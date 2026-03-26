@@ -64,15 +64,17 @@ def main():
     print("\n🔐 Authenticating... (a browser window will open)")
     credential = InteractiveBrowserCredential()
 
-    # Deploy in 4 stages
+    # Deploy in 5 stages (order matters for dependencies)
     stages = [
-        ("Stage 1/4: Infrastructure (Lakehouses, Eventhouse, KQL DB)",
-         ["Lakehouse", "Eventhouse", "KQLDatabase"]),
-        ("Stage 2/4: Compute & Ingestion (Notebooks, Eventstreams)",
+        ("Stage 1/5: Storage (Lakehouses)",
+         ["Lakehouse"]),
+        ("Stage 2/5: Real-Time (Eventhouse + KQL Database)",
+         ["Eventhouse", "KQLDatabase"]),
+        ("Stage 3/5: Compute & Ingestion (Notebooks, Eventstreams)",
          ["Notebook", "Eventstream"]),
-        ("Stage 3/4: Analytics (Semantic Models, Pipeline)",
+        ("Stage 4/5: Analytics (Semantic Models, Pipeline)",
          ["SemanticModel", "DataPipeline"]),
-        ("Stage 4/4: Presentation & AI (Report, Dashboard, Agents, Activators)",
+        ("Stage 5/5: Presentation & AI (Report, Dashboard, Agents, Activators)",
          ["Report", "KQLDashboard", "DataAgent", "Reflex"]),
     ]
 
