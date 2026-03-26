@@ -278,48 +278,17 @@ The Fabric **Task Flow** provides a visual overview of how all items relate in t
 
 - A Fabric workspace with **F64 or higher** capacity
 - **Contributor** or higher permissions on the workspace
+- If the GitHub repo is **private**: a GitHub Personal Access Token (PAT) with `repo` scope
 
 ### Step 1: Deploy 26 Items (Fabric Notebook)
 
-1. Create a new **Notebook** in your workspace
-2. Paste in **Cell 1** and run:
+1. Upload [Deploy_Bicycle_RTI.ipynb](Deploy_Bicycle_RTI.ipynb) to your workspace
+2. **Cell 1** — installs `fabric-cicd` and restarts the Python session
+3. **Cell 2** — downloads the repo from GitHub, extracts the `workspace/` folder, and deploys all 26 items in 4 staged rounds using `fabric-cicd`
 
-```python
-%pip install fabric-launcher --quiet
-notebookutils.session.restartPython()
-```
+> **Private repo?** Set `GITHUB_TOKEN = "ghp_your_token_here"` at the top of Cell 2 before running.
 
-3. Paste in **Cell 2** and run:
-
-```python
-import notebookutils
-from fabric_launcher import FabricLauncher
-
-launcher = FabricLauncher(notebookutils, allow_non_empty_workspace=True, debug=True)
-
-launcher.download_and_deploy(
-    repo_owner="kwamesefah_microsoft",
-    repo_name="RTI-Hackathon-Demo",
-    branch="main",
-    workspace_folder="workspace",
-    item_type_stages=[
-        # Stage 1: Infrastructure
-        ["Lakehouse", "Eventhouse", "KQLDatabase"],
-        # Stage 2: Compute + Ingestion
-        ["Notebook", "Eventstream"],
-        # Stage 3: Analytics
-        ["SemanticModel", "DataPipeline"],
-        # Stage 4: Presentation + IA
-        ["Report", "KQLDashboard", "DataAgent", "Reflex"],
-    ],
-    validate_after_deployment=True,
-    generate_report=True,
-)
-```
-
-> **fabric-launcher** reads definitions from this GitHub repo, resolves cross-item references via `logicalId` UUIDs in `.platform` files, and deploys in dependency order. No hardcoded workspace IDs — everything is portable.
-
-Or use the pre-built notebook: upload [Deploy_Bicycle_RTI.ipynb](Deploy_Bicycle_RTI.ipynb) to your workspace and run all cells.
+The notebook uses `fabric-cicd` to read item definitions from the extracted `workspace/` folder, resolve cross-item references via `logicalId` UUIDs in `.platform` files, and deploy in dependency order. No hardcoded workspace IDs — everything is portable.
 
 ### Step 2: Post-Deploy (Ontology + Graph + Operations Agent)
 
