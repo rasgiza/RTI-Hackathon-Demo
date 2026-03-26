@@ -298,7 +298,7 @@ from fabric_launcher import FabricLauncher
 launcher = FabricLauncher(notebookutils, allow_non_empty_workspace=True, debug=True)
 
 launcher.download_and_deploy(
-    repo_owner="kwamesefah-microsoft",
+    repo_owner="kwamesefah_microsoft",
     repo_name="RTI-Hackathon-Demo",
     branch="main",
     workspace_folder="workspace",
