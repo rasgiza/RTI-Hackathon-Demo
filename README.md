@@ -276,47 +276,55 @@ The Fabric **Task Flow** provides a visual overview of how all items relate in t
 
 ### Prerequisites
 
-- **Python 3.10+** on your local machine
 - A Fabric workspace with **F64 or higher** capacity
 - **Contributor** or higher permissions on the workspace
 
-### Step 1: Clone the repo
+> **Choose your deployment path:**
+>
+> | Path | Best for | Auth needed |
+> |------|----------|-------------|
+> | **Path A: Fabric Notebook** (recommended) | Teams, shared environments | None — already signed in |
+> | **Path B: Local Python** | CLI users, automation | Browser sign-in once |
+
+---
+
+### Path A: Fabric Notebook (Recommended — No Extra Auth)
+
+#### Step 1: Clone the repo to your local machine
 
 ```bash
 git clone https://github.com/kwamesefah_microsoft/RTI-Hackathon-Demo.git
-cd RTI-Hackathon-Demo
 ```
 
-### Step 2: Install dependencies
+#### Step 2: Upload workspace files to a staging Lakehouse
 
-```bash
-pip install -r requirements.txt
-```
+1. In your Fabric workspace, create a new **Lakehouse** (name it `deploy_staging`)
+2. Open it → click **Upload → Upload folder**
+3. Select the `workspace` folder from the cloned repo
+4. Wait for upload to complete — you'll see ~26 sub-folders under `Files/workspace/`
 
-### Step 3: Deploy 26 items to your workspace
+#### Step 3: Upload and run the deploy notebook
 
-```bash
-python deploy.py
-```
+1. Upload `Deploy_Bicycle_RTI.ipynb` from the cloned repo to your workspace
+2. Open it → **attach** the `deploy_staging` lakehouse (left sidebar → Add lakehouse)
+3. Run **Cell 1** — installs `fabric-cicd` (ignore pip warnings)
+4. Run **Cell 2** — deploys all 26 items in 4 staged rounds. No GitHub, no PAT, no auth prompts.
+5. Run **Cell 3** — validates all items were created
 
-You'll be prompted for your workspace ID or name, then a browser window opens for sign-in. The script deploys all 26 items in 4 staged rounds (Infrastructure → Compute → Analytics → Presentation).
+#### Step 4: Deploy Ontology + Graph + Operations Agent
 
-> **Alternatively**, if you prefer to deploy from inside Fabric: upload `Deploy_Bicycle_RTI.ipynb` to your workspace and run all cells (set `GITHUB_TOKEN` in Cell 2 if the repo is private).
-
-### Step 4: Deploy Ontology + Graph + Operations Agent
-
-Upload [Post_Deploy_Setup.ipynb](Post_Deploy_Setup.ipynb) to your Fabric workspace and **Run all cells**. This creates:
+Upload `Post_Deploy_Setup.ipynb` to your workspace and **Run all cells**. This creates:
 - **Bicycle_Ontology_Model_New** — Ontology with 12 entity types, 23 relationship types
 - **Bicycle_Ontology_Model_New_graph** — Graph Model linked to bicycles_gold lakehouse
 - **Cycling-Campaign-Agent** — Operations Agent for campaign automation
 
-### Step 5: Run the pipeline (first data load)
+#### Step 5: Run the pipeline (first data load)
 
 1. Open **PL_BicycleRTI_Medallion** in the workspace
 2. Click **Run** — processes: Silver → Weather → Gold → ML → Ontology → SM Refresh
 3. Wait ~15–25 minutes for the first load to complete
 
-### Step 6: One-time manual setup (~10 min)
+#### Step 6: One-time manual setup (~10 min)
 
 | Action | Where | Time |
 |--------|-------|------|
@@ -324,10 +332,26 @@ Upload [Post_Deploy_Setup.ipynb](Post_Deploy_Setup.ipynb) to your Fabric workspa
 | Open each Eventstream → click **Start** (if not running) | Fabric UI | 2 min |
 | Open KQL Dashboard → update Eventhouse query URI | Fabric UI | 2 min |
 | Test the Data Agent → ask *"Which stations need rebalancing?"* | Fabric UI | 1 min |
+| *(Optional)* Delete the `deploy_staging` lakehouse | Fabric UI | 1 min |
 
-### You're done! 🎉
+#### You're done! 🎉
 
 See [AGENT_SAMPLE_QUESTIONS.md](AGENT_SAMPLE_QUESTIONS.md) for 52 tested questions to try with the Data Agent.
+
+---
+
+### Path B: Local Python (Alternative)
+
+If you prefer deploying from your local machine:
+
+```bash
+git clone https://github.com/kwamesefah_microsoft/RTI-Hackathon-Demo.git
+cd RTI-Hackathon-Demo
+pip install -r requirements.txt
+python deploy.py
+```
+
+You'll be prompted for your workspace ID or name, then a browser window opens for Microsoft sign-in. After that, follow Steps 4–6 from Path A above.
 
 ---
 
