@@ -1,0 +1,381 @@
+[
+
+  {
+
+    "uniqueIdentifier": "c051f1a3-1669-49cb-a03c-ae30405c21cd",
+
+    "payload": {
+
+      "name": "EventStream",
+
+      "metadata": {
+
+        "eventstreamArtifactId": "22e6b4e1-7894-51ed-9afa-fb6d9c7bb93c"
+
+      }
+
+    },
+
+    "type": "eventstreamSource-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "a9b246b1-2932-4714-b15c-47a249d1a615",
+
+    "payload": {
+
+      "name": "RTIbikeRental-stream",
+
+      "definition": {
+
+        "type": "Event",
+
+        "instance": "{\"templateId\":\"SourceEvent\",\"templateVersion\":\"1.1\",\"steps\":[{\"name\":\"SourceEventStep\",\"id\":\"b993a332-ded4-47a2-bf10-52d3fda9d8f0\",\"rows\":[{\"name\":\"SourceSelector\",\"kind\":\"SourceReference\",\"arguments\":[{\"name\":\"entityId\",\"type\":\"string\",\"value\":\"c051f1a3-1669-49cb-a03c-ae30405c21cd\"}]}]}]}"
+
+      }
+
+    },
+
+    "type": "timeSeriesView-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "1da5dd23-4ddb-47e2-90b3-cd53b7645540",
+
+    "payload": {
+
+      "name": "Empty Station",
+
+      "definition": {
+
+        "type": "Rule",
+
+        "instance": "{\"steps\":[{\"id\":\"d20ca9e2-c797-4b44-9234-818d8c06d2c4\",\"name\":\"FieldsDefaultsStep\",\"rows\":[{\"arguments\":[{\"arguments\":[{\"name\":\"entityId\",\"type\":\"string\",\"value\":\"a9b246b1-2932-4714-b15c-47a249d1a615\"}],\"kind\":\"EventReference\",\"name\":\"event\",\"type\":\"complex\"}],\"kind\":\"Event\",\"name\":\"EventSelector\"}]},{\"id\":\"24331a56-add6-4641-ac52-3988b9b99f47\",\"name\":\"EventDetectStep\",\"rows\":[{\"arguments\":[{\"name\":\"fieldName\",\"type\":\"string\",\"value\":\"No_Bikes\"}],\"kind\":\"EventField\",\"name\":\"EventFieldSelector\"},{\"arguments\":[{\"name\":\"op\",\"type\":\"string\",\"value\":\"IsEqualTo\"},{\"name\":\"threshold\",\"type\":\"number\",\"value\":0}],\"kind\":\"NumberValueCondition\",\"name\":\"NumberValueCondition\"}]},{\"id\":\"f60d1f74-5e83-41e2-9fd3-1c00ce328520\",\"name\":\"ActStep\",\"rows\":[{\"arguments\":[{\"name\":\"messageLocale\",\"type\":\"string\",\"value\":\"en-us\"},{\"name\":\"recipients\",\"type\":\"array\",\"values\":[{\"type\":\"string\",\"value\":\"admin@MngEnvMCAP661056.onmicrosoft.com\"}]},{\"name\":\"headline\",\"type\":\"array\",\"values\":[{\"name\":\"string\",\"type\":\"string\",\"value\":\"ALERT: Empty Station - No Bikes Available\"}]},{\"name\":\"optionalMessage\",\"type\":\"array\",\"values\":[{\"name\":\"string\",\"type\":\"string\",\"value\":\"Station has 0 bikes available. Riders cannot rent. Dispatch rebalancing truck to deliver bikes immediately.\"}]},{\"name\":\"additionalInformation\",\"type\":\"array\",\"values\":[]}],\"kind\":\"TeamsMessage\",\"name\":\"TeamsBinding\"}]}],\"templateId\":\"EventTrigger\",\"templateVersion\":\"1.2.4\"}",
+
+        "settings": {
+
+          "shouldRun": false,
+
+          "shouldApplyRuleOnUpdate": false
+
+        }
+
+      }
+
+    },
+
+    "type": "timeSeriesView-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "6b2b3967-62e7-42eb-bbea-ab10be3b9fb7",
+
+    "payload": {
+
+      "name": "Full Station",
+
+      "definition": {
+
+        "type": "Rule",
+
+        "instance": "{\"steps\":[{\"id\":\"295e4451-008e-4180-9c43-d16e1677b257\",\"name\":\"FieldsDefaultsStep\",\"rows\":[{\"arguments\":[{\"arguments\":[{\"name\":\"entityId\",\"type\":\"string\",\"value\":\"a9b246b1-2932-4714-b15c-47a249d1a615\"}],\"kind\":\"EventReference\",\"name\":\"event\",\"type\":\"complex\"}],\"kind\":\"Event\",\"name\":\"EventSelector\"}]},{\"id\":\"4b27413b-0220-45a6-ac86-6154174730dd\",\"name\":\"EventDetectStep\",\"rows\":[{\"arguments\":[{\"name\":\"fieldName\",\"type\":\"string\",\"value\":\"No_Empty_Docks\"}],\"kind\":\"EventField\",\"name\":\"EventFieldSelector\"},{\"arguments\":[{\"name\":\"op\",\"type\":\"string\",\"value\":\"IsEqualTo\"},{\"name\":\"threshold\",\"type\":\"number\",\"value\":0}],\"kind\":\"NumberValueCondition\",\"name\":\"NumberValueCondition\"}]},{\"id\":\"cbfa5eb8-dd45-4ef9-8a50-f6968e813abe\",\"name\":\"ActStep\",\"rows\":[{\"arguments\":[{\"name\":\"messageLocale\",\"type\":\"string\",\"value\":\"en-us\"},{\"name\":\"recipients\",\"type\":\"array\",\"values\":[{\"type\":\"string\",\"value\":\"admin@MngEnvMCAP661056.onmicrosoft.com\"}]},{\"name\":\"headline\",\"type\":\"array\",\"values\":[{\"name\":\"string\",\"type\":\"string\",\"value\":\"ALERT: Full Station - No Empty Dock\"}]},{\"name\":\"optionalMessage\",\"type\":\"array\",\"values\":[{\"name\":\"string\",\"type\":\"string\",\"value\":\"🚨 Station {BikepointID} FULL reroute riders to nearby stations\"}]},{\"name\":\"additionalInformation\",\"type\":\"array\",\"values\":[{\"arguments\":[{\"name\":\"name\",\"type\":\"string\",\"value\":\"No_Bikes\"},{\"arguments\":[{\"name\":\"fieldName\",\"type\":\"string\",\"value\":\"No_Bikes\"}],\"kind\":\"EventFieldReference\",\"name\":\"reference\",\"type\":\"complexReference\"}],\"kind\":\"NameReferencePair\",\"type\":\"complex\"}]}],\"kind\":\"TeamsMessage\",\"name\":\"TeamsBinding\"}]}],\"templateId\":\"EventTrigger\",\"templateVersion\":\"1.2.4\"}",
+
+        "settings": {
+
+          "shouldRun": false,
+
+          "shouldApplyRuleOnUpdate": false
+
+        }
+
+      }
+
+    },
+
+    "type": "timeSeriesView-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "2b211d83-5d72-4ba1-84c1-46816a936f5f",
+
+    "payload": {
+
+      "name": "Low Availability",
+
+      "definition": {
+
+        "type": "Rule",
+
+        "instance": "{\"steps\":[{\"id\":\"957e19f5-28ca-4a3c-a774-312855db1c01\",\"name\":\"FieldsDefaultsStep\",\"rows\":[{\"arguments\":[{\"arguments\":[{\"name\":\"entityId\",\"type\":\"string\",\"value\":\"a9b246b1-2932-4714-b15c-47a249d1a615\"}],\"kind\":\"EventReference\",\"name\":\"event\",\"type\":\"complex\"}],\"kind\":\"Event\",\"name\":\"EventSelector\"}]},{\"id\":\"7ff5c93a-10a6-4e63-922b-ea1cd524484c\",\"name\":\"EventDetectStep\",\"rows\":[{\"arguments\":[{\"name\":\"fieldName\",\"type\":\"string\",\"value\":\"No_Bikes\"}],\"kind\":\"EventField\",\"name\":\"EventFieldSelector\"},{\"arguments\":[{\"name\":\"op\",\"type\":\"string\",\"value\":\"IsLessThan\"},{\"name\":\"threshold\",\"type\":\"number\",\"value\":3}],\"kind\":\"NumberValueCondition\",\"name\":\"NumberValueCondition\"}]},{\"id\":\"79d70bf1-0d32-46a3-b6f2-eca45d60eb8c\",\"name\":\"ActStep\",\"rows\":[{\"arguments\":[{\"name\":\"messageLocale\",\"type\":\"string\",\"value\":\"en-us\"},{\"name\":\"sentTo\",\"type\":\"array\",\"values\":[{\"type\":\"string\",\"value\":\"admin@MngEnvMCAP661056.onmicrosoft.com\"}]},{\"name\":\"copyTo\",\"type\":\"array\",\"values\":[]},{\"name\":\"bCCTo\",\"type\":\"array\",\"values\":[]},{\"name\":\"subject\",\"type\":\"array\",\"values\":[{\"name\":\"string\",\"type\":\"string\",\"value\":\"Low Bike Availability — Station {BikepointID}\"}]},{\"name\":\"headline\",\"type\":\"array\",\"values\":[{\"name\":\"string\",\"type\":\"string\",\"value\":\"Station Running Low on Bikes\"}]},{\"name\":\"optionalMessage\",\"type\":\"array\",\"values\":[{\"name\":\"string\",\"type\":\"string\",\"value\":\"Station {BikepointID} on {Street} in {Neighbourhood} has only {No_Bikes} bike(s) remaining. Dispatch additional bikes to prevent the station from going empty.\"}]},{\"name\":\"additionalInformation\",\"type\":\"array\",\"values\":[]}],\"kind\":\"EmailMessage\",\"name\":\"EmailBinding\"}]}],\"templateId\":\"EventTrigger\",\"templateVersion\":\"1.2.4\"}",
+
+        "settings": {
+
+          "shouldRun": false,
+
+          "shouldApplyRuleOnUpdate": false
+
+        }
+
+      }
+
+    },
+
+    "type": "timeSeriesView-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "a2fb46ad-5acd-48fc-87ea-91639af14137",
+
+    "payload": {
+
+      "name": "High Demand",
+
+      "definition": {
+
+        "type": "Rule",
+
+        "instance": "{\"steps\":[{\"id\":\"43c3782a-0531-4ff9-bf68-b7d6a49e5894\",\"name\":\"FieldsDefaultsStep\",\"rows\":[{\"arguments\":[{\"arguments\":[{\"name\":\"entityId\",\"type\":\"string\",\"value\":\"a9b246b1-2932-4714-b15c-47a249d1a615\"}],\"kind\":\"EventReference\",\"name\":\"event\",\"type\":\"complex\"}],\"kind\":\"Event\",\"name\":\"EventSelector\"}]},{\"id\":\"55c23671-1616-422f-adf0-e32a041b1f78\",\"name\":\"EventDetectStep\",\"rows\":[{\"arguments\":[{\"name\":\"fieldName\",\"type\":\"string\",\"value\":\"No_Empty_Docks\"}],\"kind\":\"EventField\",\"name\":\"EventFieldSelector\"},{\"arguments\":[{\"name\":\"op\",\"type\":\"string\",\"value\":\"IsLessThan\"},{\"name\":\"threshold\",\"type\":\"number\",\"value\":3}],\"kind\":\"NumberValueCondition\",\"name\":\"NumberValueCondition\"}]},{\"id\":\"141a3715-6b83-4c98-967f-ab672c34c6b3\",\"name\":\"ActStep\",\"rows\":[{\"arguments\":[{\"name\":\"messageLocale\",\"type\":\"string\",\"value\":\"en-us\"},{\"name\":\"recipients\",\"type\":\"array\",\"values\":[{\"type\":\"string\",\"value\":\"admin@MngEnvMCAP661056.onmicrosoft.com\"}]},{\"name\":\"headline\",\"type\":\"array\",\"values\":[{\"type\":\"string\",\"value\":\"Activator alert High Demand\"}]},{\"name\":\"optionalMessage\",\"type\":\"array\",\"values\":[{\"name\":\"string\",\"type\":\"string\",\"value\":\"⚠️ Station {BikepointID} on {Street} in {Neighbourhood} has only {No_Empty_Docks} empty dock(s) — redistribute bikes to nearby stations\"}]},{\"name\":\"additionalInformation\",\"type\":\"array\",\"values\":[]}],\"kind\":\"TeamsMessage\",\"name\":\"TeamsBinding\"}]}],\"templateId\":\"EventTrigger\",\"templateVersion\":\"1.2.4\"}",
+
+        "settings": {
+
+          "shouldRun": false,
+
+          "shouldApplyRuleOnUpdate": false
+
+        }
+
+      }
+
+    },
+
+    "type": "timeSeriesView-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "e3c6767b-c9d6-4988-9122-465dae74b6e9",
+
+    "payload": {
+
+      "name": "Station",
+
+      "definition": {
+
+        "type": "Object"
+
+      }
+
+    },
+
+    "type": "timeSeriesView-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "a2344768-7e2a-4863-bcf6-9aa1824ffe28",
+
+    "payload": {
+
+      "name": "BikepointID",
+
+      "parentObject": {
+
+        "targetUniqueIdentifier": "e3c6767b-c9d6-4988-9122-465dae74b6e9"
+
+      },
+
+      "definition": {
+
+        "type": "Attribute",
+
+        "instance": "{\"steps\":[{\"id\":\"9df145e0-740e-4367-a70f-e5199d1bb3d5\",\"name\":\"IdPartStep\",\"rows\":[{\"arguments\":[{\"name\":\"op\",\"type\":\"string\",\"value\":\"Text\"},{\"name\":\"format\",\"type\":\"string\",\"value\":\"\"}],\"kind\":\"TypeAssertion\",\"name\":\"TypeAssertion\"}]}],\"templateId\":\"IdentityPartAttribute\",\"templateVersion\":\"1.2.4\"}"
+
+      }
+
+    },
+
+    "type": "timeSeriesView-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "091d1d7d-afbe-4e79-a78a-294cc56dc1f8",
+
+    "payload": {
+
+      "name": "BikepointID",
+
+      "parentObject": {
+
+        "targetUniqueIdentifier": "e3c6767b-c9d6-4988-9122-465dae74b6e9"
+
+      },
+
+      "definition": {
+
+        "type": "Attribute",
+
+        "instance": "{\"steps\":[{\"id\":\"e77470c7-6bcd-4a18-83ec-fbb47de3c3ff\",\"name\":\"IdStructureStep\",\"rows\":[{\"arguments\":[{\"arguments\":[{\"name\":\"entityId\",\"type\":\"string\",\"value\":\"a2344768-7e2a-4863-bcf6-9aa1824ffe28\"}],\"kind\":\"AttributeReference\",\"name\":\"idPart\",\"type\":\"complex\"}],\"kind\":\"IdPart\",\"name\":\"IdPart\"}]}],\"templateId\":\"IdentityTupleAttribute\",\"templateVersion\":\"1.2.4\"}"
+
+      }
+
+    },
+
+    "type": "timeSeriesView-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "4dce7bbf-25da-4d1b-af0d-9bf8258ec28f",
+
+    "payload": {
+
+      "name": "RTIbikeRental-stream",
+
+      "parentObject": {
+
+        "targetUniqueIdentifier": "e3c6767b-c9d6-4988-9122-465dae74b6e9"
+
+      },
+
+      "definition": {
+
+        "type": "Event",
+
+        "instance": "{\"steps\":[{\"id\":\"aa6c0ba0-03da-4387-8bc0-494a3d53077c\",\"name\":\"SplitEventStep\",\"rows\":[{\"arguments\":[{\"arguments\":[{\"name\":\"entityId\",\"type\":\"string\",\"value\":\"a9b246b1-2932-4714-b15c-47a249d1a615\"}],\"kind\":\"EventReference\",\"name\":\"event\",\"type\":\"complex\"}],\"kind\":\"Event\",\"name\":\"EventSelector\"},{\"arguments\":[{\"name\":\"fieldName\",\"type\":\"string\",\"value\":\"BikepointID\"},{\"arguments\":[{\"name\":\"entityId\",\"type\":\"string\",\"value\":\"a2344768-7e2a-4863-bcf6-9aa1824ffe28\"}],\"kind\":\"AttributeReference\",\"name\":\"idPart\",\"type\":\"complex\"}],\"kind\":\"FieldIdMapping\",\"name\":\"FieldIdMapping\"},{\"arguments\":[{\"name\":\"isAuthoritative\",\"type\":\"boolean\",\"value\":true}],\"kind\":\"EventOptions\",\"name\":\"SplitEventOptions\"}]}],\"templateId\":\"SplitEvent\",\"templateVersion\":\"1.2.4\"}"
+
+      }
+
+    },
+
+    "type": "timeSeriesView-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "bc47a1aa-0584-4547-8286-ff1c17eca34b",
+
+    "payload": {
+
+      "name": "No_Empty_Docks",
+
+      "parentObject": {
+
+        "targetUniqueIdentifier": "e3c6767b-c9d6-4988-9122-465dae74b6e9"
+
+      },
+
+      "definition": {
+
+        "type": "Attribute",
+
+        "instance": "{\"steps\":[{\"id\":\"b8bed9c5-d4a9-4bca-b147-47391fd615f0\",\"name\":\"EventSelectStep\",\"rows\":[{\"arguments\":[{\"arguments\":[{\"name\":\"entityId\",\"type\":\"string\",\"value\":\"4dce7bbf-25da-4d1b-af0d-9bf8258ec28f\"}],\"kind\":\"EventReference\",\"name\":\"event\",\"type\":\"complex\"}],\"kind\":\"Event\",\"name\":\"EventSelector\"},{\"arguments\":[{\"name\":\"fieldName\",\"type\":\"string\",\"value\":\"No_Empty_Docks\"}],\"kind\":\"EventField\",\"name\":\"EventFieldSelector\"}]},{\"id\":\"c0655cfb-0d20-448e-9736-bb97e140dc21\",\"name\":\"EventComputeStep\",\"rows\":[{\"arguments\":[{\"name\":\"op\",\"type\":\"string\",\"value\":\"Text\"},{\"name\":\"format\",\"type\":\"string\",\"value\":\"\"}],\"kind\":\"TypeAssertion\",\"name\":\"TypeAssertion\"}]}],\"templateId\":\"BasicEventAttribute\",\"templateVersion\":\"1.2.4\"}"
+
+      }
+
+    },
+
+    "type": "timeSeriesView-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "a34cbc63-b9af-4edf-887d-ac7606a2457f",
+
+    "payload": {
+
+      "name": "No_Bikes",
+
+      "parentObject": {
+
+        "targetUniqueIdentifier": "e3c6767b-c9d6-4988-9122-465dae74b6e9"
+
+      },
+
+      "definition": {
+
+        "type": "Attribute",
+
+        "instance": "{\"steps\":[{\"id\":\"2a8984a2-1d6d-4029-88f8-588ba3db895e\",\"name\":\"EventSelectStep\",\"rows\":[{\"arguments\":[{\"arguments\":[{\"name\":\"entityId\",\"type\":\"string\",\"value\":\"4dce7bbf-25da-4d1b-af0d-9bf8258ec28f\"}],\"kind\":\"EventReference\",\"name\":\"event\",\"type\":\"complex\"}],\"kind\":\"Event\",\"name\":\"EventSelector\"},{\"arguments\":[{\"name\":\"fieldName\",\"type\":\"string\",\"value\":\"No_Bikes\"}],\"kind\":\"EventField\",\"name\":\"EventFieldSelector\"}]},{\"id\":\"8b3d3ca7-8384-47d2-889a-19d195eb2fb3\",\"name\":\"EventComputeStep\",\"rows\":[{\"arguments\":[{\"name\":\"op\",\"type\":\"string\",\"value\":\"Text\"},{\"name\":\"format\",\"type\":\"string\",\"value\":\"\"}],\"kind\":\"TypeAssertion\",\"name\":\"TypeAssertion\"}]}],\"templateId\":\"BasicEventAttribute\",\"templateVersion\":\"1.2.4\"}"
+
+      }
+
+    },
+
+    "type": "timeSeriesView-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "dc929c74-ac79-4af3-80b5-f778cbff8a7a",
+
+    "payload": {
+
+      "name": "Street",
+
+      "parentObject": {
+
+        "targetUniqueIdentifier": "e3c6767b-c9d6-4988-9122-465dae74b6e9"
+
+      },
+
+      "definition": {
+
+        "type": "Attribute",
+
+        "instance": "{\"steps\":[{\"id\":\"a6d486e9-072a-45bd-b598-e6e5111b9713\",\"name\":\"EventSelectStep\",\"rows\":[{\"arguments\":[{\"arguments\":[{\"name\":\"entityId\",\"type\":\"string\",\"value\":\"4dce7bbf-25da-4d1b-af0d-9bf8258ec28f\"}],\"kind\":\"EventReference\",\"name\":\"event\",\"type\":\"complex\"}],\"kind\":\"Event\",\"name\":\"EventSelector\"},{\"arguments\":[{\"name\":\"fieldName\",\"type\":\"string\",\"value\":\"Street\"}],\"kind\":\"EventField\",\"name\":\"EventFieldSelector\"}]},{\"id\":\"883e4134-cb0c-4125-86b1-9e1ec9c035f7\",\"name\":\"EventComputeStep\",\"rows\":[{\"arguments\":[{\"name\":\"op\",\"type\":\"string\",\"value\":\"Text\"},{\"name\":\"format\",\"type\":\"string\",\"value\":\"\"}],\"kind\":\"TypeAssertion\",\"name\":\"TypeAssertion\"}]}],\"templateId\":\"BasicEventAttribute\",\"templateVersion\":\"1.2.4\"}"
+
+      }
+
+    },
+
+    "type": "timeSeriesView-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "79114124-eb08-44ca-beb9-271c6c62f265",
+
+    "payload": {
+
+      "name": "Neighbourhood",
+
+      "parentObject": {
+
+        "targetUniqueIdentifier": "e3c6767b-c9d6-4988-9122-465dae74b6e9"
+
+      },
+
+      "definition": {
+
+        "type": "Attribute",
+
+        "instance": "{\"steps\":[{\"id\":\"bb4cb65b-7d84-4878-ae23-223bd3642a14\",\"name\":\"EventSelectStep\",\"rows\":[{\"arguments\":[{\"arguments\":[{\"name\":\"entityId\",\"type\":\"string\",\"value\":\"4dce7bbf-25da-4d1b-af0d-9bf8258ec28f\"}],\"kind\":\"EventReference\",\"name\":\"event\",\"type\":\"complex\"}],\"kind\":\"Event\",\"name\":\"EventSelector\"},{\"arguments\":[{\"name\":\"fieldName\",\"type\":\"string\",\"value\":\"Neighbourhood\"}],\"kind\":\"EventField\",\"name\":\"EventFieldSelector\"}]},{\"id\":\"774c1d45-459b-4879-817b-15ec97a8edf5\",\"name\":\"EventComputeStep\",\"rows\":[{\"arguments\":[{\"name\":\"op\",\"type\":\"string\",\"value\":\"Text\"},{\"name\":\"format\",\"type\":\"string\",\"value\":\"\"}],\"kind\":\"TypeAssertion\",\"name\":\"TypeAssertion\"}]}],\"templateId\":\"BasicEventAttribute\",\"templateVersion\":\"1.2.4\"}"
+
+      }
+
+    },
+
+    "type": "timeSeriesView-v1"
+
+  }
+
+]

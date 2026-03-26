@@ -1,0 +1,273 @@
+/// Station availability events. Contains utilization snapshots per station per event.
+/// Key measures for fleet operations, SLA monitoring, and real-time dashboards.
+table fact_availability
+	lineageTag: 10000005-0001-0001-0001-000000000001
+	sourceLineageTag: [fact_availability]
+
+	/// Total number of availability events recorded
+	measure 'Total Events' = COUNTROWS(fact_availability)
+		formatString: #,##0
+		lineageTag: 10000005-0001-0001-0001-000000000101
+
+	/// Average utilization across all events (0-1 scale, display as %)
+	measure 'Avg Utilization %' =
+			VAR _result = AVERAGE(fact_availability[utilization_pct])
+			RETURN
+			IF(ISBLANK(_result), BLANK(), _result * 100)
+		formatString: 0.0"%"
+		lineageTag: 10000005-0001-0001-0001-000000000102
+
+	/// Count of events where station was completely empty (No_Bikes = 0)
+	measure 'Empty Station Events' =
+			CALCULATE(
+			    COUNTROWS(fact_availability),
+			    fact_availability[bikes_available] = 0
+			)
+		formatString: #,##0
+		lineageTag: 10000005-0001-0001-0001-000000000103
+
+	/// Count of events where station was completely full (No_Empty_Docks = 0)
+	measure 'Full Station Events' =
+			CALCULATE(
+			    COUNTROWS(fact_availability),
+			    fact_availability[empty_docks] = 0
+			)
+		formatString: #,##0
+		lineageTag: 10000005-0001-0001-0001-000000000104
+
+	/// Count of critical events (station empty or full)
+	measure 'Critical Events' =
+			CALCULATE(
+			    COUNTROWS(fact_availability),
+			    fact_availability[is_critical] = TRUE()
+			)
+		formatString: #,##0
+		lineageTag: 10000005-0001-0001-0001-000000000105
+
+	/// Critical event rate as percentage of total events
+	measure 'Critical Rate %' =
+			VAR _total = COUNTROWS(fact_availability)
+			VAR _critical =
+			    CALCULATE(
+			        COUNTROWS(fact_availability),
+			        fact_availability[is_critical] = TRUE()
+			    )
+			RETURN
+			DIVIDE(_critical, _total)
+		formatString: 0.0"%"
+		lineageTag: 10000005-0001-0001-0001-000000000106
+
+	/// SLA compliance: % of events where bikes > 0 (target: 95%)
+	measure 'SLA Compliance %' =
+			VAR _total = COUNTROWS(fact_availability)
+			VAR _available =
+			    CALCULATE(
+			        COUNTROWS(fact_availability),
+			        fact_availability[bikes_available] > 0
+			    )
+			RETURN
+			DIVIDE(_available, _total)
+		formatString: 0.0"%"
+		lineageTag: 10000005-0001-0001-0001-000000000107
+
+	/// SLA target indicator (TRUE if compliance >= 95%)
+	measure 'SLA Met' =
+			VAR _sla = [SLA Compliance %]
+			RETURN
+			IF(_sla >= 0.95, TRUE(), FALSE())
+		formatString: &quot;TRUE&quot;;&quot;TRUE&quot;;&quot;FALSE&quot;
+		lineageTag: 10000005-0001-0001-0001-000000000108
+
+	/// Average bikes available across all events
+	measure 'Avg Bikes Available' = AVERAGE(fact_availability[bikes_available])
+		formatString: 0.0
+		lineageTag: 10000005-0001-0001-0001-000000000109
+
+	/// Average empty docks across all events
+	measure 'Avg Empty Docks' = AVERAGE(fact_availability[empty_docks])
+		formatString: 0.0
+		lineageTag: 10000005-0001-0001-0001-00000000010a
+
+	/// Rush hour events as percentage of total
+	measure 'Rush Hour Event %' =
+			VAR _total = COUNTROWS(fact_availability)
+			VAR _rush =
+			    CALCULATE(
+			        COUNTROWS(fact_availability),
+			        fact_availability[is_rush_hour] = TRUE()
+			    )
+			RETURN
+			DIVIDE(_rush, _total)
+		formatString: 0.0"%"
+		lineageTag: 10000005-0001-0001-0001-00000000010b
+
+	/// Count of distinct stations reporting in the filter context
+	measure 'Active Stations' =
+			CALCULATE(
+			    DISTINCTCOUNT(fact_availability[station_key]),
+			    fact_availability[bikes_available] >= 0
+			)
+		formatString: #,##0
+		lineageTag: 10000005-0001-0001-0001-00000000010c
+
+	column availability_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 10000005-0001-0001-0001-000000000011
+		sourceLineageTag: availability_key
+		summarizeBy: none
+		sourceColumn: availability_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column station_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 10000005-0001-0001-0001-000000000012
+		sourceLineageTag: station_key
+		summarizeBy: none
+		sourceColumn: station_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_id
+		dataType: string
+		lineageTag: 10000005-0001-0001-0001-000000000013
+		sourceLineageTag: event_id
+		summarizeBy: none
+		sourceColumn: event_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_timestamp
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 10000005-0001-0001-0001-000000000014
+		sourceLineageTag: event_timestamp
+		summarizeBy: none
+		sourceColumn: event_timestamp
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_date
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 10000005-0001-0001-0001-000000000015
+		sourceLineageTag: event_date
+		summarizeBy: none
+		sourceColumn: event_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 10000005-0001-0001-0001-000000000030
+		sourceLineageTag: date_key
+		summarizeBy: none
+		sourceColumn: date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column time_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 10000005-0001-0001-0001-000000000016
+		sourceLineageTag: time_key
+		summarizeBy: none
+		sourceColumn: time_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column bikes_available
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 10000005-0001-0001-0001-000000000017
+		sourceLineageTag: bikes_available
+		summarizeBy: sum
+		sourceColumn: bikes_available
+
+		annotation SummarizationSetBy = Automatic
+
+	column empty_docks
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 10000005-0001-0001-0001-000000000018
+		sourceLineageTag: empty_docks
+		summarizeBy: sum
+		sourceColumn: empty_docks
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_docks
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 10000005-0001-0001-0001-000000000019
+		sourceLineageTag: total_docks
+		summarizeBy: sum
+		sourceColumn: total_docks
+
+		annotation SummarizationSetBy = Automatic
+
+	column utilization_pct
+		dataType: double
+		formatString: 0.00
+		lineageTag: 10000005-0001-0001-0001-00000000001a
+		sourceLineageTag: utilization_pct
+		summarizeBy: average
+		sourceColumn: utilization_pct
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_type
+		dataType: string
+		lineageTag: 10000005-0001-0001-0001-00000000001b
+		sourceLineageTag: event_type
+		summarizeBy: none
+		sourceColumn: event_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_critical
+		dataType: boolean
+		formatString: &quot;TRUE&quot;;&quot;TRUE&quot;;&quot;FALSE&quot;
+		lineageTag: 10000005-0001-0001-0001-00000000001c
+		sourceLineageTag: is_critical
+		summarizeBy: none
+		sourceColumn: is_critical
+
+		annotation SummarizationSetBy = Automatic
+
+	column availability_band
+		dataType: string
+		lineageTag: 10000005-0001-0001-0001-00000000001d
+		sourceLineageTag: availability_band
+		summarizeBy: none
+		sourceColumn: availability_band
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_rush_hour
+		dataType: boolean
+		formatString: &quot;TRUE&quot;;&quot;TRUE&quot;;&quot;FALSE&quot;
+		lineageTag: 10000005-0001-0001-0001-00000000001e
+		sourceLineageTag: is_rush_hour
+		summarizeBy: none
+		sourceColumn: is_rush_hour
+
+		annotation SummarizationSetBy = Automatic
+
+	column time_period
+		dataType: string
+		lineageTag: 10000005-0001-0001-0001-00000000001f
+		sourceLineageTag: time_period
+		summarizeBy: none
+		sourceColumn: time_period
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_availability = entity
+		mode: directLake
+		source
+			entityName: fact_availability
+			expressionSource: 'DirectLake - bicycles_gold'

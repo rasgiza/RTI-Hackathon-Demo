@@ -1,0 +1,23 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/contextualization/1.0.0/schema.json",
+  "id": "844c7d23-0444-4456-a720-35f6a8b4c239",
+  "dataBindingTable": {
+    "workspaceId": "__WORKSPACE_ID__",
+    "itemId": "__LH_BICYCLES_GOLD__",
+    "sourceTableName": "dim_weather",
+    "sourceSchema": null,
+    "sourceType": "LakehouseTable"
+  },
+  "sourceKeyRefBindings": [
+    {
+      "sourceColumnName": "time_key",
+      "targetPropertyId": "4101848672245587377"
+    }
+  ],
+  "targetKeyRefBindings": [
+    {
+      "sourceColumnName": "time_key",
+      "targetPropertyId": "4101848215289110072"
+    }
+  ]
+}

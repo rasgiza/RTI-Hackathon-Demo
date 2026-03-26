@@ -1,0 +1,73 @@
+{
+  "modelName": "Bicycle RTI Analytics",
+  "exportedParts": [
+    {
+      "path": "definition.pbism",
+      "payloadType": "InlineBase64"
+    },
+    {
+      "path": "definition/tables/dim_station.tmdl",
+      "payloadType": "InlineBase64"
+    },
+    {
+      "path": "definition/tables/dim_neighbourhood.tmdl",
+      "payloadType": "InlineBase64"
+    },
+    {
+      "path": "definition/tables/dim_time.tmdl",
+      "payloadType": "InlineBase64"
+    },
+    {
+      "path": "definition/tables/dim_date.tmdl",
+      "payloadType": "InlineBase64"
+    },
+    {
+      "path": "definition/tables/fact_availability.tmdl",
+      "payloadType": "InlineBase64"
+    },
+    {
+      "path": "definition/tables/fact_hourly_demand.tmdl",
+      "payloadType": "InlineBase64"
+    },
+    {
+      "path": "definition/tables/fact_rebalancing.tmdl",
+      "payloadType": "InlineBase64"
+    },
+    {
+      "path": "definition/tables/forecast_demand.tmdl",
+      "payloadType": "InlineBase64"
+    },
+    {
+      "path": "definition/tables/dim_weather.tmdl",
+      "payloadType": "InlineBase64"
+    },
+    {
+      "path": "definition/tables/fact_weather_impact.tmdl",
+      "payloadType": "InlineBase64"
+    },
+    {
+      "path": "definition/tables/gold_station_snapshot.tmdl",
+      "payloadType": "InlineBase64"
+    },
+    {
+      "path": "definition/tables/gold_availability_recent.tmdl",
+      "payloadType": "InlineBase64"
+    },
+    {
+      "path": "definition/expressions.tmdl",
+      "payloadType": "InlineBase64"
+    },
+    {
+      "path": "definition/model.tmdl",
+      "payloadType": "InlineBase64"
+    },
+    {
+      "path": "definition/relationships.tmdl",
+      "payloadType": "InlineBase64"
+    },
+    {
+      "path": "definition/database.tmdl",
+      "payloadType": "InlineBase64"
+    }
+  ]
+}

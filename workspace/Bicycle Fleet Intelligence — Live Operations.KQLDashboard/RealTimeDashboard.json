@@ -1,0 +1,211 @@
+{
+  "$schema": "https://dataexplorer.azure.com/static/d/schema/20/dashboard.json",
+  "autoRefresh": {
+    "enabled": true,
+    "defaultRefreshRate": {
+      "count": 30,
+      "unit": "seconds"
+    }
+  },
+  "pages": [
+    {
+      "name": "Command Center",
+      "id": "page-command-center",
+      "tiles": [
+        {
+          "id": "tile-weather-now",
+          "title": "Current Weather",
+          "layout": { "x": 0, "y": 0, "width": 2, "height": 3 },
+          "queryRef": { "kind": "query", "queryId": "q-weather-now" },
+          "visualType": "stat",
+          "visualOptions": {}
+        },
+        {
+          "id": "tile-healthy-stations",
+          "title": "Healthy Stations",
+          "layout": { "x": 2, "y": 0, "width": 2, "height": 3 },
+          "queryRef": { "kind": "query", "queryId": "q-healthy-stations" },
+          "visualType": "stat",
+          "visualOptions": {}
+        },
+        {
+          "id": "tile-critical-stations",
+          "title": "Critical Stations",
+          "layout": { "x": 4, "y": 0, "width": 3, "height": 3 },
+          "queryRef": { "kind": "query", "queryId": "q-critical-stations" },
+          "visualType": "stat",
+          "visualOptions": {}
+        },
+        {
+          "id": "tile-active-alerts",
+          "title": "Active Alerts",
+          "layout": { "x": 7, "y": 0, "width": 2, "height": 3 },
+          "queryRef": { "kind": "query", "queryId": "q-active-alerts" },
+          "visualType": "stat",
+          "visualOptions": {}
+        },
+        {
+          "id": "tile-fleet-availability",
+          "title": "Fleet Availability %",
+          "layout": { "x": 9, "y": 0, "width": 3, "height": 3 },
+          "queryRef": { "kind": "query", "queryId": "q-fleet-availability" },
+          "visualType": "stat",
+          "visualOptions": {}
+        },
+        {
+          "id": "tile-temp-vs-bikes",
+          "title": "Temperature vs Bike Availability",
+          "layout": { "x": 0, "y": 3, "width": 12, "height": 5 },
+          "queryRef": { "kind": "query", "queryId": "q-temp-vs-bikes" },
+          "visualType": "line",
+          "visualOptions": {
+            "xAxis": { "column": "time_bucket" },
+            "yAxes": [
+              { "columns": ["avg_temperature_c"], "label": "Temperature (°C)" },
+              { "columns": ["avg_availability_pct"], "label": "Availability %" }
+            ],
+            "multiAxis": true
+          }
+        },
+        {
+          "id": "tile-neighbourhood-heatmap",
+          "title": "Neighbourhood Health — Where Needs Help?",
+          "layout": { "x": 0, "y": 8, "width": 12, "height": 5 },
+          "queryRef": { "kind": "query", "queryId": "q-neighbourhood-ranked" },
+          "visualType": "bar",
+          "visualOptions": {
+            "xAxis": { "column": "Neighbourhood" },
+            "yAxes": [
+              { "columns": ["critical_stations", "healthy_stations"], "label": "Station Count" }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Intelligence & SLA",
+      "id": "page-intelligence",
+      "tiles": [
+        {
+          "id": "tile-neighbourhood",
+          "title": "Neighbourhood Demand",
+          "layout": { "x": 0, "y": 0, "width": 6, "height": 6 },
+          "queryRef": { "kind": "query", "queryId": "q-neighbourhood-heatmap" },
+          "visualType": "bar",
+          "visualOptions": {
+            "xAxis": { "column": "Neighbourhood" },
+            "yAxes": [
+              { "columns": ["avg_utilization"], "label": "Avg Utilization %" }
+            ]
+          }
+        },
+        {
+          "id": "tile-sla",
+          "title": "SLA Compliance",
+          "layout": { "x": 6, "y": 0, "width": 6, "height": 6 },
+          "queryRef": { "kind": "query", "queryId": "q-sla-monitoring" },
+          "visualType": "table",
+          "visualOptions": {}
+        },
+        {
+          "id": "tile-anomaly",
+          "title": "Anomaly Detection",
+          "layout": { "x": 0, "y": 6, "width": 6, "height": 6 },
+          "queryRef": { "kind": "query", "queryId": "q-anomaly-detection" },
+          "visualType": "table",
+          "visualOptions": {}
+        },
+        {
+          "id": "tile-pricing",
+          "title": "Dynamic Pricing Signals",
+          "layout": { "x": 6, "y": 6, "width": 6, "height": 6 },
+          "queryRef": { "kind": "query", "queryId": "q-pricing-signals" },
+          "visualType": "table",
+          "visualOptions": {}
+        }
+      ]
+    }
+  ],
+  "dataSources": [
+    {
+      "id": "ds-eventhouse",
+      "name": "bikerentaldb",
+      "kind": "kusto",
+      "clusterUri": "__EVENTHOUSE_QUERY_URI__",
+      "database": "bikerentaldb",
+      "scopeId": "12bbefb2-a1e9-554c-a78e-873a7580aa10"
+    }
+  ],
+  "queries": [
+    {
+      "id": "q-weather-now",
+      "dataSourceId": "ds-eventhouse",
+      "text": "weather_tb\n| where ingestion_time() > ago(30m)\n| summarize arg_max(ingestion_time(), *)\n| project temperature_c = round(todouble(temperature), 1),\n    weather_text = tostring(description),\n    feels_like_c = round(todouble(realFeelTemperature), 1)\n| take 1"
+    },
+    {
+      "id": "q-healthy-stations",
+      "dataSourceId": "ds-eventhouse",
+      "text": "bikerentaldb\n| where ingestion_time() > ago(5m)\n| summarize arg_max(ingestion_time(), No_Bikes, No_Empty_Docks) by BikepointID\n| extend total_docks = No_Bikes + No_Empty_Docks\n| extend availability_pct = iff(total_docks == 0, 0.0, todouble(No_Bikes) / todouble(total_docks) * 100)\n| where availability_pct >= 20 and availability_pct <= 80\n| summarize healthy_count = count()"
+    },
+    {
+      "id": "q-critical-stations",
+      "dataSourceId": "ds-eventhouse",
+      "text": "bikerentaldb\n| where ingestion_time() > ago(5m)\n| summarize arg_max(ingestion_time(), No_Bikes, No_Empty_Docks) by BikepointID\n| where No_Bikes == 0 or No_Empty_Docks == 0\n| summarize critical_count = count()"
+    },
+    {
+      "id": "q-active-alerts",
+      "dataSourceId": "ds-eventhouse",
+      "text": "bikerentaldb\n| where ingestion_time() > ago(5m)\n| summarize arg_max(ingestion_time(), No_Bikes, No_Empty_Docks) by BikepointID\n| where No_Bikes <= 2 or No_Empty_Docks <= 2\n| summarize alert_count = count()"
+    },
+    {
+      "id": "q-fleet-availability",
+      "dataSourceId": "ds-eventhouse",
+      "text": "bikerentaldb\n| where ingestion_time() > ago(5m)\n| summarize arg_max(ingestion_time(), No_Bikes, No_Empty_Docks) by BikepointID\n| extend total_docks = No_Bikes + No_Empty_Docks\n| summarize avg_availability = round(avg(iff(total_docks == 0, 0.0, todouble(No_Bikes) / todouble(total_docks))) * 100, 1)"
+    },
+    {
+      "id": "q-temp-vs-bikes",
+      "dataSourceId": "ds-eventhouse",
+      "text": "let bikes = bikerentaldb\n| where ingestion_time() > ago(6h)\n| extend total_docks = No_Bikes + No_Empty_Docks\n| extend availability_pct = iff(total_docks == 0, 0.0, todouble(No_Bikes) / todouble(total_docks) * 100)\n| summarize avg_availability_pct = round(avg(availability_pct), 1)\n    by time_bucket = bin(ingestion_time(), 10m);\nlet weather = weather_tb\n| where ingestion_time() > ago(6h)\n| summarize avg_temperature_c = round(avg(todouble(temperature)), 1)\n    by time_bucket = bin(ingestion_time(), 10m);\nbikes\n| join kind=leftouter weather on time_bucket\n| project time_bucket, avg_availability_pct, avg_temperature_c\n| order by time_bucket asc"
+    },
+    {
+      "id": "q-neighbourhood-ranked",
+      "dataSourceId": "ds-eventhouse",
+      "text": "bikerentaldb\n| where ingestion_time() > ago(30m)\n| summarize arg_max(ingestion_time(), No_Bikes, No_Empty_Docks) by BikepointID, Neighbourhood\n| extend total_docks = No_Bikes + No_Empty_Docks\n| extend is_critical = No_Bikes == 0 or No_Empty_Docks == 0\n| extend is_healthy = No_Bikes > 2 and No_Empty_Docks > 2\n| summarize\n    critical_stations = countif(is_critical),\n    healthy_stations = countif(is_healthy),\n    total_stations = count(),\n    avg_availability = round(avg(iff(total_docks == 0, 0.0, todouble(No_Bikes) / todouble(total_docks) * 100)), 1)\n    by Neighbourhood\n| order by critical_stations desc, avg_availability asc"
+    },
+    {
+      "id": "q-live-station-status",
+      "dataSourceId": "ds-eventhouse",
+      "text": "bikerentaldb\n| where ingestion_time() > ago(5m)\n| summarize arg_max(ingestion_time(), No_Bikes, No_Empty_Docks) by BikepointID, Street, Neighbourhood, Latitude, Longitude\n| extend total_docks = No_Bikes + No_Empty_Docks\n| extend availability_pct = iff(total_docks == 0, 0.0, round(todouble(No_Bikes) / todouble(total_docks) * 100, 1))\n| extend status = case(\n    No_Bikes == 0, \"EMPTY\",\n    No_Empty_Docks == 0, \"FULL\",\n    availability_pct < 20, \"LOW\",\n    availability_pct > 80, \"HIGH\",\n    \"NORMAL\"\n  )\n| project BikepointID, Street, Neighbourhood,\n    No_Bikes, No_Empty_Docks, total_docks,\n    availability_pct, status,\n    Latitude, Longitude\n| order by availability_pct asc\n| take 200"
+    },
+    {
+      "id": "q-rebalance-alerts",
+      "dataSourceId": "ds-eventhouse",
+      "text": "bikerentaldb\n| where ingestion_time() > ago(10m)\n| summarize arg_max(ingestion_time(), No_Bikes, No_Empty_Docks) by BikepointID, Street, Neighbourhood, Latitude, Longitude\n| extend total_docks = No_Bikes + No_Empty_Docks\n| where No_Bikes <= 2 or No_Empty_Docks <= 2\n| extend urgency = case(\n    No_Bikes == 0, \"CRITICAL - No bikes available\",\n    No_Empty_Docks == 0, \"CRITICAL - Station full\",\n    No_Bikes <= 2, \"WARNING - Very low bikes\",\n    No_Empty_Docks <= 2, \"WARNING - Almost full\",\n    \"MONITOR\"\n  )\n| extend target_bikes = iff(total_docks == 0, 0, toint(round(todouble(total_docks) * 0.5)))\n| extend bikes_needed = target_bikes - No_Bikes\n| project BikepointID, Street, Neighbourhood,\n    No_Bikes, No_Empty_Docks, total_docks,\n    urgency, bikes_needed,\n    Latitude, Longitude\n| order by No_Bikes asc, No_Empty_Docks asc\n| take 50"
+    },
+    {
+      "id": "q-timeseries-trend",
+      "dataSourceId": "ds-eventhouse",
+      "text": "bikerentaldb\n| where ingestion_time() > ago(6h)\n| extend total_docks = No_Bikes + No_Empty_Docks\n| extend utilization_pct = iff(total_docks == 0, 0.0, todouble(No_Bikes) / todouble(total_docks))\n| extend is_critical = No_Bikes <= 2 or No_Empty_Docks <= 2\n| summarize\n    avg_bikes = round(avg(No_Bikes), 1),\n    avg_utilization = round(avg(utilization_pct) * 100, 1),\n    total_events = count(),\n    critical_events = countif(is_critical),\n    stations_reporting = dcount(BikepointID)\n    by bin(ingestion_time(), 5m)\n| order by ingestion_time_ asc"
+    },
+    {
+      "id": "q-neighbourhood-heatmap",
+      "dataSourceId": "ds-eventhouse",
+      "text": "bikerentaldb\n| where ingestion_time() > ago(1h)\n| extend total_docks = No_Bikes + No_Empty_Docks\n| extend utilization_pct = iff(total_docks == 0, 0.0, todouble(No_Bikes) / todouble(total_docks))\n| extend is_critical = No_Bikes <= 2 or No_Empty_Docks <= 2\n| summarize\n    total_events = count(),\n    avg_bikes = round(avg(No_Bikes), 1),\n    avg_utilization = round(avg(utilization_pct) * 100, 1),\n    critical_count = countif(is_critical),\n    station_count = dcount(BikepointID),\n    avg_lat = avg(Latitude),\n    avg_lon = avg(Longitude)\n    by Neighbourhood\n| extend demand_level = case(\n    total_events > 100, \"VERY HIGH\",\n    total_events > 50, \"HIGH\",\n    total_events > 20, \"MEDIUM\",\n    \"LOW\"\n  )\n| extend health_indicator = case(\n    critical_count > 5, \"RED\",\n    critical_count > 2, \"YELLOW\",\n    \"GREEN\"\n  )\n| order by critical_count desc"
+    },
+    {
+      "id": "q-sla-monitoring",
+      "dataSourceId": "ds-eventhouse",
+      "text": "bikerentaldb\n| where ingestion_time() > ago(24h)\n| summarize\n    total_checks = count(),\n    available_checks = countif(No_Bikes > 0),\n    empty_checks = countif(No_Bikes == 0),\n    avg_bikes = round(avg(No_Bikes), 1),\n    min_bikes = min(No_Bikes),\n    first_seen = min(ingestion_time()),\n    last_seen = max(ingestion_time())\n    by BikepointID, Street, Neighbourhood\n| extend sla_pct = iff(total_checks == 0, 0.0, round(todouble(available_checks) / todouble(total_checks) * 100, 2))\n| extend sla_status = case(\n    sla_pct >= 95, \"COMPLIANT\",\n    sla_pct >= 80, \"AT RISK\",\n    \"BREACHED\"\n  )\n| extend monitoring_hours = round(datetime_diff(\"minute\", last_seen, first_seen) / 60.0, 1)\n| project BikepointID, Street, Neighbourhood,\n    sla_pct, sla_status, total_checks,\n    available_checks, empty_checks, avg_bikes,\n    monitoring_hours\n| order by sla_pct asc\n| take 200"
+    },
+    {
+      "id": "q-anomaly-detection",
+      "dataSourceId": "ds-eventhouse",
+      "text": "let baseline = bikerentaldb\n| where ingestion_time() between (ago(24h) .. ago(1h))\n| summarize\n    baseline_avg_bikes = avg(No_Bikes),\n    baseline_std = stdev(No_Bikes)\n    by BikepointID;\nlet recent = bikerentaldb\n| where ingestion_time() > ago(30m)\n| summarize\n    recent_avg_bikes = avg(No_Bikes),\n    recent_events = count(),\n    latest_update = max(ingestion_time())\n    by BikepointID, Street, Neighbourhood;\nrecent\n| join kind=inner baseline on BikepointID\n| extend z_score = round(\n    (recent_avg_bikes - baseline_avg_bikes) / iff(baseline_std < 0.01, 1.0, baseline_std), 2)\n| where abs(z_score) > 2.0\n| extend anomaly_type = case(\n    z_score > 2, \"SURGE - Unusual bike accumulation\",\n    z_score < -2, \"DRAIN - Unusual bike depletion\",\n    \"NORMAL\"\n  )\n| project BikepointID, Street, Neighbourhood,\n    recent_avg_bikes = round(recent_avg_bikes, 1),\n    baseline_avg_bikes = round(baseline_avg_bikes, 1),\n    z_score, anomaly_type, recent_events, latest_update\n| order by abs(z_score) desc\n| take 50"
+    },
+    {
+      "id": "q-pricing-signals",
+      "dataSourceId": "ds-eventhouse",
+      "text": "bikerentaldb\n| where ingestion_time() > ago(15m)\n| summarize arg_max(ingestion_time(), No_Bikes, No_Empty_Docks) by BikepointID, Street, Neighbourhood, Latitude, Longitude\n| extend total_docks = No_Bikes + No_Empty_Docks\n| extend supply_ratio = iff(total_docks == 0, 0.0, round(todouble(No_Bikes) / todouble(total_docks), 3))\n| extend price_multiplier = case(\n    supply_ratio < 0.1, 2.0,\n    supply_ratio < 0.2, 1.5,\n    supply_ratio > 0.9, 0.5,\n    supply_ratio > 0.8, 0.75,\n    1.0\n  )\n| extend pricing_reason = case(\n    price_multiplier > 1.0, strcat(\"Supply shortage (\", tostring(round(supply_ratio * 100, 0)), \"%)\"),\n    price_multiplier < 1.0, strcat(\"Oversupply discount (\", tostring(round(supply_ratio * 100, 0)), \"%)\"),\n    \"Standard rate\"\n  )\n| project BikepointID, Street, Neighbourhood,\n    No_Bikes, No_Empty_Docks, total_docks,\n    supply_ratio, price_multiplier, pricing_reason,\n    Latitude, Longitude\n| order by price_multiplier desc\n| take 200"
+    }
+  ]
+}

@@ -1,0 +1,192 @@
+/// Recent availability (Sands End). Filtered from gold_availability_recent.
+table onto_availability_recent
+	lineageTag: 20000012-0001-0001-0001-000000000001
+	sourceLineageTag: [onto_availability_recent]
+
+	column recent_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 20000012-0001-0001-0001-000000000011
+		sourceLineageTag: recent_key
+		summarizeBy: none
+		sourceColumn: recent_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column station_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 20000012-0001-0001-0001-000000000012
+		sourceLineageTag: station_key
+		summarizeBy: none
+		sourceColumn: station_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column station_id
+		dataType: string
+		lineageTag: 20000012-0001-0001-0001-000000000013
+		sourceLineageTag: station_id
+		summarizeBy: none
+		sourceColumn: station_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column street_address
+		dataType: string
+		lineageTag: 20000012-0001-0001-0001-000000000014
+		sourceLineageTag: street_address
+		summarizeBy: none
+		sourceColumn: street_address
+
+		annotation SummarizationSetBy = Automatic
+
+	column neighbourhood
+		dataType: string
+		lineageTag: 20000012-0001-0001-0001-000000000015
+		sourceLineageTag: neighbourhood
+		summarizeBy: none
+		sourceColumn: neighbourhood
+
+		annotation SummarizationSetBy = Automatic
+
+	column zone
+		dataType: string
+		lineageTag: 20000012-0001-0001-0001-000000000016
+		sourceLineageTag: zone
+		summarizeBy: none
+		sourceColumn: zone
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_hour
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 20000012-0001-0001-0001-000000000017
+		sourceLineageTag: event_hour
+		summarizeBy: none
+		sourceColumn: event_hour
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_date
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 20000012-0001-0001-0001-000000000018
+		sourceLineageTag: event_date
+		summarizeBy: none
+		sourceColumn: event_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 20000012-0001-0001-0001-000000000019
+		sourceLineageTag: date_key
+		summarizeBy: none
+		sourceColumn: date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column time_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 20000012-0001-0001-0001-00000000001a
+		sourceLineageTag: time_key
+		summarizeBy: none
+		sourceColumn: time_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_count
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 20000012-0001-0001-0001-00000000001b
+		sourceLineageTag: event_count
+		summarizeBy: sum
+		sourceColumn: event_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column avg_bikes
+		dataType: double
+		lineageTag: 20000012-0001-0001-0001-00000000001c
+		sourceLineageTag: avg_bikes
+		summarizeBy: average
+		sourceColumn: avg_bikes
+
+		annotation SummarizationSetBy = Automatic
+
+	column min_bikes
+		dataType: int64
+		formatString: 0
+		lineageTag: 20000012-0001-0001-0001-00000000001d
+		sourceLineageTag: min_bikes
+		summarizeBy: min
+		sourceColumn: min_bikes
+
+		annotation SummarizationSetBy = Automatic
+
+	column max_bikes
+		dataType: int64
+		formatString: 0
+		lineageTag: 20000012-0001-0001-0001-00000000001e
+		sourceLineageTag: max_bikes
+		summarizeBy: max
+		sourceColumn: max_bikes
+
+		annotation SummarizationSetBy = Automatic
+
+	column avg_empty_docks
+		dataType: double
+		lineageTag: 20000012-0001-0001-0001-00000000001f
+		sourceLineageTag: avg_empty_docks
+		summarizeBy: average
+		sourceColumn: avg_empty_docks
+
+		annotation SummarizationSetBy = Automatic
+
+	column avg_utilization
+		dataType: double
+		lineageTag: 20000012-0001-0001-0001-000000000020
+		sourceLineageTag: avg_utilization
+		summarizeBy: average
+		sourceColumn: avg_utilization
+
+		annotation SummarizationSetBy = Automatic
+
+	column critical_events
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 20000012-0001-0001-0001-000000000021
+		sourceLineageTag: critical_events
+		summarizeBy: sum
+		sourceColumn: critical_events
+
+		annotation SummarizationSetBy = Automatic
+
+	column utilization_band
+		dataType: string
+		lineageTag: 20000012-0001-0001-0001-000000000022
+		sourceLineageTag: utilization_band
+		summarizeBy: none
+		sourceColumn: utilization_band
+
+		annotation SummarizationSetBy = Automatic
+
+	column loaded_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 20000012-0001-0001-0001-000000000023
+		sourceLineageTag: loaded_at
+		summarizeBy: none
+		sourceColumn: loaded_at
+
+		annotation SummarizationSetBy = Automatic
+
+	partition onto_availability_recent = entity
+		mode: directLake
+		source
+			entityName: onto_availability_recent
+			expressionSource: 'DirectLake - bicycles_gold'

@@ -1,0 +1,44 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "1e18629a-4e81-4685-85c4-6367bc3c2518",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "time_key",
+        "targetPropertyId": "4101848215289110072"
+      },
+      {
+        "sourceColumnName": "hour_of_day",
+        "targetPropertyId": "4101848236989674592"
+      },
+      {
+        "sourceColumnName": "hour_label",
+        "targetPropertyId": "4101848260610843089"
+      },
+      {
+        "sourceColumnName": "time_period",
+        "targetPropertyId": "4101848282712630833"
+      },
+      {
+        "sourceColumnName": "is_rush_hour",
+        "targetPropertyId": "4101848303808768676"
+      },
+      {
+        "sourceColumnName": "am_pm",
+        "targetPropertyId": "4101848325724497994"
+      },
+      {
+        "sourceColumnName": "demand_tier",
+        "targetPropertyId": "4101848346328803599"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "__WORKSPACE_ID__",
+      "itemId": "__LH_BICYCLES_GOLD__",
+      "sourceTableName": "dim_time",
+      "sourceSchema": null
+    }
+  }
+}

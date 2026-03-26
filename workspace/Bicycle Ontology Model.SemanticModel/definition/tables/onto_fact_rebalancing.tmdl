@@ -1,0 +1,195 @@
+/// Rebalancing assessments (Sands End). Filtered from fact_rebalancing.
+table onto_fact_rebalancing
+	lineageTag: 20000007-0001-0001-0001-000000000001
+	sourceLineageTag: [onto_fact_rebalancing]
+
+	column rebalance_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 20000007-0001-0001-0001-000000000011
+		sourceLineageTag: rebalance_key
+		summarizeBy: none
+		sourceColumn: rebalance_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column station_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 20000007-0001-0001-0001-000000000012
+		sourceLineageTag: station_key
+		summarizeBy: none
+		sourceColumn: station_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column neighbourhood_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 20000007-0001-0001-0001-000000000013
+		sourceLineageTag: neighbourhood_key
+		summarizeBy: none
+		sourceColumn: neighbourhood_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column time_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 20000007-0001-0001-0001-000000000014
+		sourceLineageTag: time_key
+		summarizeBy: none
+		sourceColumn: time_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column weather_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 20000007-0001-0001-0001-000000000015
+		sourceLineageTag: weather_key
+		summarizeBy: none
+		sourceColumn: weather_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column station_id
+		dataType: string
+		lineageTag: 20000007-0001-0001-0001-000000000016
+		sourceLineageTag: station_id
+		summarizeBy: none
+		sourceColumn: station_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column neighbourhood
+		dataType: string
+		lineageTag: 20000007-0001-0001-0001-000000000017
+		sourceLineageTag: neighbourhood
+		summarizeBy: none
+		sourceColumn: neighbourhood
+
+		annotation SummarizationSetBy = Automatic
+
+	column bikes_available
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 20000007-0001-0001-0001-000000000018
+		sourceLineageTag: bikes_available
+		summarizeBy: sum
+		sourceColumn: bikes_available
+
+		annotation SummarizationSetBy = Automatic
+
+	column empty_docks
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 20000007-0001-0001-0001-000000000019
+		sourceLineageTag: empty_docks
+		summarizeBy: sum
+		sourceColumn: empty_docks
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_docks
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 20000007-0001-0001-0001-00000000001a
+		sourceLineageTag: total_docks
+		summarizeBy: sum
+		sourceColumn: total_docks
+
+		annotation SummarizationSetBy = Automatic
+
+	column utilization_pct
+		dataType: double
+		formatString: 0.00
+		lineageTag: 20000007-0001-0001-0001-00000000001b
+		sourceLineageTag: utilization_pct
+		summarizeBy: average
+		sourceColumn: utilization_pct
+
+		annotation SummarizationSetBy = Automatic
+
+	column priority_score
+		dataType: double
+		formatString: 0.0
+		lineageTag: 20000007-0001-0001-0001-00000000001c
+		sourceLineageTag: priority_score
+		summarizeBy: average
+		sourceColumn: priority_score
+
+		annotation SummarizationSetBy = Automatic
+
+	column recommended_action
+		dataType: string
+		lineageTag: 20000007-0001-0001-0001-00000000001d
+		sourceLineageTag: recommended_action
+		summarizeBy: none
+		sourceColumn: recommended_action
+
+		annotation SummarizationSetBy = Automatic
+
+	column bikes_to_target
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 20000007-0001-0001-0001-00000000001e
+		sourceLineageTag: bikes_to_target
+		summarizeBy: sum
+		sourceColumn: bikes_to_target
+
+		annotation SummarizationSetBy = Automatic
+
+	column availability_status
+		dataType: string
+		lineageTag: 20000007-0001-0001-0001-00000000001f
+		sourceLineageTag: availability_status
+		summarizeBy: none
+		sourceColumn: availability_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column station_size
+		dataType: string
+		lineageTag: 20000007-0001-0001-0001-000000000020
+		sourceLineageTag: station_size
+		summarizeBy: none
+		sourceColumn: station_size
+
+		annotation SummarizationSetBy = Automatic
+
+	column assessed_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 20000007-0001-0001-0001-000000000021
+		sourceLineageTag: assessed_at
+		summarizeBy: none
+		sourceColumn: assessed_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 20000007-0001-0001-0001-000000000022
+		sourceLineageTag: date_key
+		summarizeBy: none
+		sourceColumn: date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column estimated_rebalance_cost
+		dataType: double
+		formatString: "$"#,##0.00
+		lineageTag: 20000007-0001-0001-0001-000000000023
+		sourceLineageTag: estimated_rebalance_cost
+		summarizeBy: sum
+		sourceColumn: estimated_rebalance_cost
+
+		annotation SummarizationSetBy = Automatic
+
+	partition onto_fact_rebalancing = entity
+		mode: directLake
+		source
+			entityName: onto_fact_rebalancing
+			expressionSource: 'DirectLake - bicycles_gold'

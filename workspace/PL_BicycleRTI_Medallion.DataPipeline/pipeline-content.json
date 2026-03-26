@@ -1,0 +1,139 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "name": "Silver Enrich Transform",
+        "type": "TridentNotebook",
+        "dependsOn": [],
+        "policy": {
+          "timeout": "0.02:00:00",
+          "retry": 1,
+          "retryIntervalInSeconds": 60
+        },
+        "typeProperties": {
+          "notebookId": "816e1155-3b23-5d96-a27b-5dc4913984e8",
+          "workspaceId": "573cc7c7-a45a-4fd9-886e-9db4e9798db4"
+        }
+      },
+      {
+        "name": "Silver Weather Join",
+        "type": "TridentNotebook",
+        "dependsOn": [
+          {
+            "activity": "Silver Enrich Transform",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.01:00:00",
+          "retry": 1,
+          "retryIntervalInSeconds": 60
+        },
+        "typeProperties": {
+          "notebookId": "62a585f5-ed10-5872-8a69-06ac637d6cd3",
+          "workspaceId": "573cc7c7-a45a-4fd9-886e-9db4e9798db4"
+        }
+      },
+      {
+        "name": "Gold Star Schema",
+        "type": "TridentNotebook",
+        "dependsOn": [
+          {
+            "activity": "Silver Weather Join",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.02:00:00",
+          "retry": 1,
+          "retryIntervalInSeconds": 60
+        },
+        "typeProperties": {
+          "notebookId": "a5259d1f-ed43-5aa1-934b-fb11f2f677fe",
+          "workspaceId": "573cc7c7-a45a-4fd9-886e-9db4e9798db4"
+        }
+      },
+      {
+        "name": "ML Demand Forecast",
+        "type": "TridentNotebook",
+        "dependsOn": [
+          {
+            "activity": "Gold Star Schema",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.01:00:00",
+          "retry": 1,
+          "retryIntervalInSeconds": 60
+        },
+        "typeProperties": {
+          "notebookId": "791debb0-aa7c-56af-b3c9-bedadd6676cf",
+          "workspaceId": "573cc7c7-a45a-4fd9-886e-9db4e9798db4"
+        }
+      },
+      {
+        "name": "Ontology Neighbourhood Filter",
+        "type": "TridentNotebook",
+        "dependsOn": [
+          {
+            "activity": "ML Demand Forecast",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.01:00:00",
+          "retry": 1,
+          "retryIntervalInSeconds": 60
+        },
+        "typeProperties": {
+          "notebookId": "6ac83b20-a547-5232-8c69-958cff91f6ff",
+          "workspaceId": "573cc7c7-a45a-4fd9-886e-9db4e9798db4"
+        }
+      },
+      {
+        "name": "Semantic model refresh1",
+        "type": "PBISemanticModelRefresh",
+        "dependsOn": [
+          {
+            "activity": "Ontology Neighbourhood Filter",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "method": "post",
+          "waitOnCompletion": true,
+          "commitMode": "Transactional",
+          "operationType": "SemanticModelRefresh",
+          "groupId": "573cc7c7-a45a-4fd9-886e-9db4e9798db4",
+          "datasetId": "acf1dcc4-3396-511b-9392-1f7e4bcabf18",
+          "objects": [
+            {
+              "table": ""
+            }
+          ]
+        },
+        "externalReferences": {
+          "connection": "__SM_REFRESH_CONN__"
+        }
+      }
+    ]
+  }
+}

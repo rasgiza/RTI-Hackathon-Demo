@@ -1,0 +1,239 @@
+/// Hourly demand aggregation per neighbourhood. Powers demand trend analysis, capacity planning, and forecasting validation.
+table fact_hourly_demand
+	lineageTag: 10000006-0001-0001-0001-000000000001
+	sourceLineageTag: [fact_hourly_demand]
+
+	/// Total demand events across all hours and neighbourhoods
+	measure 'Total Demand Events' = SUM(fact_hourly_demand[event_count])
+		formatString: #,##0
+		lineageTag: 10000006-0001-0001-0001-000000000101
+
+	/// Average hourly demand (events per hour per neighbourhood)
+	measure 'Avg Hourly Demand' = AVERAGE(fact_hourly_demand[event_count])
+		formatString: 0.0
+		lineageTag: 10000006-0001-0001-0001-000000000102
+
+	/// Peak hourly demand (highest event count in any single hour)
+	measure 'Peak Hourly Demand' = MAX(fact_hourly_demand[event_count])
+		formatString: #,##0
+		lineageTag: 10000006-0001-0001-0001-000000000103
+
+	/// Total critical events flagged across all hours
+	measure 'Total Critical Events' = SUM(fact_hourly_demand[critical_events])
+		formatString: #,##0
+		lineageTag: 10000006-0001-0001-0001-000000000104
+
+	/// Total rebalancing triggers across all hours
+	measure 'Total Rebalance Triggers' = SUM(fact_hourly_demand[rebalance_triggers])
+		formatString: #,##0
+		lineageTag: 10000006-0001-0001-0001-000000000105
+
+	/// Average utilization across all hourly buckets (0-1 scale, display as %)
+	measure 'Avg Demand Utilization %' =
+			VAR _result = AVERAGE(fact_hourly_demand[avg_utilization])
+			RETURN
+			IF(ISBLANK(_result), BLANK(), _result * 100)
+		formatString: 0.0"%"
+		lineageTag: 10000006-0001-0001-0001-000000000106
+
+	/// Total demand spike events
+	measure 'Total Demand Spikes' = SUM(fact_hourly_demand[demand_spike_count])
+		formatString: #,##0
+		lineageTag: 10000006-0001-0001-0001-000000000107
+
+	/// Rush hour vs off-peak demand ratio
+	measure 'Rush Hour Demand Ratio' =
+			VAR _rush =
+			    CALCULATE(
+			        SUM(fact_hourly_demand[event_count]),
+			        fact_hourly_demand[is_rush_hour] = TRUE()
+			    )
+			VAR _offpeak =
+			    CALCULATE(
+			        SUM(fact_hourly_demand[event_count]),
+			        fact_hourly_demand[is_rush_hour] = FALSE()
+			    )
+			RETURN
+			DIVIDE(_rush, _offpeak)
+		formatString: 0.00
+		lineageTag: 10000006-0001-0001-0001-000000000108
+
+	/// Number of distinct hours with recorded demand
+	measure 'Hours with Demand' = COUNTROWS(fact_hourly_demand)
+		formatString: #,##0
+		lineageTag: 10000006-0001-0001-0001-000000000109
+
+	column demand_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 10000006-0001-0001-0001-000000000011
+		sourceLineageTag: demand_key
+		summarizeBy: none
+		sourceColumn: demand_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column neighbourhood_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 10000006-0001-0001-0001-000000000012
+		sourceLineageTag: neighbourhood_key
+		summarizeBy: none
+		sourceColumn: neighbourhood_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_hour
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 10000006-0001-0001-0001-000000000013
+		sourceLineageTag: event_hour
+		summarizeBy: none
+		sourceColumn: event_hour
+
+		annotation SummarizationSetBy = Automatic
+
+	column demand_date
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 10000006-0001-0001-0001-000000000014
+		sourceLineageTag: demand_date
+		summarizeBy: none
+		sourceColumn: demand_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 10000006-0001-0001-0001-000000000030
+		sourceLineageTag: date_key
+		summarizeBy: none
+		sourceColumn: date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column time_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 10000006-0001-0001-0001-000000000015
+		sourceLineageTag: time_key
+		summarizeBy: none
+		sourceColumn: time_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_count
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 10000006-0001-0001-0001-000000000016
+		sourceLineageTag: event_count
+		summarizeBy: sum
+		sourceColumn: event_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column avg_utilization
+		dataType: double
+		formatString: 0.00
+		lineageTag: 10000006-0001-0001-0001-000000000017
+		sourceLineageTag: avg_utilization
+		summarizeBy: average
+		sourceColumn: avg_utilization
+
+		annotation SummarizationSetBy = Automatic
+
+	column min_bikes
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 10000006-0001-0001-0001-000000000018
+		sourceLineageTag: min_bikes
+		summarizeBy: min
+		sourceColumn: min_bikes
+
+		annotation SummarizationSetBy = Automatic
+
+	column max_bikes
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 10000006-0001-0001-0001-000000000019
+		sourceLineageTag: max_bikes
+		summarizeBy: max
+		sourceColumn: max_bikes
+
+		annotation SummarizationSetBy = Automatic
+
+	column avg_bikes
+		dataType: double
+		formatString: 0.0
+		lineageTag: 10000006-0001-0001-0001-00000000001a
+		sourceLineageTag: avg_bikes
+		summarizeBy: average
+		sourceColumn: avg_bikes
+
+		annotation SummarizationSetBy = Automatic
+
+	column critical_events
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 10000006-0001-0001-0001-00000000001b
+		sourceLineageTag: critical_events
+		summarizeBy: sum
+		sourceColumn: critical_events
+
+		annotation SummarizationSetBy = Automatic
+
+	column rebalance_triggers
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 10000006-0001-0001-0001-00000000001c
+		sourceLineageTag: rebalance_triggers
+		summarizeBy: sum
+		sourceColumn: rebalance_triggers
+
+		annotation SummarizationSetBy = Automatic
+
+	column demand_spike_count
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 10000006-0001-0001-0001-00000000001d
+		sourceLineageTag: demand_spike_count
+		summarizeBy: sum
+		sourceColumn: demand_spike_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column active_stations
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 10000006-0001-0001-0001-00000000001e
+		sourceLineageTag: active_stations
+		summarizeBy: sum
+		sourceColumn: active_stations
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_rush_hour
+		dataType: boolean
+		formatString: &quot;TRUE&quot;;&quot;TRUE&quot;;&quot;FALSE&quot;
+		lineageTag: 10000006-0001-0001-0001-00000000001f
+		sourceLineageTag: is_rush_hour
+		summarizeBy: none
+		sourceColumn: is_rush_hour
+
+		annotation SummarizationSetBy = Automatic
+
+	column demand_intensity
+		dataType: string
+		lineageTag: 10000006-0001-0001-0001-000000000020
+		sourceLineageTag: demand_intensity
+		summarizeBy: none
+		sourceColumn: demand_intensity
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_hourly_demand = entity
+		mode: directLake
+		source
+			entityName: fact_hourly_demand
+			expressionSource: 'DirectLake - bicycles_gold'

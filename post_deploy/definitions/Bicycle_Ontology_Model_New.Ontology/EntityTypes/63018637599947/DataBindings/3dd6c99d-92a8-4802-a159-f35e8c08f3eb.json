@@ -1,0 +1,84 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "3dd6c99d-92a8-4802-a159-f35e8c08f3eb",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "demand_key",
+        "targetPropertyId": "4101849599080231781"
+      },
+      {
+        "sourceColumnName": "neighbourhood_key",
+        "targetPropertyId": "4101849619666758177"
+      },
+      {
+        "sourceColumnName": "event_hour",
+        "targetPropertyId": "4101849648538303063"
+      },
+      {
+        "sourceColumnName": "demand_date",
+        "targetPropertyId": "4101849668415203682"
+      },
+      {
+        "sourceColumnName": "date_key",
+        "targetPropertyId": "4101849684022394550"
+      },
+      {
+        "sourceColumnName": "time_key",
+        "targetPropertyId": "4101849708146800254"
+      },
+      {
+        "sourceColumnName": "event_count",
+        "targetPropertyId": "4101849729019671615"
+      },
+      {
+        "sourceColumnName": "avg_utilization",
+        "targetPropertyId": "4101849748727839153"
+      },
+      {
+        "sourceColumnName": "min_bikes",
+        "targetPropertyId": "4101849770323091333"
+      },
+      {
+        "sourceColumnName": "max_bikes",
+        "targetPropertyId": "4101849791933544598"
+      },
+      {
+        "sourceColumnName": "avg_bikes",
+        "targetPropertyId": "4101849812568431847"
+      },
+      {
+        "sourceColumnName": "critical_events",
+        "targetPropertyId": "4101849836927306599"
+      },
+      {
+        "sourceColumnName": "rebalance_triggers",
+        "targetPropertyId": "4101849856200401459"
+      },
+      {
+        "sourceColumnName": "demand_spike_count",
+        "targetPropertyId": "4101849877108702875"
+      },
+      {
+        "sourceColumnName": "active_stations",
+        "targetPropertyId": "4101849900445246720"
+      },
+      {
+        "sourceColumnName": "is_rush_hour",
+        "targetPropertyId": "4101849921128402093"
+      },
+      {
+        "sourceColumnName": "demand_intensity",
+        "targetPropertyId": "4101849944309010550"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "__WORKSPACE_ID__",
+      "itemId": "__LH_BICYCLES_GOLD__",
+      "sourceTableName": "onto_fact_hourly_demand",
+      "sourceSchema": null
+    }
+  }
+}

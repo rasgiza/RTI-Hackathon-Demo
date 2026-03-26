@@ -1,0 +1,80 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "a8fa4ebb-a257-4f47-b5f0-78a79f21bdde",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "availability_key",
+        "targetPropertyId": "4101849233664690638"
+      },
+      {
+        "sourceColumnName": "station_key",
+        "targetPropertyId": "4101849254507046444"
+      },
+      {
+        "sourceColumnName": "event_id",
+        "targetPropertyId": "4101849275842097063"
+      },
+      {
+        "sourceColumnName": "event_timestamp",
+        "targetPropertyId": "4101849299169716466"
+      },
+      {
+        "sourceColumnName": "event_date",
+        "targetPropertyId": "4101849318981482124"
+      },
+      {
+        "sourceColumnName": "date_key",
+        "targetPropertyId": "4101849341512338544"
+      },
+      {
+        "sourceColumnName": "time_key",
+        "targetPropertyId": "4101849364945815611"
+      },
+      {
+        "sourceColumnName": "bikes_available",
+        "targetPropertyId": "4101849385825062876"
+      },
+      {
+        "sourceColumnName": "empty_docks",
+        "targetPropertyId": "4101849405139460780"
+      },
+      {
+        "sourceColumnName": "total_docks",
+        "targetPropertyId": "4101849428406306642"
+      },
+      {
+        "sourceColumnName": "utilization_pct",
+        "targetPropertyId": "4101849450754128541"
+      },
+      {
+        "sourceColumnName": "event_type",
+        "targetPropertyId": "4101849469753773618"
+      },
+      {
+        "sourceColumnName": "is_critical",
+        "targetPropertyId": "4101849489490059616"
+      },
+      {
+        "sourceColumnName": "availability_band",
+        "targetPropertyId": "4101849509696338604"
+      },
+      {
+        "sourceColumnName": "is_rush_hour",
+        "targetPropertyId": "4101849532260167649"
+      },
+      {
+        "sourceColumnName": "time_period",
+        "targetPropertyId": "4101849554008541171"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "__WORKSPACE_ID__",
+      "itemId": "__LH_BICYCLES_GOLD__",
+      "sourceTableName": "onto_fact_availability",
+      "sourceSchema": null
+    }
+  }
+}

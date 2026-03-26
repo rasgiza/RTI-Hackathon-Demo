@@ -1,0 +1,23 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/contextualization/1.0.0/schema.json",
+  "id": "3e2d16fb-3d19-43ab-980d-821805035efb",
+  "dataBindingTable": {
+    "workspaceId": "__WORKSPACE_ID__",
+    "itemId": "__LH_BICYCLES_GOLD__",
+    "sourceTableName": "onto_fact_weather_impact",
+    "sourceSchema": null,
+    "sourceType": "LakehouseTable"
+  },
+  "sourceKeyRefBindings": [
+    {
+      "sourceColumnName": "neighbourhood_key",
+      "targetPropertyId": "4101850852804512762"
+    }
+  ],
+  "targetKeyRefBindings": [
+    {
+      "sourceColumnName": "neighbourhood_key",
+      "targetPropertyId": "4101847829119868485"
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "e7fc2416-2d37-4251-b78a-b1ff028394cb",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "station_key",
+        "targetPropertyId": "4101847499139708468"
+      },
+      {
+        "sourceColumnName": "station_id",
+        "targetPropertyId": "4101847523917970972"
+      },
+      {
+        "sourceColumnName": "street_address",
+        "targetPropertyId": "4101847548614672874"
+      },
+      {
+        "sourceColumnName": "neighbourhood",
+        "targetPropertyId": "4101847573414047258"
+      },
+      {
+        "sourceColumnName": "latitude",
+        "targetPropertyId": "4101847594036864692"
+      },
+      {
+        "sourceColumnName": "longitude",
+        "targetPropertyId": "4101847621687794201"
+      },
+      {
+        "sourceColumnName": "total_docks",
+        "targetPropertyId": "4101847639527401887"
+      },
+      {
+        "sourceColumnName": "station_size",
+        "targetPropertyId": "4101847662278635312"
+      },
+      {
+        "sourceColumnName": "current_status",
+        "targetPropertyId": "4101847690287275159"
+      },
+      {
+        "sourceColumnName": "current_utilization_pct",
+        "targetPropertyId": "4101847711637025870"
+      },
+      {
+        "sourceColumnName": "rebalance_priority",
+        "targetPropertyId": "4101847736931629050"
+      },
+      {
+        "sourceColumnName": "zone",
+        "targetPropertyId": "4101847758449715517"
+      },
+      {
+        "sourceColumnName": "loaded_at",
+        "targetPropertyId": "4101847780011265063"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "__WORKSPACE_ID__",
+      "itemId": "__LH_BICYCLES_GOLD__",
+      "sourceTableName": "onto_dim_station",
+      "sourceSchema": null
+    }
+  }
+}

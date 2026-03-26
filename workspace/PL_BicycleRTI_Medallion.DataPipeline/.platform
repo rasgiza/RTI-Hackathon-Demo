@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "DataPipeline",
+    "displayName": "PL_BicycleRTI_Medallion"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "9d12edd8-623b-5d3a-8d5a-4570621f85b0"
+  }
+}

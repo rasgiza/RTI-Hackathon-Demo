@@ -1,0 +1,9 @@
+github:
+  repo_owner: kwamesefah-microsoft
+  repo_name: RTI-Hackathon-Demo
+  branch: main
+  workspace_folder: workspace
+
+deployment:
+  validate_after_deployment: true
+  deployment_retries: 3

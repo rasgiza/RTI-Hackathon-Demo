@@ -1,0 +1,1329 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/graphInstance/definition/graphDefinition/1.0.0/schema.json",
+  "nodeTables": [
+    {
+      "nodeTypeAlias": "212245027828040",
+      "id": "f50f6b04-d886-40b9-970c-079511ff60af",
+      "dataSourceName": "__LH_BICYCLES_GOLD___onto_dim_station",
+      "propertyMappings": [
+        {
+          "propertyName": "station_key",
+          "sourceColumn": "station_key"
+        },
+        {
+          "propertyName": "station_id",
+          "sourceColumn": "station_id"
+        },
+        {
+          "propertyName": "street_address",
+          "sourceColumn": "street_address"
+        },
+        {
+          "propertyName": "neighbourhood",
+          "sourceColumn": "neighbourhood"
+        },
+        {
+          "propertyName": "latitude",
+          "sourceColumn": "latitude"
+        },
+        {
+          "propertyName": "longitude",
+          "sourceColumn": "longitude"
+        },
+        {
+          "propertyName": "total_docks",
+          "sourceColumn": "total_docks"
+        },
+        {
+          "propertyName": "station_size",
+          "sourceColumn": "station_size"
+        },
+        {
+          "propertyName": "current_status",
+          "sourceColumn": "current_status"
+        },
+        {
+          "propertyName": "current_utilization_pct",
+          "sourceColumn": "current_utilization_pct"
+        },
+        {
+          "propertyName": "rebalance_priority",
+          "sourceColumn": "rebalance_priority"
+        },
+        {
+          "propertyName": "zone",
+          "sourceColumn": "zone"
+        },
+        {
+          "propertyName": "loaded_at",
+          "sourceColumn": "loaded_at"
+        }
+      ]
+    },
+    {
+      "nodeTypeAlias": "234584979673062",
+      "id": "184dc97a-8b78-408b-98f1-9e841c3eb6ff",
+      "dataSourceName": "__LH_BICYCLES_GOLD___dim_neighbourhood",
+      "propertyMappings": [
+        {
+          "propertyName": "neighbourhood_key",
+          "sourceColumn": "neighbourhood_key"
+        },
+        {
+          "propertyName": "neighbourhood_name",
+          "sourceColumn": "neighbourhood_name"
+        },
+        {
+          "propertyName": "station_count",
+          "sourceColumn": "station_count"
+        },
+        {
+          "propertyName": "total_capacity",
+          "sourceColumn": "total_capacity"
+        },
+        {
+          "propertyName": "total_bikes_available",
+          "sourceColumn": "total_bikes_available"
+        },
+        {
+          "propertyName": "total_empty_docks",
+          "sourceColumn": "total_empty_docks"
+        },
+        {
+          "propertyName": "neighbourhood_utilization_pct",
+          "sourceColumn": "neighbourhood_utilization_pct"
+        },
+        {
+          "propertyName": "avg_utilization_pct",
+          "sourceColumn": "avg_utilization_pct"
+        },
+        {
+          "propertyName": "health_score",
+          "sourceColumn": "health_score"
+        },
+        {
+          "propertyName": "capacity_status",
+          "sourceColumn": "capacity_status"
+        },
+        {
+          "propertyName": "empty_stations",
+          "sourceColumn": "empty_stations"
+        },
+        {
+          "propertyName": "full_stations",
+          "sourceColumn": "full_stations"
+        },
+        {
+          "propertyName": "stations_needing_rebalance",
+          "sourceColumn": "stations_needing_rebalance"
+        },
+        {
+          "propertyName": "centroid_lat",
+          "sourceColumn": "centroid_lat"
+        },
+        {
+          "propertyName": "centroid_lon",
+          "sourceColumn": "centroid_lon"
+        },
+        {
+          "propertyName": "density_tier",
+          "sourceColumn": "density_tier"
+        },
+        {
+          "propertyName": "loaded_at",
+          "sourceColumn": "loaded_at"
+        }
+      ]
+    },
+    {
+      "nodeTypeAlias": "266396690945189",
+      "id": "5efe3da8-6670-4f12-aa2f-21625ed403e2",
+      "dataSourceName": "__LH_BICYCLES_GOLD___dim_time",
+      "propertyMappings": [
+        {
+          "propertyName": "time_key",
+          "sourceColumn": "time_key"
+        },
+        {
+          "propertyName": "hour_of_day",
+          "sourceColumn": "hour_of_day"
+        },
+        {
+          "propertyName": "hour_label",
+          "sourceColumn": "hour_label"
+        },
+        {
+          "propertyName": "time_period",
+          "sourceColumn": "time_period"
+        },
+        {
+          "propertyName": "is_rush_hour",
+          "sourceColumn": "is_rush_hour"
+        },
+        {
+          "propertyName": "am_pm",
+          "sourceColumn": "am_pm"
+        },
+        {
+          "propertyName": "demand_tier",
+          "sourceColumn": "demand_tier"
+        }
+      ]
+    },
+    {
+      "nodeTypeAlias": "16437291161987",
+      "id": "a3d985ab-0ee6-4c47-abb8-9cff761cf91b",
+      "dataSourceName": "__LH_BICYCLES_GOLD___dim_date",
+      "propertyMappings": [
+        {
+          "propertyName": "date_key",
+          "sourceColumn": "date_key"
+        },
+        {
+          "propertyName": "date_value",
+          "sourceColumn": "date_value"
+        },
+        {
+          "propertyName": "year",
+          "sourceColumn": "year"
+        },
+        {
+          "propertyName": "quarter",
+          "sourceColumn": "quarter"
+        },
+        {
+          "propertyName": "month_num",
+          "sourceColumn": "month_num"
+        },
+        {
+          "propertyName": "month_name",
+          "sourceColumn": "month_name"
+        },
+        {
+          "propertyName": "week_of_year",
+          "sourceColumn": "week_of_year"
+        },
+        {
+          "propertyName": "day_of_month",
+          "sourceColumn": "day_of_month"
+        },
+        {
+          "propertyName": "day_of_week",
+          "sourceColumn": "day_of_week"
+        },
+        {
+          "propertyName": "day_name",
+          "sourceColumn": "day_name"
+        },
+        {
+          "propertyName": "is_weekend",
+          "sourceColumn": "is_weekend"
+        },
+        {
+          "propertyName": "season",
+          "sourceColumn": "season"
+        }
+      ]
+    },
+    {
+      "nodeTypeAlias": "33418903485014",
+      "id": "11067a8a-d349-4b26-88f7-555e7b1f88d8",
+      "dataSourceName": "__LH_BICYCLES_GOLD___dim_weather",
+      "propertyMappings": [
+        {
+          "propertyName": "weather_key",
+          "sourceColumn": "weather_key"
+        },
+        {
+          "propertyName": "observation_hour",
+          "sourceColumn": "observation_hour"
+        },
+        {
+          "propertyName": "observation_date",
+          "sourceColumn": "observation_date"
+        },
+        {
+          "propertyName": "time_key",
+          "sourceColumn": "time_key"
+        },
+        {
+          "propertyName": "weather_description",
+          "sourceColumn": "weather_description"
+        },
+        {
+          "propertyName": "weather_category",
+          "sourceColumn": "weather_category"
+        },
+        {
+          "propertyName": "weather_severity",
+          "sourceColumn": "weather_severity"
+        },
+        {
+          "propertyName": "has_precipitation",
+          "sourceColumn": "has_precipitation"
+        },
+        {
+          "propertyName": "temperature_c",
+          "sourceColumn": "temperature_c"
+        },
+        {
+          "propertyName": "feels_like_c",
+          "sourceColumn": "feels_like_c"
+        },
+        {
+          "propertyName": "relative_humidity",
+          "sourceColumn": "relative_humidity"
+        },
+        {
+          "propertyName": "wind_speed_kmh",
+          "sourceColumn": "wind_speed_kmh"
+        },
+        {
+          "propertyName": "wind_gust_kmh",
+          "sourceColumn": "wind_gust_kmh"
+        },
+        {
+          "propertyName": "wind_direction_desc",
+          "sourceColumn": "wind_direction_desc"
+        },
+        {
+          "propertyName": "visibility_km",
+          "sourceColumn": "visibility_km"
+        },
+        {
+          "propertyName": "cloud_cover_pct",
+          "sourceColumn": "cloud_cover_pct"
+        },
+        {
+          "propertyName": "pressure_mb",
+          "sourceColumn": "pressure_mb"
+        },
+        {
+          "propertyName": "uv_index",
+          "sourceColumn": "uv_index"
+        },
+        {
+          "propertyName": "is_daytime",
+          "sourceColumn": "is_daytime"
+        },
+        {
+          "propertyName": "cycling_comfort_index",
+          "sourceColumn": "cycling_comfort_index"
+        },
+        {
+          "propertyName": "icon_code",
+          "sourceColumn": "icon_code"
+        },
+        {
+          "propertyName": "weather_latitude",
+          "sourceColumn": "weather_latitude"
+        },
+        {
+          "propertyName": "weather_longitude",
+          "sourceColumn": "weather_longitude"
+        },
+        {
+          "propertyName": "location_name",
+          "sourceColumn": "location_name"
+        },
+        {
+          "propertyName": "loaded_at",
+          "sourceColumn": "loaded_at"
+        }
+      ]
+    },
+    {
+      "nodeTypeAlias": "47187105287110",
+      "id": "a3a23dad-20ce-4a06-a4be-9bbd0dba839a",
+      "dataSourceName": "__LH_BICYCLES_GOLD___onto_fact_availability",
+      "propertyMappings": [
+        {
+          "propertyName": "availability_key",
+          "sourceColumn": "availability_key"
+        },
+        {
+          "propertyName": "station_key",
+          "sourceColumn": "station_key"
+        },
+        {
+          "propertyName": "event_id",
+          "sourceColumn": "event_id"
+        },
+        {
+          "propertyName": "event_timestamp",
+          "sourceColumn": "event_timestamp"
+        },
+        {
+          "propertyName": "event_date",
+          "sourceColumn": "event_date"
+        },
+        {
+          "propertyName": "date_key",
+          "sourceColumn": "date_key"
+        },
+        {
+          "propertyName": "time_key",
+          "sourceColumn": "time_key"
+        },
+        {
+          "propertyName": "bikes_available",
+          "sourceColumn": "bikes_available"
+        },
+        {
+          "propertyName": "empty_docks",
+          "sourceColumn": "empty_docks"
+        },
+        {
+          "propertyName": "total_docks",
+          "sourceColumn": "total_docks"
+        },
+        {
+          "propertyName": "utilization_pct",
+          "sourceColumn": "utilization_pct"
+        },
+        {
+          "propertyName": "event_type",
+          "sourceColumn": "event_type"
+        },
+        {
+          "propertyName": "is_critical",
+          "sourceColumn": "is_critical"
+        },
+        {
+          "propertyName": "availability_band",
+          "sourceColumn": "availability_band"
+        },
+        {
+          "propertyName": "is_rush_hour",
+          "sourceColumn": "is_rush_hour"
+        },
+        {
+          "propertyName": "time_period",
+          "sourceColumn": "time_period"
+        }
+      ]
+    },
+    {
+      "nodeTypeAlias": "63018637599947",
+      "id": "80944527-d479-4110-9ffe-27dfe9246288",
+      "dataSourceName": "__LH_BICYCLES_GOLD___onto_fact_hourly_demand",
+      "propertyMappings": [
+        {
+          "propertyName": "demand_key",
+          "sourceColumn": "demand_key"
+        },
+        {
+          "propertyName": "neighbourhood_key",
+          "sourceColumn": "neighbourhood_key"
+        },
+        {
+          "propertyName": "event_hour",
+          "sourceColumn": "event_hour"
+        },
+        {
+          "propertyName": "demand_date",
+          "sourceColumn": "demand_date"
+        },
+        {
+          "propertyName": "date_key",
+          "sourceColumn": "date_key"
+        },
+        {
+          "propertyName": "time_key",
+          "sourceColumn": "time_key"
+        },
+        {
+          "propertyName": "event_count",
+          "sourceColumn": "event_count"
+        },
+        {
+          "propertyName": "avg_utilization",
+          "sourceColumn": "avg_utilization"
+        },
+        {
+          "propertyName": "min_bikes",
+          "sourceColumn": "min_bikes"
+        },
+        {
+          "propertyName": "max_bikes",
+          "sourceColumn": "max_bikes"
+        },
+        {
+          "propertyName": "avg_bikes",
+          "sourceColumn": "avg_bikes"
+        },
+        {
+          "propertyName": "critical_events",
+          "sourceColumn": "critical_events"
+        },
+        {
+          "propertyName": "rebalance_triggers",
+          "sourceColumn": "rebalance_triggers"
+        },
+        {
+          "propertyName": "demand_spike_count",
+          "sourceColumn": "demand_spike_count"
+        },
+        {
+          "propertyName": "active_stations",
+          "sourceColumn": "active_stations"
+        },
+        {
+          "propertyName": "is_rush_hour",
+          "sourceColumn": "is_rush_hour"
+        },
+        {
+          "propertyName": "demand_intensity",
+          "sourceColumn": "demand_intensity"
+        }
+      ]
+    },
+    {
+      "nodeTypeAlias": "76056605000199",
+      "id": "147c4b05-d1e4-42a4-85e4-d3440ee1af96",
+      "dataSourceName": "__LH_BICYCLES_GOLD___onto_fact_rebalancing",
+      "propertyMappings": [
+        {
+          "propertyName": "rebalance_key",
+          "sourceColumn": "rebalance_key"
+        },
+        {
+          "propertyName": "station_key",
+          "sourceColumn": "station_key"
+        },
+        {
+          "propertyName": "neighbourhood_key",
+          "sourceColumn": "neighbourhood_key"
+        },
+        {
+          "propertyName": "time_key",
+          "sourceColumn": "time_key"
+        },
+        {
+          "propertyName": "weather_key",
+          "sourceColumn": "weather_key"
+        },
+        {
+          "propertyName": "station_id",
+          "sourceColumn": "station_id"
+        },
+        {
+          "propertyName": "neighbourhood",
+          "sourceColumn": "neighbourhood"
+        },
+        {
+          "propertyName": "bikes_available",
+          "sourceColumn": "bikes_available"
+        },
+        {
+          "propertyName": "empty_docks",
+          "sourceColumn": "empty_docks"
+        },
+        {
+          "propertyName": "total_docks",
+          "sourceColumn": "total_docks"
+        },
+        {
+          "propertyName": "utilization_pct",
+          "sourceColumn": "utilization_pct"
+        },
+        {
+          "propertyName": "priority_score",
+          "sourceColumn": "priority_score"
+        },
+        {
+          "propertyName": "recommended_action",
+          "sourceColumn": "recommended_action"
+        },
+        {
+          "propertyName": "bikes_to_target",
+          "sourceColumn": "bikes_to_target"
+        },
+        {
+          "propertyName": "availability_status",
+          "sourceColumn": "availability_status"
+        },
+        {
+          "propertyName": "station_size",
+          "sourceColumn": "station_size"
+        },
+        {
+          "propertyName": "assessed_at",
+          "sourceColumn": "assessed_at"
+        },
+        {
+          "propertyName": "date_key",
+          "sourceColumn": "date_key"
+        },
+        {
+          "propertyName": "estimated_rebalance_cost",
+          "sourceColumn": "estimated_rebalance_cost"
+        }
+      ]
+    },
+    {
+      "nodeTypeAlias": "99130180380085",
+      "id": "86f6e275-cf0c-431e-9720-a616ac5607e7",
+      "dataSourceName": "__LH_BICYCLES_GOLD___onto_forecast_demand",
+      "propertyMappings": [
+        {
+          "propertyName": "forecast_key",
+          "sourceColumn": "forecast_key"
+        },
+        {
+          "propertyName": "forecast_hour",
+          "sourceColumn": "forecast_hour"
+        },
+        {
+          "propertyName": "neighbourhood",
+          "sourceColumn": "neighbourhood"
+        },
+        {
+          "propertyName": "neighbourhood_key",
+          "sourceColumn": "neighbourhood_key"
+        },
+        {
+          "propertyName": "time_key",
+          "sourceColumn": "time_key"
+        },
+        {
+          "propertyName": "date_key",
+          "sourceColumn": "date_key"
+        },
+        {
+          "propertyName": "hour_of_day",
+          "sourceColumn": "hour_of_day"
+        },
+        {
+          "propertyName": "day_of_week",
+          "sourceColumn": "day_of_week"
+        },
+        {
+          "propertyName": "is_rush_hour",
+          "sourceColumn": "is_rush_hour"
+        },
+        {
+          "propertyName": "is_weekend",
+          "sourceColumn": "is_weekend"
+        },
+        {
+          "propertyName": "predicted_demand",
+          "sourceColumn": "predicted_demand"
+        },
+        {
+          "propertyName": "demand_lower_bound",
+          "sourceColumn": "demand_lower_bound"
+        },
+        {
+          "propertyName": "demand_upper_bound",
+          "sourceColumn": "demand_upper_bound"
+        },
+        {
+          "propertyName": "demand_tier",
+          "sourceColumn": "demand_tier"
+        },
+        {
+          "propertyName": "pre_position_recommended",
+          "sourceColumn": "pre_position_recommended"
+        },
+        {
+          "propertyName": "forecast_generated_at",
+          "sourceColumn": "forecast_generated_at"
+        },
+        {
+          "propertyName": "model_quality",
+          "sourceColumn": "model_quality"
+        }
+      ]
+    },
+    {
+      "nodeTypeAlias": "112561428615426",
+      "id": "c09505bb-0759-4bf0-8d0b-9ec6774271bb",
+      "dataSourceName": "__LH_BICYCLES_GOLD___onto_fact_weather_impact",
+      "propertyMappings": [
+        {
+          "propertyName": "weather_impact_key",
+          "sourceColumn": "weather_impact_key"
+        },
+        {
+          "propertyName": "weather_key",
+          "sourceColumn": "weather_key"
+        },
+        {
+          "propertyName": "neighbourhood_key",
+          "sourceColumn": "neighbourhood_key"
+        },
+        {
+          "propertyName": "time_key",
+          "sourceColumn": "time_key"
+        },
+        {
+          "propertyName": "event_hour",
+          "sourceColumn": "event_hour"
+        },
+        {
+          "propertyName": "impact_date",
+          "sourceColumn": "impact_date"
+        },
+        {
+          "propertyName": "date_key",
+          "sourceColumn": "date_key"
+        },
+        {
+          "propertyName": "neighbourhood",
+          "sourceColumn": "neighbourhood"
+        },
+        {
+          "propertyName": "event_count",
+          "sourceColumn": "event_count"
+        },
+        {
+          "propertyName": "weather_adjusted_demand",
+          "sourceColumn": "weather_adjusted_demand"
+        },
+        {
+          "propertyName": "weather_demand_impact",
+          "sourceColumn": "weather_demand_impact"
+        },
+        {
+          "propertyName": "temperature_c",
+          "sourceColumn": "temperature_c"
+        },
+        {
+          "propertyName": "feels_like_c",
+          "sourceColumn": "feels_like_c"
+        },
+        {
+          "propertyName": "wind_speed_kmh",
+          "sourceColumn": "wind_speed_kmh"
+        },
+        {
+          "propertyName": "has_precipitation",
+          "sourceColumn": "has_precipitation"
+        },
+        {
+          "propertyName": "cloud_cover_pct",
+          "sourceColumn": "cloud_cover_pct"
+        },
+        {
+          "propertyName": "cycling_comfort_index",
+          "sourceColumn": "cycling_comfort_index"
+        },
+        {
+          "propertyName": "weather_severity",
+          "sourceColumn": "weather_severity"
+        },
+        {
+          "propertyName": "weather_category",
+          "sourceColumn": "weather_category"
+        },
+        {
+          "propertyName": "weather_description",
+          "sourceColumn": "weather_description"
+        },
+        {
+          "propertyName": "visibility_km",
+          "sourceColumn": "visibility_km"
+        },
+        {
+          "propertyName": "impact_category",
+          "sourceColumn": "impact_category"
+        },
+        {
+          "propertyName": "demand_gap",
+          "sourceColumn": "demand_gap"
+        },
+        {
+          "propertyName": "loaded_at",
+          "sourceColumn": "loaded_at"
+        }
+      ]
+    },
+    {
+      "nodeTypeAlias": "128045586265024",
+      "id": "1db8abfc-b97b-4e45-b751-78e6091a8e7d",
+      "dataSourceName": "__LH_BICYCLES_GOLD___onto_station_snapshot",
+      "propertyMappings": [
+        {
+          "propertyName": "station_key",
+          "sourceColumn": "station_key"
+        },
+        {
+          "propertyName": "station_id",
+          "sourceColumn": "station_id"
+        },
+        {
+          "propertyName": "street_address",
+          "sourceColumn": "street_address"
+        },
+        {
+          "propertyName": "neighbourhood",
+          "sourceColumn": "neighbourhood"
+        },
+        {
+          "propertyName": "latitude",
+          "sourceColumn": "latitude"
+        },
+        {
+          "propertyName": "longitude",
+          "sourceColumn": "longitude"
+        },
+        {
+          "propertyName": "total_docks",
+          "sourceColumn": "total_docks"
+        },
+        {
+          "propertyName": "station_size",
+          "sourceColumn": "station_size"
+        },
+        {
+          "propertyName": "zone",
+          "sourceColumn": "zone"
+        },
+        {
+          "propertyName": "bikes_available",
+          "sourceColumn": "bikes_available"
+        },
+        {
+          "propertyName": "empty_docks",
+          "sourceColumn": "empty_docks"
+        },
+        {
+          "propertyName": "utilization_pct",
+          "sourceColumn": "utilization_pct"
+        },
+        {
+          "propertyName": "availability_band",
+          "sourceColumn": "availability_band"
+        },
+        {
+          "propertyName": "is_critical",
+          "sourceColumn": "is_critical"
+        },
+        {
+          "propertyName": "last_event_at",
+          "sourceColumn": "last_event_at"
+        },
+        {
+          "propertyName": "last_event_type",
+          "sourceColumn": "last_event_type"
+        },
+        {
+          "propertyName": "rebalance_priority",
+          "sourceColumn": "rebalance_priority"
+        },
+        {
+          "propertyName": "operational_status",
+          "sourceColumn": "operational_status"
+        },
+        {
+          "propertyName": "needs_attention",
+          "sourceColumn": "needs_attention"
+        },
+        {
+          "propertyName": "snapshot_at",
+          "sourceColumn": "snapshot_at"
+        }
+      ]
+    },
+    {
+      "nodeTypeAlias": "143035040696971",
+      "id": "6890e113-e12f-467e-a0a5-8cee5d4d1a09",
+      "dataSourceName": "__LH_BICYCLES_GOLD___onto_availability_recent",
+      "propertyMappings": [
+        {
+          "propertyName": "recent_key",
+          "sourceColumn": "recent_key"
+        },
+        {
+          "propertyName": "station_key",
+          "sourceColumn": "station_key"
+        },
+        {
+          "propertyName": "station_id",
+          "sourceColumn": "station_id"
+        },
+        {
+          "propertyName": "street_address",
+          "sourceColumn": "street_address"
+        },
+        {
+          "propertyName": "neighbourhood",
+          "sourceColumn": "neighbourhood"
+        },
+        {
+          "propertyName": "zone",
+          "sourceColumn": "zone"
+        },
+        {
+          "propertyName": "event_hour",
+          "sourceColumn": "event_hour"
+        },
+        {
+          "propertyName": "event_date",
+          "sourceColumn": "event_date"
+        },
+        {
+          "propertyName": "date_key",
+          "sourceColumn": "date_key"
+        },
+        {
+          "propertyName": "time_key",
+          "sourceColumn": "time_key"
+        },
+        {
+          "propertyName": "event_count",
+          "sourceColumn": "event_count"
+        },
+        {
+          "propertyName": "avg_bikes",
+          "sourceColumn": "avg_bikes"
+        },
+        {
+          "propertyName": "min_bikes",
+          "sourceColumn": "min_bikes"
+        },
+        {
+          "propertyName": "max_bikes",
+          "sourceColumn": "max_bikes"
+        },
+        {
+          "propertyName": "avg_empty_docks",
+          "sourceColumn": "avg_empty_docks"
+        },
+        {
+          "propertyName": "avg_utilization",
+          "sourceColumn": "avg_utilization"
+        },
+        {
+          "propertyName": "critical_events",
+          "sourceColumn": "critical_events"
+        },
+        {
+          "propertyName": "utilization_band",
+          "sourceColumn": "utilization_band"
+        },
+        {
+          "propertyName": "loaded_at",
+          "sourceColumn": "loaded_at"
+        }
+      ]
+    }
+  ],
+  "edgeTables": [
+    {
+      "edgeTypeAlias": "4102094153518740683",
+      "id": "ff940cca-16c8-44b6-9c44-3da1a99833a6",
+      "edgeIdMapping": null,
+      "dataSourceName": "__LH_BICYCLES_GOLD___onto_fact_availability",
+      "sourceNodeKeyColumns": [
+        "station_key"
+      ],
+      "propertyMappings": [
+        {
+          "propertyName": "station_key",
+          "sourceColumn": "station_key"
+        }
+      ],
+      "destinationNodeKeyColumns": [
+        "station_key"
+      ]
+    },
+    {
+      "edgeTypeAlias": "4102106608258406901",
+      "id": "1c13d159-dfb1-4b43-a988-7c47ae507699",
+      "edgeIdMapping": null,
+      "dataSourceName": "__LH_BICYCLES_GOLD___onto_fact_availability",
+      "sourceNodeKeyColumns": [
+        "time_key"
+      ],
+      "propertyMappings": [
+        {
+          "propertyName": "time_key",
+          "sourceColumn": "time_key"
+        }
+      ],
+      "destinationNodeKeyColumns": [
+        "time_key"
+      ]
+    },
+    {
+      "edgeTypeAlias": "4102118272852551806",
+      "id": "64c367c9-fd6b-4499-9996-bad278665e8e",
+      "edgeIdMapping": null,
+      "dataSourceName": "__LH_BICYCLES_GOLD___onto_fact_availability",
+      "sourceNodeKeyColumns": [
+        "date_key"
+      ],
+      "propertyMappings": [
+        {
+          "propertyName": "date_key",
+          "sourceColumn": "date_key"
+        }
+      ],
+      "destinationNodeKeyColumns": [
+        "date_key"
+      ]
+    },
+    {
+      "edgeTypeAlias": "4102128914166469142",
+      "id": "0d8366f3-4f10-4365-966a-787076f8e92a",
+      "edgeIdMapping": null,
+      "dataSourceName": "__LH_BICYCLES_GOLD___onto_fact_hourly_demand",
+      "sourceNodeKeyColumns": [
+        "neighbourhood_key"
+      ],
+      "propertyMappings": [
+        {
+          "propertyName": "neighbourhood_key",
+          "sourceColumn": "neighbourhood_key"
+        }
+      ],
+      "destinationNodeKeyColumns": [
+        "neighbourhood_key"
+      ]
+    },
+    {
+      "edgeTypeAlias": "4102141256951076824",
+      "id": "acf90026-58e5-4f7b-84d3-9ead5fe6be53",
+      "edgeIdMapping": null,
+      "dataSourceName": "__LH_BICYCLES_GOLD___onto_fact_hourly_demand",
+      "sourceNodeKeyColumns": [
+        "time_key"
+      ],
+      "propertyMappings": [
+        {
+          "propertyName": "time_key",
+          "sourceColumn": "time_key"
+        }
+      ],
+      "destinationNodeKeyColumns": [
+        "time_key"
+      ]
+    },
+    {
+      "edgeTypeAlias": "4102153999124893358",
+      "id": "e599bebc-8233-41aa-84d5-0c2ffd7c1110",
+      "edgeIdMapping": null,
+      "dataSourceName": "__LH_BICYCLES_GOLD___onto_fact_hourly_demand",
+      "sourceNodeKeyColumns": [
+        "date_key"
+      ],
+      "propertyMappings": [
+        {
+          "propertyName": "date_key",
+          "sourceColumn": "date_key"
+        }
+      ],
+      "destinationNodeKeyColumns": [
+        "date_key"
+      ]
+    },
+    {
+      "edgeTypeAlias": "4102167112850434568",
+      "id": "2e90be6a-9a22-470a-878f-82b448c35b89",
+      "edgeIdMapping": null,
+      "dataSourceName": "__LH_BICYCLES_GOLD___onto_fact_rebalancing",
+      "sourceNodeKeyColumns": [
+        "station_key"
+      ],
+      "propertyMappings": [
+        {
+          "propertyName": "station_key",
+          "sourceColumn": "station_key"
+        }
+      ],
+      "destinationNodeKeyColumns": [
+        "station_key"
+      ]
+    },
+    {
+      "edgeTypeAlias": "4102182358119609504",
+      "id": "a7f11c1b-09bd-4a7e-b906-e08d74c87916",
+      "edgeIdMapping": null,
+      "dataSourceName": "__LH_BICYCLES_GOLD___onto_fact_rebalancing",
+      "sourceNodeKeyColumns": [
+        "neighbourhood_key"
+      ],
+      "propertyMappings": [
+        {
+          "propertyName": "neighbourhood_key",
+          "sourceColumn": "neighbourhood_key"
+        }
+      ],
+      "destinationNodeKeyColumns": [
+        "neighbourhood_key"
+      ]
+    },
+    {
+      "edgeTypeAlias": "4102193025315110584",
+      "id": "d78740f6-4a94-46e4-9245-e7e7c5b4eef8",
+      "edgeIdMapping": null,
+      "dataSourceName": "__LH_BICYCLES_GOLD___onto_fact_rebalancing",
+      "sourceNodeKeyColumns": [
+        "time_key"
+      ],
+      "propertyMappings": [
+        {
+          "propertyName": "time_key",
+          "sourceColumn": "time_key"
+        }
+      ],
+      "destinationNodeKeyColumns": [
+        "time_key"
+      ]
+    },
+    {
+      "edgeTypeAlias": "4102209689194433969",
+      "id": "1148e1a6-1576-4d4b-86b8-58a9c3543a25",
+      "edgeIdMapping": null,
+      "dataSourceName": "__LH_BICYCLES_GOLD___onto_fact_rebalancing",
+      "sourceNodeKeyColumns": [
+        "date_key"
+      ],
+      "propertyMappings": [
+        {
+          "propertyName": "date_key",
+          "sourceColumn": "date_key"
+        }
+      ],
+      "destinationNodeKeyColumns": [
+        "date_key"
+      ]
+    },
+    {
+      "edgeTypeAlias": "4102222826165138855",
+      "id": "5d121d7d-e82c-40dc-84b6-0349d4872bb3",
+      "edgeIdMapping": null,
+      "dataSourceName": "__LH_BICYCLES_GOLD___onto_fact_rebalancing",
+      "sourceNodeKeyColumns": [
+        "weather_key"
+      ],
+      "propertyMappings": [
+        {
+          "propertyName": "weather_key",
+          "sourceColumn": "weather_key"
+        }
+      ],
+      "destinationNodeKeyColumns": [
+        "weather_key"
+      ]
+    },
+    {
+      "edgeTypeAlias": "4102234212806277746",
+      "id": "54bcd0fb-4cbc-4ac1-b4c2-f53e902ed1b9",
+      "edgeIdMapping": null,
+      "dataSourceName": "__LH_BICYCLES_GOLD___onto_fact_weather_impact",
+      "sourceNodeKeyColumns": [
+        "weather_key"
+      ],
+      "propertyMappings": [
+        {
+          "propertyName": "weather_key",
+          "sourceColumn": "weather_key"
+        }
+      ],
+      "destinationNodeKeyColumns": [
+        "weather_key"
+      ]
+    },
+    {
+      "edgeTypeAlias": "4102245812766966416",
+      "id": "c03c281e-d7ab-43c7-bc69-a3e30900c67a",
+      "edgeIdMapping": null,
+      "dataSourceName": "__LH_BICYCLES_GOLD___onto_fact_weather_impact",
+      "sourceNodeKeyColumns": [
+        "neighbourhood_key"
+      ],
+      "propertyMappings": [
+        {
+          "propertyName": "neighbourhood_key",
+          "sourceColumn": "neighbourhood_key"
+        }
+      ],
+      "destinationNodeKeyColumns": [
+        "neighbourhood_key"
+      ]
+    },
+    {
+      "edgeTypeAlias": "4102255860869927743",
+      "id": "699af261-89fd-4298-b020-840c176fd765",
+      "edgeIdMapping": null,
+      "dataSourceName": "__LH_BICYCLES_GOLD___onto_fact_weather_impact",
+      "sourceNodeKeyColumns": [
+        "time_key"
+      ],
+      "propertyMappings": [
+        {
+          "propertyName": "time_key",
+          "sourceColumn": "time_key"
+        }
+      ],
+      "destinationNodeKeyColumns": [
+        "time_key"
+      ]
+    },
+    {
+      "edgeTypeAlias": "4102269527051562944",
+      "id": "1a8ed0fc-6e7f-4c62-b905-b02f839721d2",
+      "edgeIdMapping": null,
+      "dataSourceName": "__LH_BICYCLES_GOLD___onto_fact_weather_impact",
+      "sourceNodeKeyColumns": [
+        "date_key"
+      ],
+      "propertyMappings": [
+        {
+          "propertyName": "date_key",
+          "sourceColumn": "date_key"
+        }
+      ],
+      "destinationNodeKeyColumns": [
+        "date_key"
+      ]
+    },
+    {
+      "edgeTypeAlias": "4102283130443295018",
+      "id": "1cda356b-34b7-435b-8ab1-c40f927dcc17",
+      "edgeIdMapping": null,
+      "dataSourceName": "__LH_BICYCLES_GOLD___gold_station_snapshot",
+      "sourceNodeKeyColumns": [
+        "station_key"
+      ],
+      "propertyMappings": [
+        {
+          "propertyName": "station_key",
+          "sourceColumn": "station_key"
+        }
+      ],
+      "destinationNodeKeyColumns": [
+        "station_key"
+      ]
+    },
+    {
+      "edgeTypeAlias": "4102296179910149352",
+      "id": "34d94033-a720-4840-9e83-214c44b526cd",
+      "edgeIdMapping": null,
+      "dataSourceName": "__LH_BICYCLES_GOLD___onto_availability_recent",
+      "sourceNodeKeyColumns": [
+        "station_key"
+      ],
+      "propertyMappings": [
+        {
+          "propertyName": "station_key",
+          "sourceColumn": "station_key"
+        }
+      ],
+      "destinationNodeKeyColumns": [
+        "station_key"
+      ]
+    },
+    {
+      "edgeTypeAlias": "4102310776510503015",
+      "id": "17a665f6-e783-41e1-b608-a427b13521d5",
+      "edgeIdMapping": null,
+      "dataSourceName": "__LH_BICYCLES_GOLD___onto_availability_recent",
+      "sourceNodeKeyColumns": [
+        "time_key"
+      ],
+      "propertyMappings": [
+        {
+          "propertyName": "time_key",
+          "sourceColumn": "time_key"
+        }
+      ],
+      "destinationNodeKeyColumns": [
+        "time_key"
+      ]
+    },
+    {
+      "edgeTypeAlias": "4102321942862287426",
+      "id": "36bd47d1-a7e8-4a1a-ace1-61810c807703",
+      "edgeIdMapping": null,
+      "dataSourceName": "__LH_BICYCLES_GOLD___onto_availability_recent",
+      "sourceNodeKeyColumns": [
+        "date_key"
+      ],
+      "propertyMappings": [
+        {
+          "propertyName": "date_key",
+          "sourceColumn": "date_key"
+        }
+      ],
+      "destinationNodeKeyColumns": [
+        "date_key"
+      ]
+    },
+    {
+      "edgeTypeAlias": "4102335054868499744",
+      "id": "10ad1426-44da-4f7d-a0b6-a506c398ff01",
+      "edgeIdMapping": null,
+      "dataSourceName": "__LH_BICYCLES_GOLD___onto_forecast_demand",
+      "sourceNodeKeyColumns": [
+        "neighbourhood_key"
+      ],
+      "propertyMappings": [
+        {
+          "propertyName": "neighbourhood_key",
+          "sourceColumn": "neighbourhood_key"
+        }
+      ],
+      "destinationNodeKeyColumns": [
+        "neighbourhood_key"
+      ]
+    },
+    {
+      "edgeTypeAlias": "4102347066756596597",
+      "id": "2139eda0-bd0d-4592-b590-bca3d9070c5f",
+      "edgeIdMapping": null,
+      "dataSourceName": "__LH_BICYCLES_GOLD___onto_forecast_demand",
+      "sourceNodeKeyColumns": [
+        "time_key"
+      ],
+      "propertyMappings": [
+        {
+          "propertyName": "time_key",
+          "sourceColumn": "time_key"
+        }
+      ],
+      "destinationNodeKeyColumns": [
+        "time_key"
+      ]
+    },
+    {
+      "edgeTypeAlias": "4102358815914046894",
+      "id": "bed8d464-f348-4cb4-b6da-e92e72038a32",
+      "edgeIdMapping": null,
+      "dataSourceName": "__LH_BICYCLES_GOLD___onto_forecast_demand",
+      "sourceNodeKeyColumns": [
+        "date_key"
+      ],
+      "propertyMappings": [
+        {
+          "propertyName": "date_key",
+          "sourceColumn": "date_key"
+        }
+      ],
+      "destinationNodeKeyColumns": [
+        "date_key"
+      ]
+    },
+    {
+      "edgeTypeAlias": "4102373022565552030",
+      "id": "c9d7d9fc-9d3d-407e-91d0-fdb624dee9aa",
+      "edgeIdMapping": null,
+      "dataSourceName": "__LH_BICYCLES_GOLD___dim_weather",
+      "sourceNodeKeyColumns": [
+        "time_key"
+      ],
+      "propertyMappings": [
+        {
+          "propertyName": "time_key",
+          "sourceColumn": "time_key"
+        }
+      ],
+      "destinationNodeKeyColumns": [
+        "time_key"
+      ]
+    }
+  ]
+}

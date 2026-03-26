@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/relationshipType/1.0.0/schema.json",
+  "namespace": "usertypes",
+  "id": "4102222826165138855",
+  "name": "rebalance_during_weather",
+  "namespaceType": "Imported",
+  "source": {
+    "entityTypeId": "76056605000199"
+  },
+  "target": {
+    "entityTypeId": "33418903485014"
+  }
+}

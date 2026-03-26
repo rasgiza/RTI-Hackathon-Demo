@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/relationshipType/1.0.0/schema.json",
+  "namespace": "usertypes",
+  "id": "4102182358119609504",
+  "name": "rebalance_in_zone",
+  "namespaceType": "Imported",
+  "source": {
+    "entityTypeId": "76056605000199"
+  },
+  "target": {
+    "entityTypeId": "234584979673062"
+  }
+}

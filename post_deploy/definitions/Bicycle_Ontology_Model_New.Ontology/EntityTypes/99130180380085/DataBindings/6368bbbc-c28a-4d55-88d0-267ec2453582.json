@@ -1,0 +1,84 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "6368bbbc-c28a-4d55-88d0-267ec2453582",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "forecast_key",
+        "targetPropertyId": "4101850426386211202"
+      },
+      {
+        "sourceColumnName": "forecast_hour",
+        "targetPropertyId": "4101850445416248546"
+      },
+      {
+        "sourceColumnName": "neighbourhood",
+        "targetPropertyId": "4101850469160535290"
+      },
+      {
+        "sourceColumnName": "neighbourhood_key",
+        "targetPropertyId": "4101850490333978522"
+      },
+      {
+        "sourceColumnName": "time_key",
+        "targetPropertyId": "4101850508348910615"
+      },
+      {
+        "sourceColumnName": "date_key",
+        "targetPropertyId": "4101850548271110247"
+      },
+      {
+        "sourceColumnName": "hour_of_day",
+        "targetPropertyId": "4101850580231722854"
+      },
+      {
+        "sourceColumnName": "day_of_week",
+        "targetPropertyId": "4101850604470079092"
+      },
+      {
+        "sourceColumnName": "is_rush_hour",
+        "targetPropertyId": "4101850624568307937"
+      },
+      {
+        "sourceColumnName": "is_weekend",
+        "targetPropertyId": "4101850653403275109"
+      },
+      {
+        "sourceColumnName": "predicted_demand",
+        "targetPropertyId": "4101850674629187978"
+      },
+      {
+        "sourceColumnName": "demand_lower_bound",
+        "targetPropertyId": "4101850694468435753"
+      },
+      {
+        "sourceColumnName": "demand_upper_bound",
+        "targetPropertyId": "4101850714537876768"
+      },
+      {
+        "sourceColumnName": "demand_tier",
+        "targetPropertyId": "4101850741730490973"
+      },
+      {
+        "sourceColumnName": "pre_position_recommended",
+        "targetPropertyId": "4101850762534314186"
+      },
+      {
+        "sourceColumnName": "forecast_generated_at",
+        "targetPropertyId": "4101850786337943324"
+      },
+      {
+        "sourceColumnName": "model_quality",
+        "targetPropertyId": "4101850806563744899"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "__WORKSPACE_ID__",
+      "itemId": "__LH_BICYCLES_GOLD__",
+      "sourceTableName": "onto_forecast_demand",
+      "sourceSchema": null
+    }
+  }
+}

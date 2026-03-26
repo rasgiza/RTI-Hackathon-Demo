@@ -1,0 +1,1747 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/report/1.0.0/schema.json",
+  "themeCollection": {
+    "baseTheme": {
+      "name": "CY24SU06",
+      "reportVersionAtImport": "5.55",
+      "type": "SharedResources"
+    }
+  },
+  "dataColors": [
+    "#118DFF",
+    "#12239E",
+    "#E66C37",
+    "#6B007B",
+    "#E044A7",
+    "#744EC2",
+    "#D9B300",
+    "#D64550"
+  ],
+  "pages": [
+    {
+      "name": "page_fleet_ops",
+      "displayName": "Fleet Operations",
+      "displayOption": 0,
+      "height": 720,
+      "width": 1280,
+      "visuals": [
+        {
+          "name": "v_p1c1",
+          "position": {
+            "x": 20,
+            "y": 20,
+            "z": 0,
+            "width": 295,
+            "height": 110,
+            "tabOrder": 0
+          },
+          "visual": {
+            "visualType": "card",
+            "query": {
+              "queryState": {
+                "Values": {
+                  "projections": [
+                    {
+                      "field": {
+                        "Measure": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_availability"
+                            }
+                          },
+                          "Property": "Total Events"
+                        }
+                      },
+                      "queryRef": "fact_availability.Total Events",
+                      "nativeQueryRef": "Total Events"
+                    }
+                  ]
+                }
+              },
+              "sortDefinition": {
+                "isDefaultSort": true,
+                "sort": []
+              }
+            },
+            "objects": {},
+            "vcObjects": {
+              "title": [
+                {
+                  "properties": {
+                    "show": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "true"
+                        }
+                      }
+                    },
+                    "text": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "'Total Events'"
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "v_p1c2",
+          "position": {
+            "x": 335,
+            "y": 20,
+            "z": 0,
+            "width": 295,
+            "height": 110,
+            "tabOrder": 1
+          },
+          "visual": {
+            "visualType": "card",
+            "query": {
+              "queryState": {
+                "Values": {
+                  "projections": [
+                    {
+                      "field": {
+                        "Measure": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_availability"
+                            }
+                          },
+                          "Property": "Active Stations"
+                        }
+                      },
+                      "queryRef": "fact_availability.Active Stations",
+                      "nativeQueryRef": "Active Stations"
+                    }
+                  ]
+                }
+              },
+              "sortDefinition": {
+                "isDefaultSort": true,
+                "sort": []
+              }
+            },
+            "objects": {},
+            "vcObjects": {
+              "title": [
+                {
+                  "properties": {
+                    "show": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "true"
+                        }
+                      }
+                    },
+                    "text": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "'Active Stations'"
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "v_p1c3",
+          "position": {
+            "x": 650,
+            "y": 20,
+            "z": 0,
+            "width": 295,
+            "height": 110,
+            "tabOrder": 2
+          },
+          "visual": {
+            "visualType": "card",
+            "query": {
+              "queryState": {
+                "Values": {
+                  "projections": [
+                    {
+                      "field": {
+                        "Measure": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_availability"
+                            }
+                          },
+                          "Property": "Avg Utilization %"
+                        }
+                      },
+                      "queryRef": "fact_availability.Avg Utilization %",
+                      "nativeQueryRef": "Avg Utilization %"
+                    }
+                  ]
+                }
+              },
+              "sortDefinition": {
+                "isDefaultSort": true,
+                "sort": []
+              }
+            },
+            "objects": {},
+            "vcObjects": {
+              "title": [
+                {
+                  "properties": {
+                    "show": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "true"
+                        }
+                      }
+                    },
+                    "text": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "'Avg Utilization'"
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "v_p1c4",
+          "position": {
+            "x": 965,
+            "y": 20,
+            "z": 0,
+            "width": 295,
+            "height": 110,
+            "tabOrder": 3
+          },
+          "visual": {
+            "visualType": "card",
+            "query": {
+              "queryState": {
+                "Values": {
+                  "projections": [
+                    {
+                      "field": {
+                        "Measure": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_availability"
+                            }
+                          },
+                          "Property": "SLA Compliance %"
+                        }
+                      },
+                      "queryRef": "fact_availability.SLA Compliance %",
+                      "nativeQueryRef": "SLA Compliance %"
+                    }
+                  ]
+                }
+              },
+              "sortDefinition": {
+                "isDefaultSort": true,
+                "sort": []
+              }
+            },
+            "objects": {},
+            "vcObjects": {
+              "title": [
+                {
+                  "properties": {
+                    "show": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "true"
+                        }
+                      }
+                    },
+                    "text": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "'SLA Compliance'"
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "v_p1bar1",
+          "position": {
+            "x": 20,
+            "y": 150,
+            "z": 0,
+            "width": 610,
+            "height": 260,
+            "tabOrder": 4
+          },
+          "visual": {
+            "visualType": "clusteredBarChart",
+            "query": {
+              "queryState": {
+                "Category": {
+                  "projections": [
+                    {
+                      "field": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_availability"
+                            }
+                          },
+                          "Property": "availability_band"
+                        }
+                      },
+                      "queryRef": "fact_availability.availability_band",
+                      "nativeQueryRef": "availability_band"
+                    }
+                  ]
+                },
+                "Y": {
+                  "projections": [
+                    {
+                      "field": {
+                        "Measure": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_availability"
+                            }
+                          },
+                          "Property": "Total Events"
+                        }
+                      },
+                      "queryRef": "fact_availability.Total Events",
+                      "nativeQueryRef": "Total Events"
+                    }
+                  ]
+                }
+              },
+              "sortDefinition": {
+                "isDefaultSort": true,
+                "sort": []
+              }
+            },
+            "objects": {},
+            "vcObjects": {
+              "title": [
+                {
+                  "properties": {
+                    "show": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "true"
+                        }
+                      }
+                    },
+                    "text": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "'Events by Availability Band'"
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "v_p1bar2",
+          "position": {
+            "x": 650,
+            "y": 150,
+            "z": 0,
+            "width": 610,
+            "height": 260,
+            "tabOrder": 5
+          },
+          "visual": {
+            "visualType": "clusteredBarChart",
+            "query": {
+              "queryState": {
+                "Category": {
+                  "projections": [
+                    {
+                      "field": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "dim_station"
+                            }
+                          },
+                          "Property": "neighbourhood"
+                        }
+                      },
+                      "queryRef": "dim_station.neighbourhood",
+                      "nativeQueryRef": "neighbourhood"
+                    }
+                  ]
+                },
+                "Y": {
+                  "projections": [
+                    {
+                      "field": {
+                        "Measure": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_availability"
+                            }
+                          },
+                          "Property": "Avg Utilization %"
+                        }
+                      },
+                      "queryRef": "fact_availability.Avg Utilization %",
+                      "nativeQueryRef": "Avg Utilization %"
+                    }
+                  ]
+                }
+              },
+              "sortDefinition": {
+                "isDefaultSort": true,
+                "sort": []
+              }
+            },
+            "objects": {},
+            "vcObjects": {
+              "title": [
+                {
+                  "properties": {
+                    "show": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "true"
+                        }
+                      }
+                    },
+                    "text": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "'Utilization by Neighbourhood'"
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "v_p1tbl1",
+          "position": {
+            "x": 20,
+            "y": 430,
+            "z": 0,
+            "width": 1240,
+            "height": 270,
+            "tabOrder": 6
+          },
+          "visual": {
+            "visualType": "tableEx",
+            "query": {
+              "queryState": {
+                "Values": {
+                  "projections": [
+                    {
+                      "field": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_rebalancing"
+                            }
+                          },
+                          "Property": "station_id"
+                        }
+                      },
+                      "queryRef": "fact_rebalancing.station_id",
+                      "nativeQueryRef": "station_id"
+                    },
+                    {
+                      "field": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_rebalancing"
+                            }
+                          },
+                          "Property": "neighbourhood"
+                        }
+                      },
+                      "queryRef": "fact_rebalancing.neighbourhood",
+                      "nativeQueryRef": "neighbourhood"
+                    },
+                    {
+                      "field": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_rebalancing"
+                            }
+                          },
+                          "Property": "bikes_available"
+                        }
+                      },
+                      "queryRef": "fact_rebalancing.bikes_available",
+                      "nativeQueryRef": "bikes_available"
+                    },
+                    {
+                      "field": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_rebalancing"
+                            }
+                          },
+                          "Property": "empty_docks"
+                        }
+                      },
+                      "queryRef": "fact_rebalancing.empty_docks",
+                      "nativeQueryRef": "empty_docks"
+                    },
+                    {
+                      "field": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_rebalancing"
+                            }
+                          },
+                          "Property": "priority_score"
+                        }
+                      },
+                      "queryRef": "fact_rebalancing.priority_score",
+                      "nativeQueryRef": "priority_score"
+                    },
+                    {
+                      "field": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_rebalancing"
+                            }
+                          },
+                          "Property": "recommended_action"
+                        }
+                      },
+                      "queryRef": "fact_rebalancing.recommended_action",
+                      "nativeQueryRef": "recommended_action"
+                    },
+                    {
+                      "field": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_rebalancing"
+                            }
+                          },
+                          "Property": "estimated_rebalance_cost"
+                        }
+                      },
+                      "queryRef": "fact_rebalancing.estimated_rebalance_cost",
+                      "nativeQueryRef": "estimated_rebalance_cost"
+                    }
+                  ]
+                }
+              },
+              "sortDefinition": {
+                "isDefaultSort": true,
+                "sort": []
+              }
+            },
+            "objects": {},
+            "vcObjects": {
+              "title": [
+                {
+                  "properties": {
+                    "show": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "true"
+                        }
+                      }
+                    },
+                    "text": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "'Rebalancing Priority Queue'"
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "page_demand",
+      "displayName": "Demand Intelligence",
+      "displayOption": 0,
+      "height": 720,
+      "width": 1280,
+      "visuals": [
+        {
+          "name": "v_p2c1",
+          "position": {
+            "x": 20,
+            "y": 20,
+            "z": 0,
+            "width": 295,
+            "height": 110,
+            "tabOrder": 0
+          },
+          "visual": {
+            "visualType": "card",
+            "query": {
+              "queryState": {
+                "Values": {
+                  "projections": [
+                    {
+                      "field": {
+                        "Measure": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_hourly_demand"
+                            }
+                          },
+                          "Property": "Total Demand Events"
+                        }
+                      },
+                      "queryRef": "fact_hourly_demand.Total Demand Events",
+                      "nativeQueryRef": "Total Demand Events"
+                    }
+                  ]
+                }
+              },
+              "sortDefinition": {
+                "isDefaultSort": true,
+                "sort": []
+              }
+            },
+            "objects": {},
+            "vcObjects": {
+              "title": [
+                {
+                  "properties": {
+                    "show": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "true"
+                        }
+                      }
+                    },
+                    "text": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "'Total Demand'"
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "v_p2c2",
+          "position": {
+            "x": 335,
+            "y": 20,
+            "z": 0,
+            "width": 295,
+            "height": 110,
+            "tabOrder": 1
+          },
+          "visual": {
+            "visualType": "card",
+            "query": {
+              "queryState": {
+                "Values": {
+                  "projections": [
+                    {
+                      "field": {
+                        "Measure": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_hourly_demand"
+                            }
+                          },
+                          "Property": "Peak Hourly Demand"
+                        }
+                      },
+                      "queryRef": "fact_hourly_demand.Peak Hourly Demand",
+                      "nativeQueryRef": "Peak Hourly Demand"
+                    }
+                  ]
+                }
+              },
+              "sortDefinition": {
+                "isDefaultSort": true,
+                "sort": []
+              }
+            },
+            "objects": {},
+            "vcObjects": {
+              "title": [
+                {
+                  "properties": {
+                    "show": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "true"
+                        }
+                      }
+                    },
+                    "text": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "'Peak Demand'"
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "v_p2c3",
+          "position": {
+            "x": 650,
+            "y": 20,
+            "z": 0,
+            "width": 295,
+            "height": 110,
+            "tabOrder": 2
+          },
+          "visual": {
+            "visualType": "card",
+            "query": {
+              "queryState": {
+                "Values": {
+                  "projections": [
+                    {
+                      "field": {
+                        "Measure": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_hourly_demand"
+                            }
+                          },
+                          "Property": "Total Critical Events"
+                        }
+                      },
+                      "queryRef": "fact_hourly_demand.Total Critical Events",
+                      "nativeQueryRef": "Total Critical Events"
+                    }
+                  ]
+                }
+              },
+              "sortDefinition": {
+                "isDefaultSort": true,
+                "sort": []
+              }
+            },
+            "objects": {},
+            "vcObjects": {
+              "title": [
+                {
+                  "properties": {
+                    "show": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "true"
+                        }
+                      }
+                    },
+                    "text": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "'Critical Events'"
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "v_p2c4",
+          "position": {
+            "x": 965,
+            "y": 20,
+            "z": 0,
+            "width": 295,
+            "height": 110,
+            "tabOrder": 3
+          },
+          "visual": {
+            "visualType": "card",
+            "query": {
+              "queryState": {
+                "Values": {
+                  "projections": [
+                    {
+                      "field": {
+                        "Measure": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_hourly_demand"
+                            }
+                          },
+                          "Property": "Rush Hour Demand Ratio"
+                        }
+                      },
+                      "queryRef": "fact_hourly_demand.Rush Hour Demand Ratio",
+                      "nativeQueryRef": "Rush Hour Demand Ratio"
+                    }
+                  ]
+                }
+              },
+              "sortDefinition": {
+                "isDefaultSort": true,
+                "sort": []
+              }
+            },
+            "objects": {},
+            "vcObjects": {
+              "title": [
+                {
+                  "properties": {
+                    "show": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "true"
+                        }
+                      }
+                    },
+                    "text": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "'Rush Hour Ratio'"
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "v_p2ln1",
+          "position": {
+            "x": 20,
+            "y": 150,
+            "z": 0,
+            "width": 610,
+            "height": 260,
+            "tabOrder": 4
+          },
+          "visual": {
+            "visualType": "lineChart",
+            "query": {
+              "queryState": {
+                "Category": {
+                  "projections": [
+                    {
+                      "field": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_hourly_demand"
+                            }
+                          },
+                          "Property": "event_hour"
+                        }
+                      },
+                      "queryRef": "fact_hourly_demand.event_hour",
+                      "nativeQueryRef": "event_hour"
+                    }
+                  ]
+                },
+                "Y": {
+                  "projections": [
+                    {
+                      "field": {
+                        "Measure": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_hourly_demand"
+                            }
+                          },
+                          "Property": "Total Demand Events"
+                        }
+                      },
+                      "queryRef": "fact_hourly_demand.Total Demand Events",
+                      "nativeQueryRef": "Total Demand Events"
+                    }
+                  ]
+                }
+              },
+              "sortDefinition": {
+                "isDefaultSort": true,
+                "sort": []
+              }
+            },
+            "objects": {},
+            "vcObjects": {
+              "title": [
+                {
+                  "properties": {
+                    "show": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "true"
+                        }
+                      }
+                    },
+                    "text": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "'Demand Over Time'"
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "v_p2bar1",
+          "position": {
+            "x": 650,
+            "y": 150,
+            "z": 0,
+            "width": 610,
+            "height": 260,
+            "tabOrder": 5
+          },
+          "visual": {
+            "visualType": "clusteredBarChart",
+            "query": {
+              "queryState": {
+                "Category": {
+                  "projections": [
+                    {
+                      "field": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "dim_neighbourhood"
+                            }
+                          },
+                          "Property": "neighbourhood_name"
+                        }
+                      },
+                      "queryRef": "dim_neighbourhood.neighbourhood_name",
+                      "nativeQueryRef": "neighbourhood_name"
+                    }
+                  ]
+                },
+                "Y": {
+                  "projections": [
+                    {
+                      "field": {
+                        "Measure": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_hourly_demand"
+                            }
+                          },
+                          "Property": "Total Demand Events"
+                        }
+                      },
+                      "queryRef": "fact_hourly_demand.Total Demand Events",
+                      "nativeQueryRef": "Total Demand Events"
+                    }
+                  ]
+                }
+              },
+              "sortDefinition": {
+                "isDefaultSort": true,
+                "sort": []
+              }
+            },
+            "objects": {},
+            "vcObjects": {
+              "title": [
+                {
+                  "properties": {
+                    "show": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "true"
+                        }
+                      }
+                    },
+                    "text": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "'Demand by Neighbourhood'"
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "v_p2ln2",
+          "position": {
+            "x": 20,
+            "y": 430,
+            "z": 0,
+            "width": 610,
+            "height": 270,
+            "tabOrder": 6
+          },
+          "visual": {
+            "visualType": "lineChart",
+            "query": {
+              "queryState": {
+                "Category": {
+                  "projections": [
+                    {
+                      "field": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "forecast_demand"
+                            }
+                          },
+                          "Property": "forecast_hour"
+                        }
+                      },
+                      "queryRef": "forecast_demand.forecast_hour",
+                      "nativeQueryRef": "forecast_hour"
+                    }
+                  ]
+                },
+                "Y": {
+                  "projections": [
+                    {
+                      "field": {
+                        "Measure": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "forecast_demand"
+                            }
+                          },
+                          "Property": "Total Predicted Demand"
+                        }
+                      },
+                      "queryRef": "forecast_demand.Total Predicted Demand",
+                      "nativeQueryRef": "Total Predicted Demand"
+                    }
+                  ]
+                }
+              },
+              "sortDefinition": {
+                "isDefaultSort": true,
+                "sort": []
+              }
+            },
+            "objects": {},
+            "vcObjects": {
+              "title": [
+                {
+                  "properties": {
+                    "show": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "true"
+                        }
+                      }
+                    },
+                    "text": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "'24 h Demand Forecast'"
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "v_p2dnt1",
+          "position": {
+            "x": 650,
+            "y": 430,
+            "z": 0,
+            "width": 610,
+            "height": 270,
+            "tabOrder": 7
+          },
+          "visual": {
+            "visualType": "donutChart",
+            "query": {
+              "queryState": {
+                "Category": {
+                  "projections": [
+                    {
+                      "field": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "forecast_demand"
+                            }
+                          },
+                          "Property": "demand_tier"
+                        }
+                      },
+                      "queryRef": "forecast_demand.demand_tier",
+                      "nativeQueryRef": "demand_tier"
+                    }
+                  ]
+                },
+                "Y": {
+                  "projections": [
+                    {
+                      "field": {
+                        "Measure": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "forecast_demand"
+                            }
+                          },
+                          "Property": "Total Predicted Demand"
+                        }
+                      },
+                      "queryRef": "forecast_demand.Total Predicted Demand",
+                      "nativeQueryRef": "Total Predicted Demand"
+                    }
+                  ]
+                }
+              },
+              "sortDefinition": {
+                "isDefaultSort": true,
+                "sort": []
+              }
+            },
+            "objects": {},
+            "vcObjects": {
+              "title": [
+                {
+                  "properties": {
+                    "show": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "true"
+                        }
+                      }
+                    },
+                    "text": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "'Demand Tier Distribution'"
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "page_cost_sla",
+      "displayName": "SLA & Cost",
+      "displayOption": 0,
+      "height": 720,
+      "width": 1280,
+      "visuals": [
+        {
+          "name": "v_p3c1",
+          "position": {
+            "x": 20,
+            "y": 20,
+            "z": 0,
+            "width": 295,
+            "height": 110,
+            "tabOrder": 0
+          },
+          "visual": {
+            "visualType": "card",
+            "query": {
+              "queryState": {
+                "Values": {
+                  "projections": [
+                    {
+                      "field": {
+                        "Measure": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_rebalancing"
+                            }
+                          },
+                          "Property": "Total Rebalance Cost"
+                        }
+                      },
+                      "queryRef": "fact_rebalancing.Total Rebalance Cost",
+                      "nativeQueryRef": "Total Rebalance Cost"
+                    }
+                  ]
+                }
+              },
+              "sortDefinition": {
+                "isDefaultSort": true,
+                "sort": []
+              }
+            },
+            "objects": {},
+            "vcObjects": {
+              "title": [
+                {
+                  "properties": {
+                    "show": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "true"
+                        }
+                      }
+                    },
+                    "text": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "'Rebalance Cost'"
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "v_p3c2",
+          "position": {
+            "x": 335,
+            "y": 20,
+            "z": 0,
+            "width": 295,
+            "height": 110,
+            "tabOrder": 1
+          },
+          "visual": {
+            "visualType": "card",
+            "query": {
+              "queryState": {
+                "Values": {
+                  "projections": [
+                    {
+                      "field": {
+                        "Measure": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_rebalancing"
+                            }
+                          },
+                          "Property": "Projected Savings (50% Reduction)"
+                        }
+                      },
+                      "queryRef": "fact_rebalancing.Projected Savings (50% Reduction)",
+                      "nativeQueryRef": "Projected Savings (50% Reduction)"
+                    }
+                  ]
+                }
+              },
+              "sortDefinition": {
+                "isDefaultSort": true,
+                "sort": []
+              }
+            },
+            "objects": {},
+            "vcObjects": {
+              "title": [
+                {
+                  "properties": {
+                    "show": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "true"
+                        }
+                      }
+                    },
+                    "text": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "'Projected Savings'"
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "v_p3c3",
+          "position": {
+            "x": 650,
+            "y": 20,
+            "z": 0,
+            "width": 295,
+            "height": 110,
+            "tabOrder": 2
+          },
+          "visual": {
+            "visualType": "card",
+            "query": {
+              "queryState": {
+                "Values": {
+                  "projections": [
+                    {
+                      "field": {
+                        "Measure": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_rebalancing"
+                            }
+                          },
+                          "Property": "Stations Needing Rebalance"
+                        }
+                      },
+                      "queryRef": "fact_rebalancing.Stations Needing Rebalance",
+                      "nativeQueryRef": "Stations Needing Rebalance"
+                    }
+                  ]
+                }
+              },
+              "sortDefinition": {
+                "isDefaultSort": true,
+                "sort": []
+              }
+            },
+            "objects": {},
+            "vcObjects": {
+              "title": [
+                {
+                  "properties": {
+                    "show": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "true"
+                        }
+                      }
+                    },
+                    "text": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "'Stations to Rebalance'"
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "v_p3c4",
+          "position": {
+            "x": 965,
+            "y": 20,
+            "z": 0,
+            "width": 295,
+            "height": 110,
+            "tabOrder": 3
+          },
+          "visual": {
+            "visualType": "card",
+            "query": {
+              "queryState": {
+                "Values": {
+                  "projections": [
+                    {
+                      "field": {
+                        "Measure": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_rebalancing"
+                            }
+                          },
+                          "Property": "Urgent Actions"
+                        }
+                      },
+                      "queryRef": "fact_rebalancing.Urgent Actions",
+                      "nativeQueryRef": "Urgent Actions"
+                    }
+                  ]
+                }
+              },
+              "sortDefinition": {
+                "isDefaultSort": true,
+                "sort": []
+              }
+            },
+            "objects": {},
+            "vcObjects": {
+              "title": [
+                {
+                  "properties": {
+                    "show": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "true"
+                        }
+                      }
+                    },
+                    "text": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "'Urgent Actions'"
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "v_p3dnt1",
+          "position": {
+            "x": 20,
+            "y": 150,
+            "z": 0,
+            "width": 610,
+            "height": 260,
+            "tabOrder": 4
+          },
+          "visual": {
+            "visualType": "donutChart",
+            "query": {
+              "queryState": {
+                "Category": {
+                  "projections": [
+                    {
+                      "field": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_rebalancing"
+                            }
+                          },
+                          "Property": "availability_status"
+                        }
+                      },
+                      "queryRef": "fact_rebalancing.availability_status",
+                      "nativeQueryRef": "availability_status"
+                    }
+                  ]
+                },
+                "Y": {
+                  "projections": [
+                    {
+                      "field": {
+                        "Measure": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_rebalancing"
+                            }
+                          },
+                          "Property": "Stations Needing Rebalance"
+                        }
+                      },
+                      "queryRef": "fact_rebalancing.Stations Needing Rebalance",
+                      "nativeQueryRef": "Stations Needing Rebalance"
+                    }
+                  ]
+                }
+              },
+              "sortDefinition": {
+                "isDefaultSort": true,
+                "sort": []
+              }
+            },
+            "objects": {},
+            "vcObjects": {
+              "title": [
+                {
+                  "properties": {
+                    "show": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "true"
+                        }
+                      }
+                    },
+                    "text": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "'Station Availability Status'"
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "v_p3col1",
+          "position": {
+            "x": 650,
+            "y": 150,
+            "z": 0,
+            "width": 610,
+            "height": 260,
+            "tabOrder": 5
+          },
+          "visual": {
+            "visualType": "clusteredColumnChart",
+            "query": {
+              "queryState": {
+                "Category": {
+                  "projections": [
+                    {
+                      "field": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_rebalancing"
+                            }
+                          },
+                          "Property": "neighbourhood"
+                        }
+                      },
+                      "queryRef": "fact_rebalancing.neighbourhood",
+                      "nativeQueryRef": "neighbourhood"
+                    }
+                  ]
+                },
+                "Y": {
+                  "projections": [
+                    {
+                      "field": {
+                        "Measure": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_rebalancing"
+                            }
+                          },
+                          "Property": "Total Rebalance Cost"
+                        }
+                      },
+                      "queryRef": "fact_rebalancing.Total Rebalance Cost",
+                      "nativeQueryRef": "Total Rebalance Cost"
+                    }
+                  ]
+                }
+              },
+              "sortDefinition": {
+                "isDefaultSort": true,
+                "sort": []
+              }
+            },
+            "objects": {},
+            "vcObjects": {
+              "title": [
+                {
+                  "properties": {
+                    "show": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "true"
+                        }
+                      }
+                    },
+                    "text": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "'Rebalance Cost by Neighbourhood'"
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "v_p3tbl1",
+          "position": {
+            "x": 20,
+            "y": 430,
+            "z": 0,
+            "width": 1240,
+            "height": 270,
+            "tabOrder": 6
+          },
+          "visual": {
+            "visualType": "tableEx",
+            "query": {
+              "queryState": {
+                "Values": {
+                  "projections": [
+                    {
+                      "field": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_rebalancing"
+                            }
+                          },
+                          "Property": "station_id"
+                        }
+                      },
+                      "queryRef": "fact_rebalancing.station_id",
+                      "nativeQueryRef": "station_id"
+                    },
+                    {
+                      "field": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_rebalancing"
+                            }
+                          },
+                          "Property": "neighbourhood"
+                        }
+                      },
+                      "queryRef": "fact_rebalancing.neighbourhood",
+                      "nativeQueryRef": "neighbourhood"
+                    },
+                    {
+                      "field": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_rebalancing"
+                            }
+                          },
+                          "Property": "availability_status"
+                        }
+                      },
+                      "queryRef": "fact_rebalancing.availability_status",
+                      "nativeQueryRef": "availability_status"
+                    },
+                    {
+                      "field": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_rebalancing"
+                            }
+                          },
+                          "Property": "recommended_action"
+                        }
+                      },
+                      "queryRef": "fact_rebalancing.recommended_action",
+                      "nativeQueryRef": "recommended_action"
+                    },
+                    {
+                      "field": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_rebalancing"
+                            }
+                          },
+                          "Property": "bikes_to_target"
+                        }
+                      },
+                      "queryRef": "fact_rebalancing.bikes_to_target",
+                      "nativeQueryRef": "bikes_to_target"
+                    },
+                    {
+                      "field": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_rebalancing"
+                            }
+                          },
+                          "Property": "estimated_rebalance_cost"
+                        }
+                      },
+                      "queryRef": "fact_rebalancing.estimated_rebalance_cost",
+                      "nativeQueryRef": "estimated_rebalance_cost"
+                    },
+                    {
+                      "field": {
+                        "Measure": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "fact_rebalancing"
+                            }
+                          },
+                          "Property": "Avg Priority Score"
+                        }
+                      },
+                      "queryRef": "fact_rebalancing.Avg Priority Score",
+                      "nativeQueryRef": "Avg Priority Score"
+                    }
+                  ]
+                }
+              },
+              "sortDefinition": {
+                "isDefaultSort": true,
+                "sort": []
+              }
+            },
+            "objects": {},
+            "vcObjects": {
+              "title": [
+                {
+                  "properties": {
+                    "show": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "true"
+                        }
+                      }
+                    },
+                    "text": {
+                      "expr": {
+                        "Literal": {
+                          "Value": "'Operations Detail'"
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

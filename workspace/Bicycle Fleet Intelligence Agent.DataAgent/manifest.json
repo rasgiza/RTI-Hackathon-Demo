@@ -1,0 +1,49 @@
+{
+  "agentName": "Bicycle Fleet Intelligence Agent",
+  "exportedParts": [
+    {
+      "path": "Files/Config/data_agent.json",
+      "payloadType": "InlineBase64"
+    },
+    {
+      "path": "Files/Config/draft/stage_config.json",
+      "payloadType": "InlineBase64"
+    },
+    {
+      "path": "Files/Config/draft/lakehouse-tables-bicycles_gold/datasource.json",
+      "payloadType": "InlineBase64"
+    },
+    {
+      "path": "Files/Config/draft/lakehouse-tables-bicycles_gold/fewshots.json",
+      "payloadType": "InlineBase64"
+    },
+    {
+      "path": "Files/Config/draft/semantic-model-Bicycle RTI Analytics/datasource.json",
+      "payloadType": "InlineBase64"
+    },
+    {
+      "path": "Files/Config/publish_info.json",
+      "payloadType": "InlineBase64"
+    },
+    {
+      "path": "Files/Config/published/stage_config.json",
+      "payloadType": "InlineBase64"
+    },
+    {
+      "path": "Files/Config/published/lakehouse-tables-bicycles_gold/datasource.json",
+      "payloadType": "InlineBase64"
+    },
+    {
+      "path": "Files/Config/published/lakehouse-tables-bicycles_gold/fewshots.json",
+      "payloadType": "InlineBase64"
+    },
+    {
+      "path": "Files/Config/published/semantic-model-Bicycle RTI Analytics/datasource.json",
+      "payloadType": "InlineBase64"
+    },
+    {
+      "path": ".platform",
+      "payloadType": "InlineBase64"
+    }
+  ]
+}

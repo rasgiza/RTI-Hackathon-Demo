@@ -1,0 +1,232 @@
+/// Station snapshot — one row per station with the latest event data. Agent-friendly (~120 rows). Use this instead of scanning 562M fact_availability rows for current status questions.
+table gold_station_snapshot
+	lineageTag: 10000011-0001-0001-0001-000000000001
+	sourceLineageTag: [gold_station_snapshot]
+
+	/// Count of stations needing immediate attention (empty or full)
+	measure 'Stations Needing Attention' =
+			CALCULATE(
+			    COUNTROWS(gold_station_snapshot),
+			    gold_station_snapshot[needs_attention] = TRUE()
+			)
+		formatString: #,##0
+		lineageTag: 10000011-0001-0001-0001-000000000101
+
+	/// Average fleet utilization across all stations
+	measure 'Fleet Avg Utilization %' = AVERAGE(gold_station_snapshot[utilization_pct]) * 100
+		formatString: 0.0"%"
+		lineageTag: 10000011-0001-0001-0001-000000000102
+
+	/// Count of empty stations
+	measure 'Empty Stations' =
+			CALCULATE(
+			    COUNTROWS(gold_station_snapshot),
+			    gold_station_snapshot[operational_status] = "EMPTY"
+			)
+		formatString: #,##0
+		lineageTag: 10000011-0001-0001-0001-000000000103
+
+	/// Count of full stations
+	measure 'Full Stations' =
+			CALCULATE(
+			    COUNTROWS(gold_station_snapshot),
+			    gold_station_snapshot[operational_status] = "FULL"
+			)
+		formatString: #,##0
+		lineageTag: 10000011-0001-0001-0001-000000000104
+
+	column station_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 10000011-0001-0001-0001-000000000011
+		sourceLineageTag: station_key
+		summarizeBy: none
+		sourceColumn: station_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column station_id
+		dataType: string
+		lineageTag: 10000011-0001-0001-0001-000000000012
+		sourceLineageTag: station_id
+		summarizeBy: none
+		sourceColumn: station_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column street_address
+		dataType: string
+		lineageTag: 10000011-0001-0001-0001-000000000013
+		sourceLineageTag: street_address
+		summarizeBy: none
+		sourceColumn: street_address
+
+		annotation SummarizationSetBy = Automatic
+
+	column neighbourhood
+		dataType: string
+		lineageTag: 10000011-0001-0001-0001-000000000014
+		sourceLineageTag: neighbourhood
+		summarizeBy: none
+		sourceColumn: neighbourhood
+
+		annotation SummarizationSetBy = Automatic
+
+	column latitude
+		dataType: double
+		lineageTag: 10000011-0001-0001-0001-000000000015
+		sourceLineageTag: latitude
+		summarizeBy: none
+		sourceColumn: latitude
+
+		annotation SummarizationSetBy = Automatic
+
+	column longitude
+		dataType: double
+		lineageTag: 10000011-0001-0001-0001-000000000016
+		sourceLineageTag: longitude
+		summarizeBy: none
+		sourceColumn: longitude
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_docks
+		dataType: int64
+		formatString: 0
+		lineageTag: 10000011-0001-0001-0001-000000000017
+		sourceLineageTag: total_docks
+		summarizeBy: sum
+		sourceColumn: total_docks
+
+		annotation SummarizationSetBy = Automatic
+
+	column station_size
+		dataType: string
+		lineageTag: 10000011-0001-0001-0001-000000000018
+		sourceLineageTag: station_size
+		summarizeBy: none
+		sourceColumn: station_size
+
+		annotation SummarizationSetBy = Automatic
+
+	column zone
+		dataType: string
+		lineageTag: 10000011-0001-0001-0001-000000000019
+		sourceLineageTag: zone
+		summarizeBy: none
+		sourceColumn: zone
+
+		annotation SummarizationSetBy = Automatic
+
+	column bikes_available
+		dataType: int64
+		formatString: 0
+		lineageTag: 10000011-0001-0001-0001-000000000020
+		sourceLineageTag: bikes_available
+		summarizeBy: sum
+		sourceColumn: bikes_available
+
+		annotation SummarizationSetBy = Automatic
+
+	column empty_docks
+		dataType: int64
+		formatString: 0
+		lineageTag: 10000011-0001-0001-0001-000000000021
+		sourceLineageTag: empty_docks
+		summarizeBy: sum
+		sourceColumn: empty_docks
+
+		annotation SummarizationSetBy = Automatic
+
+	column utilization_pct
+		dataType: double
+		lineageTag: 10000011-0001-0001-0001-000000000022
+		sourceLineageTag: utilization_pct
+		summarizeBy: average
+		sourceColumn: utilization_pct
+
+		annotation SummarizationSetBy = Automatic
+
+	column availability_band
+		dataType: string
+		lineageTag: 10000011-0001-0001-0001-000000000023
+		sourceLineageTag: availability_band
+		summarizeBy: none
+		sourceColumn: availability_band
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_critical
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 10000011-0001-0001-0001-000000000024
+		sourceLineageTag: is_critical
+		summarizeBy: none
+		sourceColumn: is_critical
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_event_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 10000011-0001-0001-0001-000000000025
+		sourceLineageTag: last_event_at
+		summarizeBy: none
+		sourceColumn: last_event_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column last_event_type
+		dataType: string
+		lineageTag: 10000011-0001-0001-0001-000000000026
+		sourceLineageTag: last_event_type
+		summarizeBy: none
+		sourceColumn: last_event_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column rebalance_priority
+		dataType: double
+		lineageTag: 10000011-0001-0001-0001-000000000027
+		sourceLineageTag: rebalance_priority
+		summarizeBy: average
+		sourceColumn: rebalance_priority
+
+		annotation SummarizationSetBy = Automatic
+
+	column operational_status
+		dataType: string
+		lineageTag: 10000011-0001-0001-0001-000000000028
+		sourceLineageTag: operational_status
+		summarizeBy: none
+		sourceColumn: operational_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column needs_attention
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 10000011-0001-0001-0001-000000000029
+		sourceLineageTag: needs_attention
+		summarizeBy: none
+		sourceColumn: needs_attention
+
+		annotation SummarizationSetBy = Automatic
+
+	column snapshot_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 10000011-0001-0001-0001-000000000030
+		sourceLineageTag: snapshot_at
+		summarizeBy: none
+		sourceColumn: snapshot_at
+
+		annotation SummarizationSetBy = Automatic
+
+	partition gold_station_snapshot = entity
+		mode: directLake
+		source
+			entityName: gold_station_snapshot
+			expressionSource: 'DirectLake - bicycles_gold'
+
+	annotation PBI_ResultType = Table

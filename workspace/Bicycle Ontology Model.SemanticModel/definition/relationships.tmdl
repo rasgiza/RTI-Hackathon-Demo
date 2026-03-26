@@ -1,0 +1,104 @@
+relationship onto_fact_availability_to_onto_dim_station
+	fromColumn: onto_fact_availability.station_key
+	toColumn: onto_dim_station.station_key
+
+relationship onto_fact_availability_to_dim_time
+	fromColumn: onto_fact_availability.time_key
+	toColumn: dim_time.time_key
+
+relationship onto_fact_availability_to_dim_date
+	fromColumn: onto_fact_availability.date_key
+	toColumn: dim_date.date_key
+
+relationship onto_fact_hourly_demand_to_dim_neighbourhood
+	fromColumn: onto_fact_hourly_demand.neighbourhood_key
+	toColumn: dim_neighbourhood.neighbourhood_key
+
+relationship onto_fact_hourly_demand_to_dim_time
+	isActive: false
+	fromColumn: onto_fact_hourly_demand.time_key
+	toColumn: dim_time.time_key
+
+relationship onto_fact_hourly_demand_to_dim_date
+	isActive: false
+	fromColumn: onto_fact_hourly_demand.date_key
+	toColumn: dim_date.date_key
+
+relationship onto_fact_rebalancing_to_onto_dim_station
+	fromColumn: onto_fact_rebalancing.station_key
+	toColumn: onto_dim_station.station_key
+
+relationship onto_fact_rebalancing_to_dim_neighbourhood
+	fromColumn: onto_fact_rebalancing.neighbourhood_key
+	toColumn: dim_neighbourhood.neighbourhood_key
+
+relationship onto_fact_rebalancing_to_dim_time
+	isActive: false
+	fromColumn: onto_fact_rebalancing.time_key
+	toColumn: dim_time.time_key
+
+relationship onto_fact_rebalancing_to_dim_date
+	isActive: false
+	fromColumn: onto_fact_rebalancing.date_key
+	toColumn: dim_date.date_key
+
+relationship onto_fact_rebalancing_to_dim_weather
+	fromColumn: onto_fact_rebalancing.weather_key
+	toColumn: dim_weather.weather_key
+
+relationship onto_fact_weather_impact_to_dim_weather
+	fromColumn: onto_fact_weather_impact.weather_key
+	toColumn: dim_weather.weather_key
+
+relationship onto_fact_weather_impact_to_dim_neighbourhood
+	fromColumn: onto_fact_weather_impact.neighbourhood_key
+	toColumn: dim_neighbourhood.neighbourhood_key
+
+relationship onto_fact_weather_impact_to_dim_time
+	isActive: false
+	fromColumn: onto_fact_weather_impact.time_key
+	toColumn: dim_time.time_key
+
+relationship onto_fact_weather_impact_to_dim_date
+	isActive: false
+	fromColumn: onto_fact_weather_impact.date_key
+	toColumn: dim_date.date_key
+
+relationship onto_station_snapshot_to_onto_dim_station
+	fromColumn: onto_station_snapshot.station_key
+	toColumn: onto_dim_station.station_key
+
+relationship onto_availability_recent_to_onto_dim_station
+	fromColumn: onto_availability_recent.station_key
+	toColumn: onto_dim_station.station_key
+
+relationship onto_availability_recent_to_dim_time
+	isActive: false
+	fromColumn: onto_availability_recent.time_key
+	toColumn: dim_time.time_key
+
+relationship onto_availability_recent_to_dim_date
+	isActive: false
+	fromColumn: onto_availability_recent.date_key
+	toColumn: dim_date.date_key
+
+relationship onto_forecast_demand_to_dim_neighbourhood
+	isActive: false
+	fromColumn: onto_forecast_demand.neighbourhood_key
+	toColumn: dim_neighbourhood.neighbourhood_key
+
+relationship onto_forecast_demand_to_dim_time
+	isActive: false
+	fromColumn: onto_forecast_demand.time_key
+	toColumn: dim_time.time_key
+
+relationship onto_forecast_demand_to_dim_date
+	isActive: false
+	fromColumn: onto_forecast_demand.date_key
+	toColumn: dim_date.date_key
+
+relationship dim_weather_to_dim_time
+	isActive: false
+	fromColumn: dim_weather.time_key
+	toColumn: dim_time.time_key
+

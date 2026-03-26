@@ -1,0 +1,23 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/contextualization/1.0.0/schema.json",
+  "id": "055d2b5f-7da1-4c87-8717-372edf2d7463",
+  "dataBindingTable": {
+    "workspaceId": "__WORKSPACE_ID__",
+    "itemId": "__LH_BICYCLES_GOLD__",
+    "sourceTableName": "onto_fact_rebalancing",
+    "sourceSchema": null,
+    "sourceType": "LakehouseTable"
+  },
+  "sourceKeyRefBindings": [
+    {
+      "sourceColumnName": "date_key",
+      "targetPropertyId": "4101849993720733175"
+    }
+  ],
+  "targetKeyRefBindings": [
+    {
+      "sourceColumnName": "date_key",
+      "targetPropertyId": "4101848392917508667"
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "a6a9b895-bcf9-48fa-ac10-891fcd925d29",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "recent_key",
+        "targetPropertyId": "4101851848028088351"
+      },
+      {
+        "sourceColumnName": "station_key",
+        "targetPropertyId": "4101851888108037488"
+      },
+      {
+        "sourceColumnName": "station_id",
+        "targetPropertyId": "4101851908983260932"
+      },
+      {
+        "sourceColumnName": "street_address",
+        "targetPropertyId": "4101851932993876927"
+      },
+      {
+        "sourceColumnName": "neighbourhood",
+        "targetPropertyId": "4101851952155153349"
+      },
+      {
+        "sourceColumnName": "zone",
+        "targetPropertyId": "4101851979073799145"
+      },
+      {
+        "sourceColumnName": "event_hour",
+        "targetPropertyId": "4101852005180042231"
+      },
+      {
+        "sourceColumnName": "event_date",
+        "targetPropertyId": "4101852026779755638"
+      },
+      {
+        "sourceColumnName": "date_key",
+        "targetPropertyId": "4101852047947282725"
+      },
+      {
+        "sourceColumnName": "time_key",
+        "targetPropertyId": "4101852067307997568"
+      },
+      {
+        "sourceColumnName": "event_count",
+        "targetPropertyId": "4101852090879737472"
+      },
+      {
+        "sourceColumnName": "avg_bikes",
+        "targetPropertyId": "4101852110356246749"
+      },
+      {
+        "sourceColumnName": "min_bikes",
+        "targetPropertyId": "4101852132903728130"
+      },
+      {
+        "sourceColumnName": "max_bikes",
+        "targetPropertyId": "4101852155363583570"
+      },
+      {
+        "sourceColumnName": "avg_empty_docks",
+        "targetPropertyId": "4101852178059364640"
+      },
+      {
+        "sourceColumnName": "avg_utilization",
+        "targetPropertyId": "4101852200321029894"
+      },
+      {
+        "sourceColumnName": "critical_events",
+        "targetPropertyId": "4101852218860374299"
+      },
+      {
+        "sourceColumnName": "utilization_band",
+        "targetPropertyId": "4101852240403239373"
+      },
+      {
+        "sourceColumnName": "loaded_at",
+        "targetPropertyId": "4101852261915574979"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "__WORKSPACE_ID__",
+      "itemId": "__LH_BICYCLES_GOLD__",
+      "sourceTableName": "onto_availability_recent",
+      "sourceSchema": null
+    }
+  }
+}

@@ -1,0 +1,100 @@
+relationship fact_availability_to_dim_station
+	fromColumn: fact_availability.station_key
+	toColumn: dim_station.station_key
+
+relationship fact_availability_to_dim_time
+	fromColumn: fact_availability.time_key
+	toColumn: dim_time.time_key
+
+relationship fact_hourly_demand_to_dim_neighbourhood
+	fromColumn: fact_hourly_demand.neighbourhood_key
+	toColumn: dim_neighbourhood.neighbourhood_key
+
+relationship fact_hourly_demand_to_dim_time
+	fromColumn: fact_hourly_demand.time_key
+	toColumn: dim_time.time_key
+
+relationship fact_rebalancing_to_dim_station
+	fromColumn: fact_rebalancing.station_key
+	toColumn: dim_station.station_key
+
+relationship fact_rebalancing_to_dim_neighbourhood
+	fromColumn: fact_rebalancing.neighbourhood_key
+	toColumn: dim_neighbourhood.neighbourhood_key
+
+relationship fact_rebalancing_to_dim_time
+	fromColumn: fact_rebalancing.time_key
+	toColumn: dim_time.time_key
+
+relationship fact_rebalancing_to_dim_weather
+	fromColumn: fact_rebalancing.weather_key
+	toColumn: dim_weather.weather_key
+
+relationship fact_weather_impact_to_dim_weather
+	fromColumn: fact_weather_impact.weather_key
+	toColumn: dim_weather.weather_key
+
+relationship fact_weather_impact_to_dim_neighbourhood
+	fromColumn: fact_weather_impact.neighbourhood_key
+	toColumn: dim_neighbourhood.neighbourhood_key
+
+relationship fact_weather_impact_to_dim_time
+	fromColumn: fact_weather_impact.time_key
+	toColumn: dim_time.time_key
+
+relationship dim_weather_to_dim_time
+	isActive: false
+	fromColumn: dim_weather.time_key
+	toColumn: dim_time.time_key
+
+relationship gold_station_snapshot_to_dim_station
+	fromColumn: gold_station_snapshot.station_key
+	toColumn: dim_station.station_key
+
+relationship gold_availability_recent_to_dim_station
+	fromColumn: gold_availability_recent.station_key
+	toColumn: dim_station.station_key
+
+relationship gold_availability_recent_to_dim_time
+	isActive: false
+	fromColumn: gold_availability_recent.time_key
+	toColumn: dim_time.time_key
+
+relationship fact_availability_to_dim_date
+	fromColumn: fact_availability.date_key
+	toColumn: dim_date.date_key
+
+relationship fact_hourly_demand_to_dim_date
+	isActive: false
+	fromColumn: fact_hourly_demand.date_key
+	toColumn: dim_date.date_key
+
+relationship fact_rebalancing_to_dim_date
+	isActive: false
+	fromColumn: fact_rebalancing.date_key
+	toColumn: dim_date.date_key
+
+relationship fact_weather_impact_to_dim_date
+	isActive: false
+	fromColumn: fact_weather_impact.date_key
+	toColumn: dim_date.date_key
+
+relationship gold_availability_recent_to_dim_date
+	isActive: false
+	fromColumn: gold_availability_recent.date_key
+	toColumn: dim_date.date_key
+
+relationship forecast_demand_to_dim_neighbourhood
+	isActive: false
+	fromColumn: forecast_demand.neighbourhood_key
+	toColumn: dim_neighbourhood.neighbourhood_key
+
+relationship forecast_demand_to_dim_time
+	isActive: false
+	fromColumn: forecast_demand.time_key
+	toColumn: dim_time.time_key
+
+relationship forecast_demand_to_dim_date
+	isActive: false
+	fromColumn: forecast_demand.date_key
+	toColumn: dim_date.date_key

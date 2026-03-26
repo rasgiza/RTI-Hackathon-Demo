@@ -1,0 +1,8 @@
+expression 'DirectLake - bicycles_gold' =
+		let
+		    Source = AzureStorage.DataLake("https://onelake.dfs.fabric.microsoft.com/573cc7c7-a45a-4fd9-886e-9db4e9798db4/edb7391d-0c43-56ff-981f-fd19c6a770f7", [HierarchicalNavigation=true])
+		in
+		    Source
+	lineageTag: a0b0c0d0-e0f0-0000-abcd-ef0000000001
+
+	annotation PBI_IncludeFutureArtifacts = False

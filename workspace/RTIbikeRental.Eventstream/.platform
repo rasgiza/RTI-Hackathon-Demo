@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Eventstream",
+    "displayName": "RTIbikeRental"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "22e6b4e1-7894-51ed-9afa-fb6d9c7bb93c"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/relationshipType/1.0.0/schema.json",
+  "namespace": "usertypes",
+  "id": "4102193025315110584",
+  "name": "rebalance_at_time",
+  "namespaceType": "Imported",
+  "source": {
+    "entityTypeId": "76056605000199"
+  },
+  "target": {
+    "entityTypeId": "266396690945189"
+  }
+}

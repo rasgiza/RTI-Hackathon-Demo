@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/relationshipType/1.0.0/schema.json",
+  "namespace": "usertypes",
+  "id": "4102269527051562944",
+  "name": "impact_on_date",
+  "namespaceType": "Imported",
+  "source": {
+    "entityTypeId": "112561428615426"
+  },
+  "target": {
+    "entityTypeId": "16437291161987"
+  }
+}

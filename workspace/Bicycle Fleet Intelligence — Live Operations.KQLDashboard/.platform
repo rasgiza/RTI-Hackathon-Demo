@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "KQLDashboard",
+    "displayName": "Bicycle Fleet Intelligence \u2014 Live Operations"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "fc81e1b8-16ea-509e-ad6b-97de8ba1e102"
+  }
+}

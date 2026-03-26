@@ -1,0 +1,175 @@
+{
+
+  "queryset": {
+
+    "version": "1.0.0",
+
+    "dataSources": [
+
+      {
+
+        "id": "9153a013-43c3-4a55-b98b-520be66a2058",
+
+        "clusterUri": "https://trd-9gu1netcys5t7d3sj8.z7.kusto.fabric.microsoft.com",
+
+        "type": "Fabric",
+
+        "databaseItemId": "27e1952e-cbd2-5a14-b54b-79f090db2745",
+
+        "databaseItemName": "bikerentaleventhouse"
+
+      }
+
+    ],
+
+    "tabs": [
+
+      {
+
+        "id": "9a13fbd6-39ba-4d6b-95aa-1a6b2ca7d4e9",
+
+        "content": "bikerentaldb\n| where ingestion_time() > ago(5m)\n| summarize arg_max(ingestion_time(), No_Bikes, No_Empty_Docks) by BikepointID, Street, Neighbourhood\n| extend total_docks = No_Bikes + No_Empty_Docks\n| summarize\n    total_stations = dcount(BikepointID),\n    empty_stations = countif(No_Bikes == 0),\n    full_stations = countif(No_Empty_Docks == 0),\n    avg_utilization = round(avg(iff(total_docks == 0, 0.0, todouble(No_Bikes) / todouble(total_docks))) * 100, 1),\n    total_bikes = sum(No_Bikes),\n    total_empty_docks = sum(No_Empty_Docks)",
+
+        "title": "Fleet KPIs",
+
+        "dataSourceId": "9153a013-43c3-4a55-b98b-520be66a2058"
+
+      },
+
+      {
+
+        "id": "9d651047-7ed1-4ab2-adcd-d4c3fbb3ef4b",
+
+        "content": "bikerentaldb\n| where ingestion_time() > ago(5m)\n| summarize arg_max(ingestion_time(), No_Bikes, No_Empty_Docks) by BikepointID, Street, Neighbourhood, Latitude, Longitude\n| extend total_docks = No_Bikes + No_Empty_Docks\n| extend availability_pct = iff(total_docks == 0, 0.0, round(todouble(No_Bikes) / todouble(total_docks) * 100, 1))\n| extend status = case(\n    No_Bikes == 0, \"EMPTY\",\n    No_Empty_Docks == 0, \"FULL\",\n    availability_pct < 20, \"LOW\",\n    availability_pct > 80, \"HIGH\",\n    \"NORMAL\"\n  )\n| project BikepointID, Street, Neighbourhood, No_Bikes, No_Empty_Docks, total_docks, availability_pct, status, Latitude, Longitude\n| order by availability_pct asc",
+
+        "title": "Live Station Status ",
+
+        "dataSourceId": "9153a013-43c3-4a55-b98b-520be66a2058"
+
+      },
+
+      {
+
+        "id": "a8207d75-4407-4cd1-95c2-6e780bbc150a",
+
+        "content": "bikerentaldb\n| where ingestion_time() > ago(10m)\n| summarize arg_max(ingestion_time(), No_Bikes, No_Empty_Docks) by BikepointID, Street, Neighbourhood, Latitude, Longitude\n| extend total_docks = No_Bikes + No_Empty_Docks\n| where No_Bikes <= 2 or No_Empty_Docks <= 2\n| extend urgency = case(\n    No_Bikes == 0, \"CRITICAL - No bikes\",\n    No_Empty_Docks == 0, \"CRITICAL - Full\",\n    No_Bikes <= 2, \"WARNING - Low bikes\",\n    No_Empty_Docks <= 2, \"WARNING - Almost full\",\n    \"MONITOR\"\n  )\n| extend target_bikes = iff(total_docks == 0, 0, toint(round(todouble(total_docks) * 0.5)))\n| extend bikes_needed = target_bikes - No_Bikes\n| project BikepointID, Street, Neighbourhood, No_Bikes, No_Empty_Docks, urgency, bikes_needed\n| order by No_Bikes asc\n| take 50",
+
+        "title": "Rebalancing Alerts",
+
+        "dataSourceId": "9153a013-43c3-4a55-b98b-520be66a2058"
+
+      },
+
+      {
+
+        "id": "38e69ca4-1655-4903-99ba-9751dbfb7adf",
+
+        "content": "bikerentaldb\n| where ingestion_time() > ago(6h)\n| extend total_docks = No_Bikes + No_Empty_Docks\n| extend utilization_pct = iff(total_docks == 0, 0.0, todouble(No_Bikes) / todouble(total_docks))\n| summarize\n    avg_bikes = round(avg(No_Bikes), 1),\n    avg_utilization = round(avg(utilization_pct) * 100, 1),\n    critical_events = countif(No_Bikes <= 2 or No_Empty_Docks <= 2),\n    stations_reporting = dcount(BikepointID)\n    by time_bin = bin(ingestion_time(), 5m)\n| order by time_bin asc",
+
+        "title": "Availability Trend",
+
+        "dataSourceId": "9153a013-43c3-4a55-b98b-520be66a2058"
+
+      },
+
+      {
+
+        "id": "f5e16911-4948-4de8-b33a-2ac24af9973b",
+
+        "content": "bikerentaldb\n| where ingestion_time() > ago(6h)\n| extend total_docks = No_Bikes + No_Empty_Docks\n| extend utilization_pct = iff(total_docks == 0, 0.0, todouble(No_Bikes) / todouble(total_docks))\n| summarize\n    avg_bikes = round(avg(No_Bikes), 1),\n    avg_utilization = round(avg(utilization_pct) * 100, 1),\n    critical_events = countif(No_Bikes <= 2 or No_Empty_Docks <= 2),\n    stations_reporting = dcount(BikepointID)\n    by time_bin = bin(ingestion_time(), 5m)\n| order by time_bin asc",
+
+        "title": "Availability Trend",
+
+        "dataSourceId": "9153a013-43c3-4a55-b98b-520be66a2058"
+
+      },
+
+      {
+
+        "id": "a4eaeae5-7eb1-4cf3-8ffe-7fe5e00a09fa",
+
+        "content": "bikerentaldb\n| where ingestion_time() > ago(24h)\n| extend total_docks = No_Bikes + No_Empty_Docks\n| extend utilization_pct = iff(total_docks == 0, 0.0, todouble(No_Bikes) / todouble(total_docks))\n| extend is_critical = No_Bikes <= 2 or No_Empty_Docks <= 2\n| summarize\n    event_count = count(),\n    avg_utilization = round(avg(utilization_pct) * 100, 1),\n    critical_events = countif(is_critical),\n    empty_events = countif(No_Bikes == 0),\n    unique_stations = dcount(BikepointID)\n    by time_bin = bin(ingestion_time(), 1h), Neighbourhood\n| extend hour_of_day = datetime_part(\"Hour\", time_bin)\n| extend is_rush = hour_of_day between (7 .. 9) or hour_of_day between (17 .. 19)\n| order by time_bin asc, Neighbourhood asc",
+
+        "title": "Hourly Demand Trend",
+
+        "dataSourceId": "9153a013-43c3-4a55-b98b-520be66a2058"
+
+      },
+
+      {
+
+        "id": "31c7f237-70ce-4216-96c2-cf5ac4d44373",
+
+        "content": "bikerentaldb\n| where ingestion_time() > ago(24h)\n| summarize\n    total_checks = count(),\n    available_checks = countif(No_Bikes > 0),\n    empty_checks = countif(No_Bikes == 0),\n    avg_bikes = round(avg(No_Bikes), 1),\n    min_bikes = min(No_Bikes),\n    first_seen = min(ingestion_time()),\n    last_seen = max(ingestion_time())\n    by BikepointID, Street, Neighbourhood\n| extend sla_pct = iff(total_checks == 0, 0.0, round(todouble(available_checks) / todouble(total_checks) * 100, 2))\n| extend sla_status = case(\n    sla_pct >= 95, \"COMPLIANT\",\n    sla_pct >= 80, \"AT RISK\",\n    \"BREACHED\"\n  )\n| project BikepointID, Street, Neighbourhood, sla_pct, sla_status, total_checks, available_checks, empty_checks, avg_bikes\n| order by sla_pct asc\n| take 200",
+
+        "title": "Neighbourhood Heatmap",
+
+        "dataSourceId": "9153a013-43c3-4a55-b98b-520be66a2058"
+
+      },
+
+      {
+
+        "id": "ae2507f5-1bd3-47dc-83cf-673d8ecd6127",
+
+        "content": "let baseline = bikerentaldb\n| where ingestion_time() between (ago(24h) .. ago(1h))\n| summarize\n    baseline_avg_bikes = avg(No_Bikes),\n    baseline_std = stdev(No_Bikes)\n    by BikepointID;\nlet recent = bikerentaldb\n| where ingestion_time() > ago(30m)\n| summarize\n    recent_avg_bikes = avg(No_Bikes),\n    recent_events = count(),\n    latest_update = max(ingestion_time())\n    by BikepointID, Street, Neighbourhood;\nrecent\n| join kind=inner baseline on BikepointID\n| extend z_score = round(\n    (recent_avg_bikes - baseline_avg_bikes) / iff(baseline_std < 0.01, 1.0, baseline_std), 2)\n| where abs(z_score) > 2.0\n| extend anomaly_type = case(\n    z_score > 2, \"SURGE - Unusual accumulation\",\n    z_score < -2, \"DRAIN - Unusual depletion\",\n    \"NORMAL\"\n  )\n| project BikepointID, Street, Neighbourhood, recent_avg_bikes = round(recent_avg_bikes, 1), baseline_avg_bikes = round(baseline_avg_bikes, 1), z_score, anomaly_type, recent_events\n| order by abs(z_score) desc\n| take 50",
+
+        "title": "Anomaly Detection",
+
+        "dataSourceId": "9153a013-43c3-4a55-b98b-520be66a2058"
+
+      },
+
+      {
+
+        "id": "8b71798e-4921-4124-91e5-e000c052a452",
+
+        "content": ".alter-merge table weather_events (\n    weather_description: string,\n    has_precipitation: bool,\n    relative_humidity: real,\n    location_name: string,\n    is_daytime: bool,\n    precip_past_1h_mm: real,\n    icon_code: string,\n    uv_index: real,\n    cloud_ceiling_m: real,\n    cloud_cover_pct: real,\n    pressure_mb: real,\n    visibility_km: real,\n    dew_point_c: real,\n    wind_gust_kmh: real,\n    wind_direction_desc: string\n)\n\n.alter-merge table weather_events (\n    has_precipitation: string,\n    is_daytime: string\n)\n\n.alter-merge table weather_events (\n    temperature_c: real,\n    feels_like_c: real,\n    wind_direction_deg: real\n)\n\n.alter-merge table weather_events (\n    has_precipitation: string,\n    is_daytime: string,\n    temperature_c: real,\n    feels_like_c: real,\n    wind_direction_deg: real\n)\n\n.drop column weather_events.has_precipitation\n\n.drop column weather_events.is_daytime\n\n\n.alter-merge table weather_events (\n    has_precipitation: string,\n    is_daytime: string,\n    temperature_c: real,\n    feels_like_c: real,\n    wind_direction_deg: real\n)\n\n.show table weather_events schema as json\n\nweather_events | take 10\n\nweather_events\n| extend icon_code_int = toint(parse_json(icon_code).value)",
+
+        "title": "",
+
+        "dataSourceId": "9153a013-43c3-4a55-b98b-520be66a2058"
+
+      },
+
+      {
+
+        "id": "85b5bd28-6f04-41bc-bd00-c57b0b928646",
+
+        "content": "// Step 1: Create a clean target table\n.create table weather_events_clean (\n    observation_time: string,\n    weather_description: string,\n    relative_humidity: real,\n    location_name: string,\n    precip_past_1h_mm: real,\n    icon_code: int,\n    uv_index: real,\n    cloud_ceiling_m: real,\n    cloud_cover_pct: real,\n    pressure_mb: real,\n    visibility_km: real,\n    dew_point_c: real,\n    wind_gust_kmh: real,\n    wind_direction_desc: string,\n    temperature_c: real,\n    feels_like_c: real,\n    wind_direction_deg: real,\n    has_precipitation: bool,\n    is_daytime: bool\n)\n\n// Step 2: Create a function that transforms the data\n.create function weather_events_transform() {\n    weather_events\n    | extend icon_code_clean = toint(parse_json(icon_code).value)\n    | extend has_precip_clean = tobool(has_precipitation)\n    | extend is_day_clean = tobool(is_daytime)\n    | project \n        observation_time, weather_description, relative_humidity, location_name,\n        precip_past_1h_mm, icon_code = icon_code_clean, uv_index, cloud_ceiling_m,\n        cloud_cover_pct, pressure_mb, visibility_km, dew_point_c, wind_gust_kmh,\n        wind_direction_desc, temperature_c, feels_like_c, wind_direction_deg,\n        has_precipitation = has_precip_clean, is_daytime = is_day_clean\n}\n\n// Step 3: Attach update policy - auto-transforms every new row\n.alter table weather_events_clean policy update @'[{\"Source\": \"weather_events\", \"Query\": \"weather_events_transform()\", \"IsEnabled\": true}]'\n\n\n\nweather_events_clean\n| take 10",
+
+        "title": "",
+
+        "dataSourceId": "9153a013-43c3-4a55-b98b-520be66a2058"
+
+      },
+
+      {
+
+        "id": "1380a7b4-c435-4bf9-802d-40cfa2ce98b4",
+
+        "content": "let filterNeighbourhood = _selectedNeighbourhood;\nlet latest_weather = weather_events_clean\n    | summarize arg_max(observation_time, has_precipitation, temperature_c, wind_gust_kmh) by location_name\n    | take 1;\nlet has_precip = toscalar(latest_weather | project has_precipitation);\nlet current_temp = toscalar(latest_weather | project temperature_c);\nlet current_wind = toscalar(latest_weather | project wind_gust_kmh);\nlet weather_risk_label = case(\n    has_precip == true, \"High - Rain detected\",\n    current_temp < 5, \"Medium - Cold weather\",\n    current_wind > 40, \"Medium - High wind\",\n    \"Low\");\nbikerentaldb\n| where ingestion_time() between (_startTime .. _endTime)\n| where filterNeighbourhood == \"\" or Neighbourhood == filterNeighbourhood\n| summarize arg_max(ingestion_time(), No_Bikes, No_Empty_Docks) by BikepointID, Street, Neighbourhood\n| extend total_docks = No_Bikes + No_Empty_Docks\n| extend utilization = iff(total_docks == 0, 0.0, round(100.0 * todouble(No_Bikes) / todouble(total_docks), 1))\n| extend weather_risk = weather_risk_label\n| extend rebalance_priority = case(\n    No_Bikes == 0 and weather_risk startswith \"High\", \"URGENT\",\n    No_Bikes <= 2 and weather_risk startswith \"High\", \"HIGH\",\n    No_Bikes == 0, \"MEDIUM\",\n    No_Bikes <= 2, \"LOW\",\n    \"OK\")\n| where rebalance_priority != \"OK\"\n| project BikepointID, Street, Neighbourhood, No_Bikes, No_Empty_Docks, utilization, weather_risk, rebalance_priority\n| order by rebalance_priority asc",
+
+        "title": "",
+
+        "dataSourceId": "9153a013-43c3-4a55-b98b-520be66a2058"
+
+      },
+
+      {
+
+        "id": "72d42e3e-5d0b-48d3-a54c-1c6de5607988",
+
+        "content": "weather_events_clean\n| take weather_events_clean\n| extend obs_time = todatetime(observation_time)\n| where obs_time between (_startTime .. _endTime)\n| top 1 by obs_time desc\n| project \n    obs_time,\n    weather_condition,\n    temperature_c,\n    feels_like_c,\n    humidity_pct,\n    wind_speed_kph,\n    cloud_cover_pct\n\n\n\nweather_events_clean\n| getschema\n\nbikerentaldb\n| where ingestion_time() between (ago(1h) .. now())\n| summarize arg_max(ingestion_time(), *) by BikepointID\n| extend total = No_Bikes + No_Empty_Docks\n| extend utilization = iff(total == 0, 0.0, round(100.0 * todouble(No_Bikes) / todouble(total), 1))\n| summarize \n    below_20 = countif(utilization < 20),\n    below_30 = countif(utilization < 30),\n    below_50 = countif(utilization < 50),\n    above_50 = countif(utilization >= 50),\n    total_stations = count()\n\n\nbikerentaldb\n| summarize arg_max(ingestion_time(), *) by BikepointID\n| extend total = No_Bikes + No_Empty_Docks\n| extend utilization = iff(total == 0, 0.0, round(100.0 * todouble(No_Bikes) / todouble(total), 1))\n| summarize \n    below_30 = countif(utilization < 30),\n    below_40 = countif(utilization < 40),\n    below_50 = countif(utilization < 50),\n    above_50 = countif(utilization >= 50),\n    avg_util = round(avg(utilization), 1),\n    total_stations = count()\n\n\nbikerentaldb\n| summarize neighbourhood_count = dcount(Neighbourhood)\n\nbikerentaldb\n| summarize station_count = dcount(BikepointID)\n\n\nweather_events_clean\n| take 5\n\ngeo_station_hotspots\n| where Gi_Bin > 1 or Gi_Bin < -1\n| take 10\n\nweather_events_clean | getschema",
+
+        "title": "",
+
+        "dataSourceId": "9153a013-43c3-4a55-b98b-520be66a2058"
+
+      }
+
+    ]
+
+  }
+
+}

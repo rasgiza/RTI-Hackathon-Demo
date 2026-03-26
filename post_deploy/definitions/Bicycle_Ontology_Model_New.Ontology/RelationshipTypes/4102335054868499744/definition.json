@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/relationshipType/1.0.0/schema.json",
+  "namespace": "usertypes",
+  "id": "4102335054868499744",
+  "name": "forecast_for_zone",
+  "namespaceType": "Imported",
+  "source": {
+    "entityTypeId": "99130180380085"
+  },
+  "target": {
+    "entityTypeId": "234584979673062"
+  }
+}

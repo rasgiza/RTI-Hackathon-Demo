@@ -1,0 +1,258 @@
+/// Fleet rebalancing actions and cost estimates. Powers operations dashboards and cost analysis.
+table fact_rebalancing
+	lineageTag: 10000007-0001-0001-0001-000000000001
+	sourceLineageTag: [fact_rebalancing]
+
+	/// Total stations flagged for rebalancing
+	measure 'Stations Needing Rebalance' = COUNTROWS(fact_rebalancing)
+		formatString: #,##0
+		lineageTag: 10000007-0001-0001-0001-000000000101
+
+	/// Total estimated rebalancing cost ($5 per bike moved)
+	measure 'Total Rebalance Cost' = SUM(fact_rebalancing[estimated_rebalance_cost])
+		formatString: "$"#,##0
+		lineageTag: 10000007-0001-0001-0001-000000000102
+
+	/// Average rebalancing cost per station
+	measure 'Avg Cost per Station' =
+			DIVIDE(
+			    SUM(fact_rebalancing[estimated_rebalance_cost]),
+			    COUNTROWS(fact_rebalancing)
+			)
+		formatString: "$"#,##0.00
+		lineageTag: 10000007-0001-0001-0001-000000000103
+
+	/// Total bikes that need to be moved to reach 50% target
+	measure 'Total Bikes to Move' =
+			SUMX(
+			    fact_rebalancing,
+			    ABS(fact_rebalancing[bikes_to_target])
+			)
+		formatString: #,##0
+		lineageTag: 10000007-0001-0001-0001-000000000104
+
+	/// Percentage of stations that are critical (empty or full)
+	measure 'Critical Station %' =
+			VAR _total = COUNTROWS(fact_rebalancing)
+			VAR _critical =
+			    CALCULATE(
+			        COUNTROWS(fact_rebalancing),
+			        fact_rebalancing[availability_status] IN {"empty", "full"}
+			    )
+			RETURN
+			DIVIDE(_critical, _total)
+		formatString: 0.0"%"
+		lineageTag: 10000007-0001-0001-0001-000000000105
+
+	/// Average priority score (0-100 scale)
+	measure 'Avg Priority Score' = AVERAGE(fact_rebalancing[priority_score])
+		formatString: 0.0
+		lineageTag: 10000007-0001-0001-0001-000000000106
+
+	/// Count of urgent actions (URGENT: Deploy bikes or URGENT: Remove bikes)
+	measure 'Urgent Actions' =
+			CALCULATE(
+			    COUNTROWS(fact_rebalancing),
+			    CONTAINSSTRING(fact_rebalancing[recommended_action], "URGENT")
+			)
+		formatString: #,##0
+		lineageTag: 10000007-0001-0001-0001-000000000107
+
+	/// Potential savings if rebalancing reduces empty/full events by 50%
+	measure 'Projected Savings (50% Reduction)' =
+			VAR _currentCost = SUM(fact_rebalancing[estimated_rebalance_cost])
+			RETURN
+			_currentCost * 0.5
+		formatString: "$"#,##0
+		lineageTag: 10000007-0001-0001-0001-000000000108
+
+	column rebalance_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 10000007-0001-0001-0001-000000000011
+		sourceLineageTag: rebalance_key
+		summarizeBy: none
+		sourceColumn: rebalance_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column station_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 10000007-0001-0001-0001-000000000012
+		sourceLineageTag: station_key
+		summarizeBy: none
+		sourceColumn: station_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column neighbourhood_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 10000007-0001-0001-0001-000000000020
+		sourceLineageTag: neighbourhood_key
+		summarizeBy: none
+		sourceColumn: neighbourhood_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column time_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 10000007-0001-0001-0001-000000000021
+		sourceLineageTag: time_key
+		summarizeBy: none
+		sourceColumn: time_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column weather_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 10000007-0001-0001-0001-000000000022
+		sourceLineageTag: weather_key
+		summarizeBy: none
+		sourceColumn: weather_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column station_id
+		dataType: string
+		lineageTag: 10000007-0001-0001-0001-000000000013
+		sourceLineageTag: station_id
+		summarizeBy: none
+		sourceColumn: station_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column neighbourhood
+		dataType: string
+		lineageTag: 10000007-0001-0001-0001-000000000014
+		sourceLineageTag: neighbourhood
+		summarizeBy: none
+		sourceColumn: neighbourhood
+
+		annotation SummarizationSetBy = Automatic
+
+	column bikes_available
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 10000007-0001-0001-0001-000000000015
+		sourceLineageTag: bikes_available
+		summarizeBy: sum
+		sourceColumn: bikes_available
+
+		annotation SummarizationSetBy = Automatic
+
+	column empty_docks
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 10000007-0001-0001-0001-000000000016
+		sourceLineageTag: empty_docks
+		summarizeBy: sum
+		sourceColumn: empty_docks
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_docks
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 10000007-0001-0001-0001-000000000017
+		sourceLineageTag: total_docks
+		summarizeBy: sum
+		sourceColumn: total_docks
+
+		annotation SummarizationSetBy = Automatic
+
+	column utilization_pct
+		dataType: double
+		formatString: 0.00
+		lineageTag: 10000007-0001-0001-0001-000000000018
+		sourceLineageTag: utilization_pct
+		summarizeBy: average
+		sourceColumn: utilization_pct
+
+		annotation SummarizationSetBy = Automatic
+
+	column priority_score
+		dataType: double
+		formatString: 0.0
+		lineageTag: 10000007-0001-0001-0001-000000000019
+		sourceLineageTag: priority_score
+		summarizeBy: average
+		sourceColumn: priority_score
+
+		annotation SummarizationSetBy = Automatic
+
+	column recommended_action
+		dataType: string
+		lineageTag: 10000007-0001-0001-0001-00000000001a
+		sourceLineageTag: recommended_action
+		summarizeBy: none
+		sourceColumn: recommended_action
+
+		annotation SummarizationSetBy = Automatic
+
+	column bikes_to_target
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 10000007-0001-0001-0001-00000000001b
+		sourceLineageTag: bikes_to_target
+		summarizeBy: sum
+		sourceColumn: bikes_to_target
+
+		annotation SummarizationSetBy = Automatic
+
+	column availability_status
+		dataType: string
+		lineageTag: 10000007-0001-0001-0001-00000000001c
+		sourceLineageTag: availability_status
+		summarizeBy: none
+		sourceColumn: availability_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column station_size
+		dataType: string
+		lineageTag: 10000007-0001-0001-0001-00000000001d
+		sourceLineageTag: station_size
+		summarizeBy: none
+		sourceColumn: station_size
+
+		annotation SummarizationSetBy = Automatic
+
+	column assessed_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 10000007-0001-0001-0001-00000000001e
+		sourceLineageTag: assessed_at
+		summarizeBy: none
+		sourceColumn: assessed_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 10000007-0001-0001-0001-000000000030
+		sourceLineageTag: date_key
+		summarizeBy: none
+		sourceColumn: date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column estimated_rebalance_cost
+		dataType: double
+		formatString: "$"#,##0.00
+		lineageTag: 10000007-0001-0001-0001-00000000001f
+		sourceLineageTag: estimated_rebalance_cost
+		summarizeBy: sum
+		sourceColumn: estimated_rebalance_cost
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_rebalancing = entity
+		mode: directLake
+		source
+			entityName: fact_rebalancing
+			expressionSource: 'DirectLake - bicycles_gold'

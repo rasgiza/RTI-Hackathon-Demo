@@ -1,0 +1,64 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "60ef0e98-ad83-4a20-8695-91b4afd2fc8d",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "date_key",
+        "targetPropertyId": "4101848392917508667"
+      },
+      {
+        "sourceColumnName": "date_value",
+        "targetPropertyId": "4101848412670899028"
+      },
+      {
+        "sourceColumnName": "year",
+        "targetPropertyId": "4101848431257679642"
+      },
+      {
+        "sourceColumnName": "quarter",
+        "targetPropertyId": "4101848455454575442"
+      },
+      {
+        "sourceColumnName": "month_num",
+        "targetPropertyId": "4101848475141739624"
+      },
+      {
+        "sourceColumnName": "month_name",
+        "targetPropertyId": "4101848495973141369"
+      },
+      {
+        "sourceColumnName": "week_of_year",
+        "targetPropertyId": "4101848515716179260"
+      },
+      {
+        "sourceColumnName": "day_of_month",
+        "targetPropertyId": "4101848539885469951"
+      },
+      {
+        "sourceColumnName": "day_of_week",
+        "targetPropertyId": "4101848565364556129"
+      },
+      {
+        "sourceColumnName": "day_name",
+        "targetPropertyId": "4101848584918248654"
+      },
+      {
+        "sourceColumnName": "is_weekend",
+        "targetPropertyId": "4101848606782326243"
+      },
+      {
+        "sourceColumnName": "season",
+        "targetPropertyId": "4101848629903230744"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "__WORKSPACE_ID__",
+      "itemId": "__LH_BICYCLES_GOLD__",
+      "sourceTableName": "dim_date",
+      "sourceSchema": null
+    }
+  }
+}

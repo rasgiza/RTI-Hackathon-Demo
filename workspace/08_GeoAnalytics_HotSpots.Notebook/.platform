@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "08_GeoAnalytics_HotSpots"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "7c38f53d-0508-5aaf-a346-af190b8fbe38"
+  }
+}

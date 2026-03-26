@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Bicycle Fleet Operations Report"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "e186b092-8c00-5e03-83fe-e420f51272e7"
+  }
+}

@@ -1,0 +1,164 @@
+/// Availability events (Sands End, last 7 days). Filtered from fact_availability.
+table onto_fact_availability
+	lineageTag: 20000005-0001-0001-0001-000000000001
+	sourceLineageTag: [onto_fact_availability]
+
+	column availability_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 20000005-0001-0001-0001-000000000011
+		sourceLineageTag: availability_key
+		summarizeBy: none
+		sourceColumn: availability_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column station_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 20000005-0001-0001-0001-000000000012
+		sourceLineageTag: station_key
+		summarizeBy: none
+		sourceColumn: station_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_id
+		dataType: string
+		lineageTag: 20000005-0001-0001-0001-000000000013
+		sourceLineageTag: event_id
+		summarizeBy: none
+		sourceColumn: event_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_timestamp
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 20000005-0001-0001-0001-000000000014
+		sourceLineageTag: event_timestamp
+		summarizeBy: none
+		sourceColumn: event_timestamp
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_date
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 20000005-0001-0001-0001-000000000015
+		sourceLineageTag: event_date
+		summarizeBy: none
+		sourceColumn: event_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 20000005-0001-0001-0001-000000000016
+		sourceLineageTag: date_key
+		summarizeBy: none
+		sourceColumn: date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column time_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 20000005-0001-0001-0001-000000000017
+		sourceLineageTag: time_key
+		summarizeBy: none
+		sourceColumn: time_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column bikes_available
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 20000005-0001-0001-0001-000000000018
+		sourceLineageTag: bikes_available
+		summarizeBy: sum
+		sourceColumn: bikes_available
+
+		annotation SummarizationSetBy = Automatic
+
+	column empty_docks
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 20000005-0001-0001-0001-000000000019
+		sourceLineageTag: empty_docks
+		summarizeBy: sum
+		sourceColumn: empty_docks
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_docks
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 20000005-0001-0001-0001-00000000001a
+		sourceLineageTag: total_docks
+		summarizeBy: sum
+		sourceColumn: total_docks
+
+		annotation SummarizationSetBy = Automatic
+
+	column utilization_pct
+		dataType: double
+		formatString: 0.00
+		lineageTag: 20000005-0001-0001-0001-00000000001b
+		sourceLineageTag: utilization_pct
+		summarizeBy: average
+		sourceColumn: utilization_pct
+
+		annotation SummarizationSetBy = Automatic
+
+	column event_type
+		dataType: string
+		lineageTag: 20000005-0001-0001-0001-00000000001c
+		sourceLineageTag: event_type
+		summarizeBy: none
+		sourceColumn: event_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_critical
+		dataType: boolean
+		lineageTag: 20000005-0001-0001-0001-00000000001d
+		sourceLineageTag: is_critical
+		summarizeBy: none
+		sourceColumn: is_critical
+
+		annotation SummarizationSetBy = Automatic
+
+	column availability_band
+		dataType: string
+		lineageTag: 20000005-0001-0001-0001-00000000001e
+		sourceLineageTag: availability_band
+		summarizeBy: none
+		sourceColumn: availability_band
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_rush_hour
+		dataType: boolean
+		lineageTag: 20000005-0001-0001-0001-00000000001f
+		sourceLineageTag: is_rush_hour
+		summarizeBy: none
+		sourceColumn: is_rush_hour
+
+		annotation SummarizationSetBy = Automatic
+
+	column time_period
+		dataType: string
+		lineageTag: 20000005-0001-0001-0001-000000000020
+		sourceLineageTag: time_period
+		summarizeBy: none
+		sourceColumn: time_period
+
+		annotation SummarizationSetBy = Automatic
+
+	partition onto_fact_availability = entity
+		mode: directLake
+		source
+			entityName: onto_fact_availability
+			expressionSource: 'DirectLake - bicycles_gold'

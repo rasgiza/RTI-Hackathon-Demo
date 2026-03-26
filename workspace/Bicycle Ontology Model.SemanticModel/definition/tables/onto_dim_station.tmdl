@@ -1,0 +1,132 @@
+/// Station dimension (Sands End filtered). One row per bike station.
+table onto_dim_station
+	lineageTag: 20000001-0001-0001-0001-000000000001
+	sourceLineageTag: [onto_dim_station]
+
+	column station_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 20000001-0001-0001-0001-000000000011
+		sourceLineageTag: station_key
+		summarizeBy: none
+		sourceColumn: station_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column station_id
+		dataType: string
+		lineageTag: 20000001-0001-0001-0001-000000000012
+		sourceLineageTag: station_id
+		summarizeBy: none
+		sourceColumn: station_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column street_address
+		dataType: string
+		lineageTag: 20000001-0001-0001-0001-000000000013
+		sourceLineageTag: street_address
+		summarizeBy: none
+		sourceColumn: street_address
+
+		annotation SummarizationSetBy = Automatic
+
+	column neighbourhood
+		dataType: string
+		lineageTag: 20000001-0001-0001-0001-000000000014
+		sourceLineageTag: neighbourhood
+		summarizeBy: none
+		sourceColumn: neighbourhood
+
+		annotation SummarizationSetBy = Automatic
+
+	column latitude
+		dataType: double
+		lineageTag: 20000001-0001-0001-0001-000000000015
+		sourceLineageTag: latitude
+		summarizeBy: none
+		sourceColumn: latitude
+
+		annotation SummarizationSetBy = Automatic
+
+	column longitude
+		dataType: double
+		lineageTag: 20000001-0001-0001-0001-000000000016
+		sourceLineageTag: longitude
+		summarizeBy: none
+		sourceColumn: longitude
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_docks
+		dataType: int64
+		formatString: 0
+		lineageTag: 20000001-0001-0001-0001-000000000017
+		sourceLineageTag: total_docks
+		summarizeBy: sum
+		sourceColumn: total_docks
+
+		annotation SummarizationSetBy = Automatic
+
+	column station_size
+		dataType: string
+		lineageTag: 20000001-0001-0001-0001-000000000018
+		sourceLineageTag: station_size
+		summarizeBy: none
+		sourceColumn: station_size
+
+		annotation SummarizationSetBy = Automatic
+
+	column current_status
+		dataType: string
+		lineageTag: 20000001-0001-0001-0001-000000000019
+		sourceLineageTag: current_status
+		summarizeBy: none
+		sourceColumn: current_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column current_utilization_pct
+		dataType: double
+		formatString: 0.00
+		lineageTag: 20000001-0001-0001-0001-00000000001a
+		sourceLineageTag: current_utilization_pct
+		summarizeBy: average
+		sourceColumn: current_utilization_pct
+
+		annotation SummarizationSetBy = Automatic
+
+	column rebalance_priority
+		dataType: double
+		formatString: 0
+		lineageTag: 20000001-0001-0001-0001-00000000001b
+		sourceLineageTag: rebalance_priority
+		summarizeBy: sum
+		sourceColumn: rebalance_priority
+
+		annotation SummarizationSetBy = Automatic
+
+	column zone
+		dataType: string
+		lineageTag: 20000001-0001-0001-0001-00000000001c
+		sourceLineageTag: zone
+		summarizeBy: none
+		sourceColumn: zone
+
+		annotation SummarizationSetBy = Automatic
+
+	column loaded_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 20000001-0001-0001-0001-00000000001d
+		sourceLineageTag: loaded_at
+		summarizeBy: none
+		sourceColumn: loaded_at
+
+		annotation SummarizationSetBy = Automatic
+
+	partition onto_dim_station = entity
+		mode: directLake
+		source
+			entityName: onto_dim_station
+			expressionSource: 'DirectLake - bicycles_gold'

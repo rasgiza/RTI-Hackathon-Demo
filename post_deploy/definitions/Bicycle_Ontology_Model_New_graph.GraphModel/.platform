@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "GraphModel",
+    "displayName": "Bicycle_Ontology_Model_New_graph_c2264cd06d2143a0adf2f1250f872678"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "b134da2a-2524-5d8f-ad4f-4989e314be80"
+  }
+}

@@ -1,0 +1,1005 @@
+[
+
+  {
+
+    "uniqueIdentifier": "729cc07d-62df-4b33-a5a3-d2c8f6f05a76",
+
+    "payload": {
+
+      "name": "Send Customer Campaign",
+
+      "parameters": [
+
+        {
+
+          "key": "neighbourhoods"
+
+        },
+
+        {
+
+          "key": "temperature_c"
+
+        }
+
+      ]
+
+    },
+
+    "type": "powerAutomateFlowAction-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "419edb8c-4140-4f59-91da-a79155330872",
+
+    "payload": {
+
+      "name": "DemandForecast",
+
+      "description": "Container Description",
+
+      "type": "digitalTwinBuilder"
+
+    },
+
+    "type": "container-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "62ed400d-8cc7-41bd-8fe6-0be35138ce90",
+
+    "payload": {
+
+      "name": "DemandForecast event",
+
+      "runSettings": {
+
+        "executionIntervalInSeconds": 300
+
+      },
+
+      "query": {
+
+        "queryString": "{\"entitySelector\":{\"query\":\"MATCH (node_DemandForecast:`DemandForecast`) RETURN node_DemandForecast.forecast_key AS `forecast_key`, node_DemandForecast.forecast_hour AS `forecast_hour`, node_DemandForecast.neighbourhood AS `neighbourhood`, node_DemandForecast.neighbourhood_key AS `neighbourhood_key`, node_DemandForecast.time_key AS `time_key`, node_DemandForecast.date_key AS `date_key`, node_DemandForecast.hour_of_day AS `hour_of_day`, node_DemandForecast.day_of_week AS `day_of_week`, node_DemandForecast.is_rush_hour AS `is_rush_hour`, node_DemandForecast.is_weekend AS `is_weekend`, node_DemandForecast.predicted_demand AS `predicted_demand`, node_DemandForecast.demand_lower_bound AS `demand_lower_bound`, node_DemandForecast.demand_upper_bound AS `demand_upper_bound`, node_DemandForecast.demand_tier AS `demand_tier`, node_DemandForecast.pre_position_recommended AS `pre_position_recommended`, node_DemandForecast.forecast_generated_at AS `forecast_generated_at`, node_DemandForecast.model_quality AS `model_quality`\",\"queryType\":\"GQL\"}}",
+
+        "compositeKey": {
+
+          "name": "forecast_key",
+
+          "keys": [
+
+            "forecast_key"
+
+          ]
+
+        }
+
+      },
+
+      "connection": {
+
+        "itemId": "__ONTOLOGY_NEW__",
+
+        "workspaceId": "573cc7c7-a45a-4fd9-886e-9db4e9798db4",
+
+        "itemType": "DigitalTwinBuilder"
+
+      },
+
+      "metadata": {
+
+        "digitalTwinBuilderEntityId": "99130180380085"
+
+      },
+
+      "parentContainer": {
+
+        "targetUniqueIdentifier": "419edb8c-4140-4f59-91da-a79155330872"
+
+      }
+
+    },
+
+    "type": "digitalTwinBuilderSource-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "956fee38-588a-4d58-8476-b25fbe1ecec8",
+
+    "payload": {
+
+      "name": "DemandForecast event",
+
+      "parentContainer": {
+
+        "targetUniqueIdentifier": "419edb8c-4140-4f59-91da-a79155330872"
+
+      },
+
+      "definition": {
+
+        "type": "Event",
+
+        "instance": "{\"steps\":[{\"id\":\"3300629f-8df9-4c4c-8d96-15fdcb6236b4\",\"name\":\"SourceEventStep\",\"rows\":[{\"arguments\":[{\"name\":\"entityId\",\"type\":\"string\",\"value\":\"62ed400d-8cc7-41bd-8fe6-0be35138ce90\"}],\"kind\":\"SourceReference\",\"name\":\"SourceSelector\"}]}],\"templateId\":\"SourceEvent\",\"templateVersion\":\"1.2.4\"}"
+
+      }
+
+    },
+
+    "type": "timeSeriesView-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "e272c73d-2ddf-4ace-948e-6b77a9a99559",
+
+    "payload": {
+
+      "name": "forecast_key",
+
+      "parentContainer": {
+
+        "targetUniqueIdentifier": "419edb8c-4140-4f59-91da-a79155330872"
+
+      },
+
+      "definition": {
+
+        "type": "Object"
+
+      }
+
+    },
+
+    "type": "timeSeriesView-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "f51934bc-a21a-458e-b4d0-9b1fc855bdab",
+
+    "payload": {
+
+      "name": "forecast_key",
+
+      "parentObject": {
+
+        "targetUniqueIdentifier": "e272c73d-2ddf-4ace-948e-6b77a9a99559"
+
+      },
+
+      "parentContainer": {
+
+        "targetUniqueIdentifier": "419edb8c-4140-4f59-91da-a79155330872"
+
+      },
+
+      "definition": {
+
+        "type": "Attribute",
+
+        "instance": "{\"steps\":[{\"id\":\"0b4fe189-5582-40a0-9311-0485a88133c4\",\"name\":\"IdPartStep\",\"rows\":[{\"arguments\":[{\"name\":\"op\",\"type\":\"string\",\"value\":\"Text\"},{\"name\":\"format\",\"type\":\"string\",\"value\":\"\"}],\"kind\":\"TypeAssertion\",\"name\":\"TypeAssertion\"}]}],\"templateId\":\"IdentityPartAttribute\",\"templateVersion\":\"1.2.4\"}"
+
+      }
+
+    },
+
+    "type": "timeSeriesView-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "43af4d2b-dd1e-44ed-8423-618b592b377b",
+
+    "payload": {
+
+      "name": "forecast_key",
+
+      "parentObject": {
+
+        "targetUniqueIdentifier": "e272c73d-2ddf-4ace-948e-6b77a9a99559"
+
+      },
+
+      "parentContainer": {
+
+        "targetUniqueIdentifier": "419edb8c-4140-4f59-91da-a79155330872"
+
+      },
+
+      "definition": {
+
+        "type": "Attribute",
+
+        "instance": "{\"steps\":[{\"id\":\"38871a7c-3903-4b2e-a2a7-58bdd171cfe5\",\"name\":\"IdStructureStep\",\"rows\":[{\"arguments\":[{\"arguments\":[{\"name\":\"entityId\",\"type\":\"string\",\"value\":\"f51934bc-a21a-458e-b4d0-9b1fc855bdab\"}],\"kind\":\"AttributeReference\",\"name\":\"idPart\",\"type\":\"complex\"}],\"kind\":\"IdPart\",\"name\":\"IdPart\"}]}],\"templateId\":\"IdentityTupleAttribute\",\"templateVersion\":\"1.2.4\"}"
+
+      }
+
+    },
+
+    "type": "timeSeriesView-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "3497f9da-aa1e-4e0b-a722-14bbdb2e5635",
+
+    "payload": {
+
+      "name": "DemandForecast event",
+
+      "parentObject": {
+
+        "targetUniqueIdentifier": "e272c73d-2ddf-4ace-948e-6b77a9a99559"
+
+      },
+
+      "parentContainer": {
+
+        "targetUniqueIdentifier": "419edb8c-4140-4f59-91da-a79155330872"
+
+      },
+
+      "definition": {
+
+        "type": "Event",
+
+        "instance": "{\"steps\":[{\"id\":\"60a28bad-60b3-491c-bd9c-e3d470325164\",\"name\":\"SplitEventStep\",\"rows\":[{\"arguments\":[{\"arguments\":[{\"name\":\"entityId\",\"type\":\"string\",\"value\":\"956fee38-588a-4d58-8476-b25fbe1ecec8\"}],\"kind\":\"EventReference\",\"name\":\"event\",\"type\":\"complex\"}],\"kind\":\"Event\",\"name\":\"EventSelector\"},{\"arguments\":[{\"name\":\"fieldName\",\"type\":\"string\",\"value\":\"forecast_key\"},{\"arguments\":[{\"name\":\"entityId\",\"type\":\"string\",\"value\":\"f51934bc-a21a-458e-b4d0-9b1fc855bdab\"}],\"kind\":\"AttributeReference\",\"name\":\"idPart\",\"type\":\"complex\"}],\"kind\":\"FieldIdMapping\",\"name\":\"FieldIdMapping\"},{\"arguments\":[{\"name\":\"isAuthoritative\",\"type\":\"boolean\",\"value\":true}],\"kind\":\"EventOptions\",\"name\":\"SplitEventOptions\"}]}],\"templateId\":\"SplitEvent\",\"templateVersion\":\"1.2.4\"}"
+
+      }
+
+    },
+
+    "type": "timeSeriesView-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "353933b2-5418-490d-8fbb-fddf29633682",
+
+    "payload": {
+
+      "name": "pre_position_recommended",
+
+      "parentObject": {
+
+        "targetUniqueIdentifier": "e272c73d-2ddf-4ace-948e-6b77a9a99559"
+
+      },
+
+      "parentContainer": {
+
+        "targetUniqueIdentifier": "419edb8c-4140-4f59-91da-a79155330872"
+
+      },
+
+      "definition": {
+
+        "type": "Attribute",
+
+        "instance": "{\"steps\":[{\"id\":\"cf61cc70-ee8c-49d5-82bd-d78b941a52f3\",\"name\":\"EventSelectStep\",\"rows\":[{\"arguments\":[{\"arguments\":[{\"name\":\"entityId\",\"type\":\"string\",\"value\":\"3497f9da-aa1e-4e0b-a722-14bbdb2e5635\"}],\"kind\":\"EventReference\",\"name\":\"event\",\"type\":\"complex\"}],\"kind\":\"Event\",\"name\":\"EventSelector\"},{\"arguments\":[{\"name\":\"fieldName\",\"type\":\"string\",\"value\":\"pre_position_recommended\"}],\"kind\":\"EventField\",\"name\":\"EventFieldSelector\"}]},{\"id\":\"7e152d42-bd23-4f8b-b4e9-fb8c3b50612a\",\"name\":\"EventComputeStep\",\"rows\":[{\"arguments\":[{\"name\":\"op\",\"type\":\"string\",\"value\":\"Text\"},{\"name\":\"format\",\"type\":\"string\",\"value\":\"\"}],\"kind\":\"TypeAssertion\",\"name\":\"TypeAssertion\"}]}],\"templateId\":\"BasicEventAttribute\",\"templateVersion\":\"1.2.4\"}"
+
+      }
+
+    },
+
+    "type": "timeSeriesView-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "a419e22c-e259-417c-9af8-0733fcfef4f8",
+
+    "payload": {
+
+      "name": "High Demand Forecast — Pre-Position Bikes",
+
+      "parentObject": {
+
+        "targetUniqueIdentifier": "e272c73d-2ddf-4ace-948e-6b77a9a99559"
+
+      },
+
+      "parentContainer": {
+
+        "targetUniqueIdentifier": "419edb8c-4140-4f59-91da-a79155330872"
+
+      },
+
+      "definition": {
+
+        "type": "Rule",
+
+        "instance": "{\"templateId\":\"AttributeTrigger\",\"templateVersion\":\"1.2.4\",\"steps\":[{\"name\":\"ScalarSelectStep\",\"id\":\"3e97744b-cd8a-474c-b2d5-78253f19b57c\",\"rows\":[{\"name\":\"AttributeSelector\",\"kind\":\"Attribute\",\"arguments\":[{\"kind\":\"AttributeReference\",\"type\":\"complex\",\"arguments\":[{\"name\":\"entityId\",\"type\":\"string\",\"value\":\"353933b2-5418-490d-8fbb-fddf29633682\"}],\"name\":\"attribute\"}]}]},{\"name\":\"ScalarDetectStep\",\"id\":\"1ea5f5df-5edd-447d-8f46-50328559cfb3\",\"rows\":[{\"name\":\"LogicalValueCondition\",\"kind\":\"LogicalValueCondition\",\"arguments\":[{\"name\":\"op\",\"type\":\"string\",\"value\":\"IsEqual\"},{\"name\":\"value\",\"type\":\"boolean\",\"value\":true}]}]},{\"name\":\"ActStep\",\"id\":\"be38d558-ac1c-48d9-b424-d824897d14ff\",\"rows\":[{\"name\":\"TeamsBinding\",\"kind\":\"TeamsMessage\",\"arguments\":[{\"name\":\"messageLocale\",\"type\":\"string\",\"value\":\"en-us\"},{\"name\":\"recipients\",\"type\":\"array\",\"values\":[{\"type\":\"string\",\"value\":\"admin@MngEnvMCAP661056.onmicrosoft.com\"}]},{\"name\":\"headline\",\"type\":\"array\",\"values\":[{\"name\":\"string\",\"type\":\"string\",\"value\":\"🚴 High Demand Forecast — Pre-Position Bikes\"}]},{\"name\":\"optionalMessage\",\"type\":\"array\",\"values\":[{\"name\":\"string\",\"type\":\"string\",\"value\":\"ML model predicts high demand. Pre-position bikes to meet expected ridership surge.\"}]},{\"name\":\"additionalInformation\",\"type\":\"array\",\"values\":[{\"arguments\":[{\"name\":\"name\",\"type\":\"string\",\"value\":\"pre_position_recommended\"},{\"arguments\":[{\"name\":\"entityId\",\"type\":\"string\",\"value\":\"353933b2-5418-490d-8fbb-fddf29633682\"}],\"kind\":\"AttributeReference\",\"name\":\"reference\",\"type\":\"complexReference\"}],\"kind\":\"NameReferencePair\",\"type\":\"complex\"}]}]}]}]}",
+
+        "settings": {
+
+          "shouldRun": false,
+
+          "shouldApplyRuleOnUpdate": false
+
+        }
+
+      }
+
+    },
+
+    "type": "timeSeriesView-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "d06ab085-1d02-4e3c-b9fa-abd971c23c4d",
+
+    "payload": {
+
+      "name": "StationSnapshot",
+
+      "description": "Container Description",
+
+      "type": "digitalTwinBuilder"
+
+    },
+
+    "type": "container-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "4c82d243-94f5-406b-8caa-b14eda9a54ee",
+
+    "payload": {
+
+      "name": "StationSnapshot event",
+
+      "runSettings": {
+
+        "executionIntervalInSeconds": 300
+
+      },
+
+      "query": {
+
+        "queryString": "{\"entitySelector\":{\"query\":\"MATCH (node_StationSnapshot:`StationSnapshot`) RETURN node_StationSnapshot.station_key AS `station_key`, node_StationSnapshot.station_id AS `station_id`, node_StationSnapshot.street_address AS `street_address`, node_StationSnapshot.neighbourhood AS `neighbourhood`, node_StationSnapshot.latitude AS `latitude`, node_StationSnapshot.longitude AS `longitude`, node_StationSnapshot.total_docks AS `total_docks`, node_StationSnapshot.station_size AS `station_size`, node_StationSnapshot.zone AS `zone`, node_StationSnapshot.bikes_available AS `bikes_available`, node_StationSnapshot.empty_docks AS `empty_docks`, node_StationSnapshot.utilization_pct AS `utilization_pct`, node_StationSnapshot.availability_band AS `availability_band`, node_StationSnapshot.is_critical AS `is_critical`, node_StationSnapshot.last_event_at AS `last_event_at`, node_StationSnapshot.last_event_type AS `last_event_type`, node_StationSnapshot.rebalance_priority AS `rebalance_priority`, node_StationSnapshot.operational_status AS `operational_status`, node_StationSnapshot.needs_attention AS `needs_attention`, node_StationSnapshot.snapshot_at AS `snapshot_at`\",\"queryType\":\"GQL\"}}",
+
+        "compositeKey": {
+
+          "name": "station_key",
+
+          "keys": [
+
+            "station_key"
+
+          ]
+
+        }
+
+      },
+
+      "connection": {
+
+        "itemId": "__ONTOLOGY_NEW__",
+
+        "workspaceId": "573cc7c7-a45a-4fd9-886e-9db4e9798db4",
+
+        "itemType": "DigitalTwinBuilder"
+
+      },
+
+      "metadata": {
+
+        "digitalTwinBuilderEntityId": "128045586265024"
+
+      },
+
+      "parentContainer": {
+
+        "targetUniqueIdentifier": "d06ab085-1d02-4e3c-b9fa-abd971c23c4d"
+
+      }
+
+    },
+
+    "type": "digitalTwinBuilderSource-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "56038476-699f-4d3b-a820-6aafdeb0e6bb",
+
+    "payload": {
+
+      "name": "StationSnapshot event",
+
+      "parentContainer": {
+
+        "targetUniqueIdentifier": "d06ab085-1d02-4e3c-b9fa-abd971c23c4d"
+
+      },
+
+      "definition": {
+
+        "type": "Event",
+
+        "instance": "{\"steps\":[{\"id\":\"030c3802-e30d-46e7-af0a-4b005a02f714\",\"name\":\"SourceEventStep\",\"rows\":[{\"arguments\":[{\"name\":\"entityId\",\"type\":\"string\",\"value\":\"4c82d243-94f5-406b-8caa-b14eda9a54ee\"}],\"kind\":\"SourceReference\",\"name\":\"SourceSelector\"}]}],\"templateId\":\"SourceEvent\",\"templateVersion\":\"1.2.4\"}"
+
+      }
+
+    },
+
+    "type": "timeSeriesView-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "8be6d224-2918-4769-8972-144504526fae",
+
+    "payload": {
+
+      "name": "station_key",
+
+      "parentContainer": {
+
+        "targetUniqueIdentifier": "d06ab085-1d02-4e3c-b9fa-abd971c23c4d"
+
+      },
+
+      "definition": {
+
+        "type": "Object"
+
+      }
+
+    },
+
+    "type": "timeSeriesView-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "0a9abb07-52ec-496a-8598-1c4d6cc6c226",
+
+    "payload": {
+
+      "name": "station_key",
+
+      "parentObject": {
+
+        "targetUniqueIdentifier": "8be6d224-2918-4769-8972-144504526fae"
+
+      },
+
+      "parentContainer": {
+
+        "targetUniqueIdentifier": "d06ab085-1d02-4e3c-b9fa-abd971c23c4d"
+
+      },
+
+      "definition": {
+
+        "type": "Attribute",
+
+        "instance": "{\"steps\":[{\"id\":\"8f77dfda-d714-4318-8bc2-32f644c46a78\",\"name\":\"IdPartStep\",\"rows\":[{\"arguments\":[{\"name\":\"op\",\"type\":\"string\",\"value\":\"Text\"},{\"name\":\"format\",\"type\":\"string\",\"value\":\"\"}],\"kind\":\"TypeAssertion\",\"name\":\"TypeAssertion\"}]}],\"templateId\":\"IdentityPartAttribute\",\"templateVersion\":\"1.2.4\"}"
+
+      }
+
+    },
+
+    "type": "timeSeriesView-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "9e449af3-1ff6-486c-8ee2-cdac4a2b108e",
+
+    "payload": {
+
+      "name": "station_key",
+
+      "parentObject": {
+
+        "targetUniqueIdentifier": "8be6d224-2918-4769-8972-144504526fae"
+
+      },
+
+      "parentContainer": {
+
+        "targetUniqueIdentifier": "d06ab085-1d02-4e3c-b9fa-abd971c23c4d"
+
+      },
+
+      "definition": {
+
+        "type": "Attribute",
+
+        "instance": "{\"steps\":[{\"id\":\"142aa207-8250-4e60-959d-4a86c0b93a52\",\"name\":\"IdStructureStep\",\"rows\":[{\"arguments\":[{\"arguments\":[{\"name\":\"entityId\",\"type\":\"string\",\"value\":\"0a9abb07-52ec-496a-8598-1c4d6cc6c226\"}],\"kind\":\"AttributeReference\",\"name\":\"idPart\",\"type\":\"complex\"}],\"kind\":\"IdPart\",\"name\":\"IdPart\"}]}],\"templateId\":\"IdentityTupleAttribute\",\"templateVersion\":\"1.2.4\"}"
+
+      }
+
+    },
+
+    "type": "timeSeriesView-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "c8469161-097a-484c-b344-7bab02d773a0",
+
+    "payload": {
+
+      "name": "StationSnapshot event",
+
+      "parentObject": {
+
+        "targetUniqueIdentifier": "8be6d224-2918-4769-8972-144504526fae"
+
+      },
+
+      "parentContainer": {
+
+        "targetUniqueIdentifier": "d06ab085-1d02-4e3c-b9fa-abd971c23c4d"
+
+      },
+
+      "definition": {
+
+        "type": "Event",
+
+        "instance": "{\"steps\":[{\"id\":\"225a6945-dff8-4054-a27c-a2749a6ecaca\",\"name\":\"SplitEventStep\",\"rows\":[{\"arguments\":[{\"arguments\":[{\"name\":\"entityId\",\"type\":\"string\",\"value\":\"56038476-699f-4d3b-a820-6aafdeb0e6bb\"}],\"kind\":\"EventReference\",\"name\":\"event\",\"type\":\"complex\"}],\"kind\":\"Event\",\"name\":\"EventSelector\"},{\"arguments\":[{\"name\":\"fieldName\",\"type\":\"string\",\"value\":\"station_key\"},{\"arguments\":[{\"name\":\"entityId\",\"type\":\"string\",\"value\":\"0a9abb07-52ec-496a-8598-1c4d6cc6c226\"}],\"kind\":\"AttributeReference\",\"name\":\"idPart\",\"type\":\"complex\"}],\"kind\":\"FieldIdMapping\",\"name\":\"FieldIdMapping\"},{\"arguments\":[{\"name\":\"isAuthoritative\",\"type\":\"boolean\",\"value\":true}],\"kind\":\"EventOptions\",\"name\":\"SplitEventOptions\"}]}],\"templateId\":\"SplitEvent\",\"templateVersion\":\"1.2.4\"}"
+
+      }
+
+    },
+
+    "type": "timeSeriesView-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "5075fbeb-97c6-48e2-b4fa-44b148902a92",
+
+    "payload": {
+
+      "name": "bikes_available",
+
+      "parentObject": {
+
+        "targetUniqueIdentifier": "8be6d224-2918-4769-8972-144504526fae"
+
+      },
+
+      "parentContainer": {
+
+        "targetUniqueIdentifier": "d06ab085-1d02-4e3c-b9fa-abd971c23c4d"
+
+      },
+
+      "definition": {
+
+        "type": "Attribute",
+
+        "instance": "{\"steps\":[{\"id\":\"3adf4a8f-7b2d-4e7e-ac42-843921f1d352\",\"name\":\"EventSelectStep\",\"rows\":[{\"arguments\":[{\"arguments\":[{\"name\":\"entityId\",\"type\":\"string\",\"value\":\"c8469161-097a-484c-b344-7bab02d773a0\"}],\"kind\":\"EventReference\",\"name\":\"event\",\"type\":\"complex\"}],\"kind\":\"Event\",\"name\":\"EventSelector\"},{\"arguments\":[{\"name\":\"fieldName\",\"type\":\"string\",\"value\":\"bikes_available\"}],\"kind\":\"EventField\",\"name\":\"EventFieldSelector\"}]},{\"id\":\"346d80d5-4e61-4ca9-9f9b-ebbac79dab81\",\"name\":\"EventComputeStep\",\"rows\":[{\"arguments\":[{\"name\":\"op\",\"type\":\"string\",\"value\":\"Text\"},{\"name\":\"format\",\"type\":\"string\",\"value\":\"\"}],\"kind\":\"TypeAssertion\",\"name\":\"TypeAssertion\"}]}],\"templateId\":\"BasicEventAttribute\",\"templateVersion\":\"1.2.4\"}"
+
+      }
+
+    },
+
+    "type": "timeSeriesView-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "19e84684-549b-496e-8212-08287342ade0",
+
+    "payload": {
+
+      "name": "EventStream",
+
+      "metadata": {
+
+        "eventstreamArtifactId": "f0a2bf6d-63a7-5caf-9d67-2e539f922812"
+
+      }
+
+    },
+
+    "type": "eventstreamSource-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "fba5d08e-6a88-4f7b-844a-e26a2fdeb93f",
+
+    "payload": {
+
+      "name": "RTI-WeatherDemo-stream",
+
+      "definition": {
+
+        "type": "Event",
+
+        "instance": "{\"templateId\":\"SourceEvent\",\"templateVersion\":\"1.1\",\"steps\":[{\"name\":\"SourceEventStep\",\"id\":\"14d2392f-f446-404c-b408-254e14c87264\",\"rows\":[{\"name\":\"SourceSelector\",\"kind\":\"SourceReference\",\"arguments\":[{\"name\":\"entityId\",\"type\":\"string\",\"value\":\"19e84684-549b-496e-8212-08287342ade0\"}]}]}]}"
+
+      }
+
+    },
+
+    "type": "timeSeriesView-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "47654228-05a5-470f-a6b5-4c60203753ee",
+
+    "payload": {
+
+      "name": "StationSnapshot",
+
+      "description": "Container Description",
+
+      "type": "digitalTwinBuilder"
+
+    },
+
+    "type": "container-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "126ef0bd-acc9-4058-a122-dbcba7f8273c",
+
+    "payload": {
+
+      "name": "StationSnapshot event",
+
+      "runSettings": {
+
+        "executionIntervalInSeconds": 300
+
+      },
+
+      "query": {
+
+        "queryString": "{\"entitySelector\":{\"query\":\"MATCH (node_StationSnapshot:`StationSnapshot`) RETURN node_StationSnapshot.station_key AS `station_key`, node_StationSnapshot.station_id AS `station_id`, node_StationSnapshot.street_address AS `street_address`, node_StationSnapshot.neighbourhood AS `neighbourhood`, node_StationSnapshot.latitude AS `latitude`, node_StationSnapshot.longitude AS `longitude`, node_StationSnapshot.total_docks AS `total_docks`, node_StationSnapshot.station_size AS `station_size`, node_StationSnapshot.zone AS `zone`, node_StationSnapshot.bikes_available AS `bikes_available`, node_StationSnapshot.empty_docks AS `empty_docks`, node_StationSnapshot.utilization_pct AS `utilization_pct`, node_StationSnapshot.availability_band AS `availability_band`, node_StationSnapshot.is_critical AS `is_critical`, node_StationSnapshot.last_event_at AS `last_event_at`, node_StationSnapshot.last_event_type AS `last_event_type`, node_StationSnapshot.rebalance_priority AS `rebalance_priority`, node_StationSnapshot.operational_status AS `operational_status`, node_StationSnapshot.needs_attention AS `needs_attention`, node_StationSnapshot.snapshot_at AS `snapshot_at`\",\"queryType\":\"GQL\"}}",
+
+        "compositeKey": {
+
+          "name": "station_key",
+
+          "keys": [
+
+            "station_key"
+
+          ]
+
+        }
+
+      },
+
+      "connection": {
+
+        "itemId": "__ONTOLOGY_NEW__",
+
+        "workspaceId": "573cc7c7-a45a-4fd9-886e-9db4e9798db4",
+
+        "itemType": "DigitalTwinBuilder"
+
+      },
+
+      "metadata": {
+
+        "digitalTwinBuilderEntityId": "128045586265024"
+
+      },
+
+      "parentContainer": {
+
+        "targetUniqueIdentifier": "47654228-05a5-470f-a6b5-4c60203753ee"
+
+      }
+
+    },
+
+    "type": "digitalTwinBuilderSource-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "611a6aba-cb26-4da7-beef-1405fe441555",
+
+    "payload": {
+
+      "name": "StationSnapshot event",
+
+      "parentContainer": {
+
+        "targetUniqueIdentifier": "47654228-05a5-470f-a6b5-4c60203753ee"
+
+      },
+
+      "definition": {
+
+        "type": "Event",
+
+        "instance": "{\"steps\":[{\"id\":\"89e558a8-3165-428b-8f61-70f56c435efd\",\"name\":\"SourceEventStep\",\"rows\":[{\"arguments\":[{\"name\":\"entityId\",\"type\":\"string\",\"value\":\"126ef0bd-acc9-4058-a122-dbcba7f8273c\"}],\"kind\":\"SourceReference\",\"name\":\"SourceSelector\"}]}],\"templateId\":\"SourceEvent\",\"templateVersion\":\"1.2.4\"}"
+
+      }
+
+    },
+
+    "type": "timeSeriesView-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "a8630f0d-d5cf-4221-a6ca-ccaba751f618",
+
+    "payload": {
+
+      "name": "station_key",
+
+      "parentContainer": {
+
+        "targetUniqueIdentifier": "47654228-05a5-470f-a6b5-4c60203753ee"
+
+      },
+
+      "definition": {
+
+        "type": "Object"
+
+      }
+
+    },
+
+    "type": "timeSeriesView-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "e88c6b73-e84e-45b6-9c72-9b105bcefb27",
+
+    "payload": {
+
+      "name": "station_key",
+
+      "parentObject": {
+
+        "targetUniqueIdentifier": "a8630f0d-d5cf-4221-a6ca-ccaba751f618"
+
+      },
+
+      "parentContainer": {
+
+        "targetUniqueIdentifier": "47654228-05a5-470f-a6b5-4c60203753ee"
+
+      },
+
+      "definition": {
+
+        "type": "Attribute",
+
+        "instance": "{\"steps\":[{\"id\":\"5f300c94-3b03-43d2-8faa-020c230597af\",\"name\":\"IdPartStep\",\"rows\":[{\"arguments\":[{\"name\":\"op\",\"type\":\"string\",\"value\":\"Text\"},{\"name\":\"format\",\"type\":\"string\",\"value\":\"\"}],\"kind\":\"TypeAssertion\",\"name\":\"TypeAssertion\"}]}],\"templateId\":\"IdentityPartAttribute\",\"templateVersion\":\"1.2.4\"}"
+
+      }
+
+    },
+
+    "type": "timeSeriesView-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "59708bfc-cd9a-490c-bb51-f7ac9d13ae45",
+
+    "payload": {
+
+      "name": "station_key",
+
+      "parentObject": {
+
+        "targetUniqueIdentifier": "a8630f0d-d5cf-4221-a6ca-ccaba751f618"
+
+      },
+
+      "parentContainer": {
+
+        "targetUniqueIdentifier": "47654228-05a5-470f-a6b5-4c60203753ee"
+
+      },
+
+      "definition": {
+
+        "type": "Attribute",
+
+        "instance": "{\"steps\":[{\"id\":\"6cc1550e-581c-47f0-a780-89936bdd84e6\",\"name\":\"IdStructureStep\",\"rows\":[{\"arguments\":[{\"arguments\":[{\"name\":\"entityId\",\"type\":\"string\",\"value\":\"e88c6b73-e84e-45b6-9c72-9b105bcefb27\"}],\"kind\":\"AttributeReference\",\"name\":\"idPart\",\"type\":\"complex\"}],\"kind\":\"IdPart\",\"name\":\"IdPart\"}]}],\"templateId\":\"IdentityTupleAttribute\",\"templateVersion\":\"1.2.4\"}"
+
+      }
+
+    },
+
+    "type": "timeSeriesView-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "5d5b2551-acb5-4136-bd1e-507601c90b48",
+
+    "payload": {
+
+      "name": "StationSnapshot event",
+
+      "parentObject": {
+
+        "targetUniqueIdentifier": "a8630f0d-d5cf-4221-a6ca-ccaba751f618"
+
+      },
+
+      "parentContainer": {
+
+        "targetUniqueIdentifier": "47654228-05a5-470f-a6b5-4c60203753ee"
+
+      },
+
+      "definition": {
+
+        "type": "Event",
+
+        "instance": "{\"steps\":[{\"id\":\"905919ab-5842-420a-b315-c5af56045e47\",\"name\":\"SplitEventStep\",\"rows\":[{\"arguments\":[{\"arguments\":[{\"name\":\"entityId\",\"type\":\"string\",\"value\":\"611a6aba-cb26-4da7-beef-1405fe441555\"}],\"kind\":\"EventReference\",\"name\":\"event\",\"type\":\"complex\"}],\"kind\":\"Event\",\"name\":\"EventSelector\"},{\"arguments\":[{\"name\":\"fieldName\",\"type\":\"string\",\"value\":\"station_key\"},{\"arguments\":[{\"name\":\"entityId\",\"type\":\"string\",\"value\":\"e88c6b73-e84e-45b6-9c72-9b105bcefb27\"}],\"kind\":\"AttributeReference\",\"name\":\"idPart\",\"type\":\"complex\"}],\"kind\":\"FieldIdMapping\",\"name\":\"FieldIdMapping\"},{\"arguments\":[{\"name\":\"isAuthoritative\",\"type\":\"boolean\",\"value\":true}],\"kind\":\"EventOptions\",\"name\":\"SplitEventOptions\"}]}],\"templateId\":\"SplitEvent\",\"templateVersion\":\"1.2.4\"}"
+
+      }
+
+    },
+
+    "type": "timeSeriesView-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "0bb3aa2f-c83b-4d4d-933b-6de5e11b4bf0",
+
+    "payload": {
+
+      "name": "is_critical",
+
+      "parentObject": {
+
+        "targetUniqueIdentifier": "a8630f0d-d5cf-4221-a6ca-ccaba751f618"
+
+      },
+
+      "parentContainer": {
+
+        "targetUniqueIdentifier": "47654228-05a5-470f-a6b5-4c60203753ee"
+
+      },
+
+      "definition": {
+
+        "type": "Attribute",
+
+        "instance": "{\"steps\":[{\"id\":\"7b25765e-54a9-4255-8604-7bbee3e758e0\",\"name\":\"EventSelectStep\",\"rows\":[{\"arguments\":[{\"arguments\":[{\"name\":\"entityId\",\"type\":\"string\",\"value\":\"5d5b2551-acb5-4136-bd1e-507601c90b48\"}],\"kind\":\"EventReference\",\"name\":\"event\",\"type\":\"complex\"}],\"kind\":\"Event\",\"name\":\"EventSelector\"},{\"arguments\":[{\"name\":\"fieldName\",\"type\":\"string\",\"value\":\"is_critical\"}],\"kind\":\"EventField\",\"name\":\"EventFieldSelector\"}]},{\"id\":\"43f0c8ed-768f-4352-98e0-c9ebd7357f13\",\"name\":\"EventComputeStep\",\"rows\":[{\"arguments\":[{\"name\":\"op\",\"type\":\"string\",\"value\":\"Text\"},{\"name\":\"format\",\"type\":\"string\",\"value\":\"\"}],\"kind\":\"TypeAssertion\",\"name\":\"TypeAssertion\"}]}],\"templateId\":\"BasicEventAttribute\",\"templateVersion\":\"1.2.4\"}"
+
+      }
+
+    },
+
+    "type": "timeSeriesView-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "55a07123-2d20-4e75-b92a-e83cd0170a4d",
+
+    "payload": {
+
+      "name": "⚠️ Station Critical — Rebalance Needed",
+
+      "parentObject": {
+
+        "targetUniqueIdentifier": "a8630f0d-d5cf-4221-a6ca-ccaba751f618"
+
+      },
+
+      "parentContainer": {
+
+        "targetUniqueIdentifier": "47654228-05a5-470f-a6b5-4c60203753ee"
+
+      },
+
+      "definition": {
+
+        "type": "Rule",
+
+        "instance": "{\"templateId\":\"AttributeTrigger\",\"templateVersion\":\"1.2.4\",\"steps\":[{\"name\":\"ScalarSelectStep\",\"id\":\"61c90aa7-c278-4f99-a894-34be6a2ac25e\",\"rows\":[{\"name\":\"AttributeSelector\",\"kind\":\"Attribute\",\"arguments\":[{\"kind\":\"AttributeReference\",\"type\":\"complex\",\"arguments\":[{\"name\":\"entityId\",\"type\":\"string\",\"value\":\"0bb3aa2f-c83b-4d4d-933b-6de5e11b4bf0\"}],\"name\":\"attribute\"}]}]},{\"name\":\"ScalarDetectStep\",\"id\":\"1865bdab-4c08-4a25-ae90-d1e9ba86dd2e\",\"rows\":[{\"name\":\"LogicalValueCondition\",\"kind\":\"LogicalValueCondition\",\"arguments\":[{\"name\":\"op\",\"type\":\"string\",\"value\":\"IsEqual\"},{\"name\":\"value\",\"type\":\"boolean\",\"value\":true}]}]},{\"name\":\"ActStep\",\"id\":\"7ef6807d-3d63-48a9-b601-4fbec0477fb8\",\"rows\":[{\"name\":\"TeamsBinding\",\"kind\":\"TeamsMessage\",\"arguments\":[{\"name\":\"messageLocale\",\"type\":\"string\",\"value\":\"en-us\"},{\"name\":\"recipients\",\"type\":\"array\",\"values\":[{\"type\":\"string\",\"value\":\"admin@MngEnvMCAP661056.onmicrosoft.com\"}]},{\"name\":\"headline\",\"type\":\"array\",\"values\":[{\"type\":\"string\",\"value\":\"Activator alert ⚠️ Station Critical — Rebalance Needed\"}]},{\"name\":\"optionalMessage\",\"type\":\"array\",\"values\":[{\"name\":\"string\",\"type\":\"string\",\"value\":\"A station has run critically low on bikes. Dispatch rebalancing van immediately.\"}]},{\"name\":\"additionalInformation\",\"type\":\"array\",\"values\":[{\"arguments\":[{\"name\":\"name\",\"type\":\"string\",\"value\":\"is_critical\"},{\"arguments\":[{\"name\":\"entityId\",\"type\":\"string\",\"value\":\"0bb3aa2f-c83b-4d4d-933b-6de5e11b4bf0\"}],\"kind\":\"AttributeReference\",\"name\":\"reference\",\"type\":\"complexReference\"}],\"kind\":\"NameReferencePair\",\"type\":\"complex\"}]}]}]}]}",
+
+        "settings": {
+
+          "shouldRun": false,
+
+          "shouldApplyRuleOnUpdate": false
+
+        }
+
+      }
+
+    },
+
+    "type": "timeSeriesView-v1"
+
+  },
+
+  {
+
+    "uniqueIdentifier": "6ee692ce-9524-45ad-a16a-316ddd82b3c6",
+
+    "payload": {
+
+      "name": "Fleet Surplus — Send Campaign",
+
+      "parentObject": {
+
+        "targetUniqueIdentifier": "8be6d224-2918-4769-8972-144504526fae"
+
+      },
+
+      "parentContainer": {
+
+        "targetUniqueIdentifier": "d06ab085-1d02-4e3c-b9fa-abd971c23c4d"
+
+      },
+
+      "definition": {
+
+        "type": "Rule",
+
+        "instance": "{\"steps\":[{\"id\":\"efc672f8-8249-4a86-8582-c147f102260c\",\"name\":\"ScalarSelectStep\",\"rows\":[{\"arguments\":[{\"arguments\":[{\"name\":\"entityId\",\"type\":\"string\",\"value\":\"5075fbeb-97c6-48e2-b4fa-44b148902a92\"}],\"kind\":\"AttributeReference\",\"name\":\"attribute\",\"type\":\"complex\"}],\"kind\":\"Attribute\",\"name\":\"AttributeSelector\"}]},{\"id\":\"00f0c98d-6fd7-4f5f-a05f-7c6046e26a5b\",\"name\":\"ScalarDetectStep\",\"rows\":[{\"arguments\":[{\"name\":\"op\",\"type\":\"string\",\"value\":\"IsGreaterThan\"},{\"name\":\"threshold\",\"type\":\"number\",\"value\":10}],\"kind\":\"NumberValueCondition\",\"name\":\"NumberValueCondition\"}]},{\"id\":\"670dec51-f4f3-46f1-bdb0-a4156f9595b2\",\"name\":\"ActStep\",\"rows\":[{\"arguments\":[{\"arguments\":[{\"name\":\"sinkId\",\"type\":\"string\",\"value\":\"729cc07d-62df-4b33-a5a3-d2c8f6f05a76\"}],\"kind\":\"SinkReference\",\"name\":\"sinkName\",\"type\":\"complex\"},{\"name\":\"inputFields\",\"type\":\"array\",\"values\":[{\"arguments\":[{\"name\":\"key\",\"type\":\"string\",\"value\":\"temperature_c\"},{\"name\":\"value\",\"type\":\"complexArray\",\"values\":[{\"name\":\"string\",\"type\":\"string\",\"value\":\"22\"}]}],\"kind\":\"KeyValuePair\",\"type\":\"complex\"},{\"arguments\":[{\"name\":\"key\",\"type\":\"string\",\"value\":\"neighbourhoods\"},{\"name\":\"value\",\"type\":\"complexArray\",\"values\":[{\"name\":\"string\",\"type\":\"string\",\"value\":\"Sands End\"}]}],\"kind\":\"KeyValuePair\",\"type\":\"complex\"}]},{\"name\":\"additionalInformation\",\"type\":\"array\",\"values\":[]}],\"kind\":\"PowerAutomateFlow\",\"name\":\"PowerAutomateBinding\",\"type\":\"row\"}]}],\"templateId\":\"AttributeTrigger\",\"templateVersion\":\"1.2.4\"}",
+
+        "settings": {
+
+          "shouldRun": false,
+
+          "shouldApplyRuleOnUpdate": true
+
+        }
+
+      }
+
+    },
+
+    "type": "timeSeriesView-v1"
+
+  }
+
+]

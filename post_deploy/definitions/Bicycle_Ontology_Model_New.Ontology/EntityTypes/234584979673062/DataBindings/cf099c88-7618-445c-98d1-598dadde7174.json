@@ -1,0 +1,84 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "cf099c88-7618-445c-98d1-598dadde7174",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "neighbourhood_key",
+        "targetPropertyId": "4101847829119868485"
+      },
+      {
+        "sourceColumnName": "neighbourhood_name",
+        "targetPropertyId": "4101847850309606183"
+      },
+      {
+        "sourceColumnName": "station_count",
+        "targetPropertyId": "4101847870061176072"
+      },
+      {
+        "sourceColumnName": "total_capacity",
+        "targetPropertyId": "4101847894122447413"
+      },
+      {
+        "sourceColumnName": "total_bikes_available",
+        "targetPropertyId": "4101847914278532212"
+      },
+      {
+        "sourceColumnName": "total_empty_docks",
+        "targetPropertyId": "4101847939821240188"
+      },
+      {
+        "sourceColumnName": "neighbourhood_utilization_pct",
+        "targetPropertyId": "4101847958544839087"
+      },
+      {
+        "sourceColumnName": "avg_utilization_pct",
+        "targetPropertyId": "4101847979494905301"
+      },
+      {
+        "sourceColumnName": "health_score",
+        "targetPropertyId": "4101848001730437032"
+      },
+      {
+        "sourceColumnName": "capacity_status",
+        "targetPropertyId": "4101848024480226779"
+      },
+      {
+        "sourceColumnName": "empty_stations",
+        "targetPropertyId": "4101848046758335215"
+      },
+      {
+        "sourceColumnName": "full_stations",
+        "targetPropertyId": "4101848064828100390"
+      },
+      {
+        "sourceColumnName": "stations_needing_rebalance",
+        "targetPropertyId": "4101848089496776233"
+      },
+      {
+        "sourceColumnName": "centroid_lat",
+        "targetPropertyId": "4101848109880121453"
+      },
+      {
+        "sourceColumnName": "centroid_lon",
+        "targetPropertyId": "4101848129974368880"
+      },
+      {
+        "sourceColumnName": "density_tier",
+        "targetPropertyId": "4101848153916623985"
+      },
+      {
+        "sourceColumnName": "loaded_at",
+        "targetPropertyId": "4101848174046941758"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "__WORKSPACE_ID__",
+      "itemId": "__LH_BICYCLES_GOLD__",
+      "sourceTableName": "dim_neighbourhood",
+      "sourceSchema": null
+    }
+  }
+}

@@ -1,0 +1,159 @@
+{
+  "version": "1.0",
+  "name": "Bicycle RTI — End-to-End Real-Time Intelligence",
+  "description": "Complete data flow for the Bicycle Real-Time Intelligence hackathon demo. Covers streaming ingestion, medallion architecture (Bronze → Silver → Gold), ML forecasting, ontology modeling, real-time alerting, and operational dashboards.",
+  "tasks": [
+    {
+      "id": "task-raw-bike",
+      "name": "Raw streaming Bike Rentals",
+      "description": "Eventstream ingesting sample bicycle rental data (station occupancy, bike counts, timestamps) into Fabric.",
+      "taskType": "Get data",
+      "position": { "x": 50, "y": 200 },
+      "recommendedItemTypes": ["Eventstream"],
+      "items": ["RTIbikeRental"]
+    },
+    {
+      "id": "task-raw-weather",
+      "name": "Raw Streaming Weather",
+      "description": "Eventstream ingesting real-time weather data (temperature, wind, humidity, conditions) from OpenWeatherMap API.",
+      "taskType": "Get data",
+      "position": { "x": 50, "y": 400 },
+      "recommendedItemTypes": ["Eventstream"],
+      "items": ["RTI-WeatherDemo"]
+    },
+    {
+      "id": "task-eventhouse",
+      "name": "Eventhouse",
+      "description": "KQL-based real-time store. Receives streaming data from both eventstreams for hot-path analytics and KQL queries.",
+      "taskType": "Store data",
+      "position": { "x": 300, "y": 100 },
+      "recommendedItemTypes": ["Eventhouse", "KQLDatabase"],
+      "items": ["bikerentaleventhouse"]
+    },
+    {
+      "id": "task-rti-dashboard",
+      "name": "RTI Dashboard",
+      "description": "KQL Dashboard showing live bike station occupancy, weather overlays, and real-time fleet status.",
+      "taskType": "Visualize data",
+      "position": { "x": 550, "y": 50 },
+      "recommendedItemTypes": ["KQLDashboard"],
+      "items": ["Bicycle Fleet Intelligence — Live Operations"]
+    },
+    {
+      "id": "task-bronze",
+      "name": "Bronze data",
+      "description": "Raw landing zone. Eventstreams write to bikerental_bronze_raw and weather_bronze_raw lakehouses. NB02 handles streaming ingest.",
+      "taskType": "Store data",
+      "position": { "x": 300, "y": 350 },
+      "recommendedItemTypes": ["Lakehouse", "Notebook"],
+      "items": ["bikerental_bronze_raw", "weather_bronze_raw", "02_Bronze_Streaming_Ingest", "03a_Silver_Weather_Join"]
+    },
+    {
+      "id": "task-silver",
+      "name": "Silver data",
+      "description": "Cleaned & enriched layer. NB03 validates business rules, deduplicates, adds derived columns. NB03a joins weather context.",
+      "taskType": "Store data",
+      "position": { "x": 550, "y": 350 },
+      "recommendedItemTypes": ["Lakehouse", "Notebook"],
+      "items": ["bicycles_silver", "03_Silver_Enrich_Transform", "03a_Silver_Weather_Join"]
+    },
+    {
+      "id": "task-gold",
+      "name": "Golden data",
+      "description": "Star schema dimensional model. NB04 builds fact/dim tables (fact_availability, fact_hourly_demand, dim_station, dim_weather, etc.).",
+      "taskType": "Store data",
+      "position": { "x": 800, "y": 350 },
+      "recommendedItemTypes": ["Lakehouse", "Notebook"],
+      "items": ["bicycles_gold", "04_Gold_Star_Schema"]
+    },
+    {
+      "id": "task-analyze",
+      "name": "Analyze and train",
+      "description": "ML demand forecasting (NB06), geo-analytics hot spots (NB08), and KQL real-time queries (NB05).",
+      "taskType": "Analyze and train data",
+      "position": { "x": 1050, "y": 150 },
+      "recommendedItemTypes": ["Notebook", "MLExperiment"],
+      "items": ["05_KQL_Realtime_Queries", "06_ML_Demand_Forecast", "08_GeoAnalytics_HotSpots"]
+    },
+    {
+      "id": "task-semantic-model",
+      "name": "Semantic Model",
+      "description": "Two Direct Lake semantic models: Bicycle RTI Analytics (fleet operations) and Bicycle Ontology Model (entity relationships).",
+      "taskType": "General",
+      "position": { "x": 1300, "y": 100 },
+      "recommendedItemTypes": ["SemanticModel"],
+      "items": ["Bicycle RTI Analytics", "Bicycle Ontology Model"]
+    },
+    {
+      "id": "task-ontology",
+      "name": "Ontology",
+      "description": "Bicycle_Ontology_Model_New with 12 entity types, 23 relationship types. NB09 populates ontology-specific tables. Graph model visualizes connections.",
+      "taskType": "General",
+      "position": { "x": 1050, "y": 350 },
+      "recommendedItemTypes": ["Ontology", "GraphModel", "Notebook"],
+      "items": ["Bicycle_Ontology_Model_New", "Bicycle_Ontology_Model_New_graph", "09_Ontology_Neighbourhood_Filter"]
+    },
+    {
+      "id": "task-realtime-activation",
+      "name": "Realtime activation",
+      "description": "Reflex/Activator rules monitoring bike fleet thresholds and weather-triggered campaign conditions.",
+      "taskType": "Track data",
+      "position": { "x": 1050, "y": 550 },
+      "recommendedItemTypes": ["Reflex"],
+      "items": ["BicycleFleet_Activator", "Cycling Campaign Activator"]
+    },
+    {
+      "id": "task-powerbi-dashboard",
+      "name": "PowerBI Dashboard",
+      "description": "Bicycle Fleet Operations Report — interactive Power BI visuals backed by the RTI Analytics semantic model.",
+      "taskType": "Visualize data",
+      "position": { "x": 1500, "y": 100 },
+      "recommendedItemTypes": ["Report"],
+      "items": ["Bicycle Fleet Operations Report"]
+    },
+    {
+      "id": "task-data-agent",
+      "name": "Data Agent",
+      "description": "AI data agents: Fleet Intelligence Agent (NL queries across lakehouse + SM + graph) and Ontology Data Agent (graph-based reasoning).",
+      "taskType": "General",
+      "position": { "x": 1500, "y": 350 },
+      "recommendedItemTypes": ["DataAgent"],
+      "items": ["Bicycle Fleet Intelligence Agent", "ontology data agent", "Cycling-Campaign-Agent"]
+    },
+    {
+      "id": "task-power-automate",
+      "name": "Power Automate Connector",
+      "description": "Power Automate flows triggered by Activator alerts — sends notifications and kicks off rebalancing workflows.",
+      "taskType": "General",
+      "position": { "x": 1500, "y": 550 },
+      "recommendedItemTypes": [],
+      "items": []
+    },
+    {
+      "id": "task-teams",
+      "name": "Teams",
+      "description": "Microsoft Teams channel receiving alert notifications from Power Automate flows.",
+      "taskType": "General",
+      "position": { "x": 1500, "y": 700 },
+      "recommendedItemTypes": [],
+      "items": []
+    }
+  ],
+  "connectors": [
+    { "id": "c1",  "from": "task-raw-bike",    "to": "task-eventhouse" },
+    { "id": "c2",  "from": "task-raw-bike",    "to": "task-bronze" },
+    { "id": "c3",  "from": "task-raw-weather",  "to": "task-eventhouse" },
+    { "id": "c4",  "from": "task-raw-weather",  "to": "task-bronze" },
+    { "id": "c5",  "from": "task-eventhouse",   "to": "task-rti-dashboard" },
+    { "id": "c6",  "from": "task-bronze",       "to": "task-silver" },
+    { "id": "c7",  "from": "task-silver",       "to": "task-gold" },
+    { "id": "c8",  "from": "task-gold",         "to": "task-analyze" },
+    { "id": "c9",  "from": "task-analyze",      "to": "task-semantic-model" },
+    { "id": "c10", "from": "task-semantic-model","to": "task-powerbi-dashboard" },
+    { "id": "c11", "from": "task-gold",         "to": "task-ontology" },
+    { "id": "c12", "from": "task-ontology",     "to": "task-data-agent" },
+    { "id": "c13", "from": "task-gold",         "to": "task-realtime-activation" },
+    { "id": "c14", "from": "task-realtime-activation", "to": "task-power-automate" },
+    { "id": "c15", "from": "task-power-automate", "to": "task-teams" }
+  ]
+}

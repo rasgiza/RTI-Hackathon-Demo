@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Reflex",
+    "displayName": "BicycleFleet_Activator"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "93b57365-2c5f-5aa6-ad3e-cbc6bf83e9e3"
+  }
+}

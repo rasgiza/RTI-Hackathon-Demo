@@ -1,0 +1,175 @@
+/// Neighbourhood dimension. One row per London neighbourhood with capacity, health metrics, and density tier.
+table dim_neighbourhood
+	lineageTag: 10000002-0001-0001-0001-000000000001
+	sourceLineageTag: [dim_neighbourhood]
+
+	column neighbourhood_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 10000002-0001-0001-0001-000000000011
+		sourceLineageTag: neighbourhood_key
+		summarizeBy: none
+		sourceColumn: neighbourhood_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column neighbourhood_name
+		dataType: string
+		lineageTag: 10000002-0001-0001-0001-000000000012
+		sourceLineageTag: neighbourhood_name
+		summarizeBy: none
+		sourceColumn: neighbourhood_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column station_count
+		dataType: int64
+		formatString: 0
+		lineageTag: 10000002-0001-0001-0001-000000000013
+		sourceLineageTag: station_count
+		summarizeBy: sum
+		sourceColumn: station_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_capacity
+		dataType: int64
+		formatString: 0
+		lineageTag: 10000002-0001-0001-0001-000000000014
+		sourceLineageTag: total_capacity
+		summarizeBy: sum
+		sourceColumn: total_capacity
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_bikes_available
+		dataType: int64
+		formatString: 0
+		lineageTag: 10000002-0001-0001-0001-000000000015
+		sourceLineageTag: total_bikes_available
+		summarizeBy: sum
+		sourceColumn: total_bikes_available
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_empty_docks
+		dataType: int64
+		formatString: 0
+		lineageTag: 10000002-0001-0001-0001-000000000016
+		sourceLineageTag: total_empty_docks
+		summarizeBy: sum
+		sourceColumn: total_empty_docks
+
+		annotation SummarizationSetBy = Automatic
+
+	column neighbourhood_utilization_pct
+		dataType: double
+		formatString: 0.00
+		lineageTag: 10000002-0001-0001-0001-000000000017
+		sourceLineageTag: neighbourhood_utilization_pct
+		summarizeBy: average
+		sourceColumn: neighbourhood_utilization_pct
+
+		annotation SummarizationSetBy = Automatic
+
+	column avg_utilization_pct
+		dataType: double
+		formatString: 0.00
+		lineageTag: 10000002-0001-0001-0001-000000000018
+		sourceLineageTag: avg_utilization_pct
+		summarizeBy: average
+		sourceColumn: avg_utilization_pct
+
+		annotation SummarizationSetBy = Automatic
+
+	column health_score
+		dataType: double
+		formatString: 0.0
+		lineageTag: 10000002-0001-0001-0001-000000000019
+		sourceLineageTag: health_score
+		summarizeBy: average
+		sourceColumn: health_score
+
+		annotation SummarizationSetBy = Automatic
+
+	column capacity_status
+		dataType: string
+		lineageTag: 10000002-0001-0001-0001-00000000001a
+		sourceLineageTag: capacity_status
+		summarizeBy: none
+		sourceColumn: capacity_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column empty_stations
+		dataType: int64
+		formatString: 0
+		lineageTag: 10000002-0001-0001-0001-00000000001b
+		sourceLineageTag: empty_stations
+		summarizeBy: sum
+		sourceColumn: empty_stations
+
+		annotation SummarizationSetBy = Automatic
+
+	column full_stations
+		dataType: int64
+		formatString: 0
+		lineageTag: 10000002-0001-0001-0001-00000000001c
+		sourceLineageTag: full_stations
+		summarizeBy: sum
+		sourceColumn: full_stations
+
+		annotation SummarizationSetBy = Automatic
+
+	column stations_needing_rebalance
+		dataType: int64
+		formatString: 0
+		lineageTag: 10000002-0001-0001-0001-00000000001d
+		sourceLineageTag: stations_needing_rebalance
+		summarizeBy: sum
+		sourceColumn: stations_needing_rebalance
+
+		annotation SummarizationSetBy = Automatic
+
+	column centroid_lat
+		dataType: double
+		lineageTag: 10000002-0001-0001-0001-00000000001e
+		sourceLineageTag: centroid_lat
+		summarizeBy: none
+		sourceColumn: centroid_lat
+
+		annotation SummarizationSetBy = Automatic
+
+	column centroid_lon
+		dataType: double
+		lineageTag: 10000002-0001-0001-0001-00000000001f
+		sourceLineageTag: centroid_lon
+		summarizeBy: none
+		sourceColumn: centroid_lon
+
+		annotation SummarizationSetBy = Automatic
+
+	column density_tier
+		dataType: string
+		lineageTag: 10000002-0001-0001-0001-000000000020
+		sourceLineageTag: density_tier
+		summarizeBy: none
+		sourceColumn: density_tier
+
+		annotation SummarizationSetBy = Automatic
+
+	column loaded_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 10000002-0001-0001-0001-000000000021
+		sourceLineageTag: loaded_at
+		summarizeBy: none
+		sourceColumn: loaded_at
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_neighbourhood = entity
+		mode: directLake
+		source
+			entityName: dim_neighbourhood
+			expressionSource: 'DirectLake - bicycles_gold'

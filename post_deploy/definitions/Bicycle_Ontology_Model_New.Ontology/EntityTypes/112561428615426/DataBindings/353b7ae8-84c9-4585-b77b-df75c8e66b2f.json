@@ -1,0 +1,112 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "353b7ae8-84c9-4585-b77b-df75c8e66b2f",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "weather_impact_key",
+        "targetPropertyId": "4101850852804512762"
+      },
+      {
+        "sourceColumnName": "weather_key",
+        "targetPropertyId": "4101850875831940011"
+      },
+      {
+        "sourceColumnName": "neighbourhood_key",
+        "targetPropertyId": "4101850898706286928"
+      },
+      {
+        "sourceColumnName": "time_key",
+        "targetPropertyId": "4101850919433215602"
+      },
+      {
+        "sourceColumnName": "event_hour",
+        "targetPropertyId": "4101850937941129988"
+      },
+      {
+        "sourceColumnName": "impact_date",
+        "targetPropertyId": "4101850961653995225"
+      },
+      {
+        "sourceColumnName": "date_key",
+        "targetPropertyId": "4101850983007029092"
+      },
+      {
+        "sourceColumnName": "neighbourhood",
+        "targetPropertyId": "4101851003631816078"
+      },
+      {
+        "sourceColumnName": "event_count",
+        "targetPropertyId": "4101851025471399214"
+      },
+      {
+        "sourceColumnName": "weather_adjusted_demand",
+        "targetPropertyId": "4101851048279520024"
+      },
+      {
+        "sourceColumnName": "weather_demand_impact",
+        "targetPropertyId": "4101851067009260762"
+      },
+      {
+        "sourceColumnName": "temperature_c",
+        "targetPropertyId": "4101851089725796342"
+      },
+      {
+        "sourceColumnName": "feels_like_c",
+        "targetPropertyId": "4101851113060735212"
+      },
+      {
+        "sourceColumnName": "wind_speed_kmh",
+        "targetPropertyId": "4101851133528380424"
+      },
+      {
+        "sourceColumnName": "has_precipitation",
+        "targetPropertyId": "4101851155942714413"
+      },
+      {
+        "sourceColumnName": "cloud_cover_pct",
+        "targetPropertyId": "4101851180500792196"
+      },
+      {
+        "sourceColumnName": "cycling_comfort_index",
+        "targetPropertyId": "4101851203105051647"
+      },
+      {
+        "sourceColumnName": "weather_severity",
+        "targetPropertyId": "4101851224991357144"
+      },
+      {
+        "sourceColumnName": "weather_category",
+        "targetPropertyId": "4101851243102898525"
+      },
+      {
+        "sourceColumnName": "weather_description",
+        "targetPropertyId": "4101851266711702256"
+      },
+      {
+        "sourceColumnName": "visibility_km",
+        "targetPropertyId": "4101851289075915384"
+      },
+      {
+        "sourceColumnName": "impact_category",
+        "targetPropertyId": "4101851311317686417"
+      },
+      {
+        "sourceColumnName": "demand_gap",
+        "targetPropertyId": "4101851331000412683"
+      },
+      {
+        "sourceColumnName": "loaded_at",
+        "targetPropertyId": "4101851351639704012"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "__WORKSPACE_ID__",
+      "itemId": "__LH_BICYCLES_GOLD__",
+      "sourceTableName": "onto_fact_weather_impact",
+      "sourceSchema": null
+    }
+  }
+}

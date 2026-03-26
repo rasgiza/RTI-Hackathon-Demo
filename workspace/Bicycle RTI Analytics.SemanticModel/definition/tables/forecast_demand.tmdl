@@ -1,0 +1,220 @@
+/// ML demand forecast predictions (24h ahead). Powers predictive dashboards and pre-positioning recommendations.
+table forecast_demand
+	lineageTag: 10000008-0001-0001-0001-000000000001
+	sourceLineageTag: [forecast_demand]
+
+	/// Total predicted demand events across all neighbourhoods and hours
+	measure 'Total Predicted Demand' = SUM(forecast_demand[predicted_demand])
+		formatString: #,##0
+		lineageTag: 10000008-0001-0001-0001-000000000101
+
+	/// Average predicted demand per hour per neighbourhood
+	measure 'Avg Predicted Demand' = AVERAGE(forecast_demand[predicted_demand])
+		formatString: 0.0
+		lineageTag: 10000008-0001-0001-0001-000000000102
+
+	/// Peak predicted demand in the forecast window
+	measure 'Peak Predicted Demand' = MAX(forecast_demand[predicted_demand])
+		formatString: #,##0
+		lineageTag: 10000008-0001-0001-0001-000000000103
+
+	/// Number of hours where pre-positioning is recommended
+	measure 'Pre-Position Hours' =
+			CALCULATE(
+			    COUNTROWS(forecast_demand),
+			    forecast_demand[pre_position_recommended] = TRUE()
+			)
+		formatString: #,##0
+		lineageTag: 10000008-0001-0001-0001-000000000104
+
+	/// Number of hours with high or very_high demand tier
+	measure 'High Demand Hours' =
+			CALCULATE(
+			    COUNTROWS(forecast_demand),
+			    forecast_demand[demand_tier] IN {"high", "very_high"}
+			)
+		formatString: #,##0
+		lineageTag: 10000008-0001-0001-0001-000000000105
+
+	/// Average confidence band width (upper - lower bound)
+	measure 'Avg Confidence Width' =
+			AVERAGEX(
+			    forecast_demand,
+			    forecast_demand[demand_upper_bound] - forecast_demand[demand_lower_bound]
+			)
+		formatString: 0.0
+		lineageTag: 10000008-0001-0001-0001-000000000106
+
+	column forecast_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 10000008-0001-0001-0001-000000000010
+		sourceLineageTag: forecast_key
+		summarizeBy: none
+		sourceColumn: forecast_key
+		isKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column forecast_hour
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 10000008-0001-0001-0001-000000000011
+		sourceLineageTag: forecast_hour
+		summarizeBy: none
+		sourceColumn: forecast_hour
+
+		annotation SummarizationSetBy = Automatic
+
+	column neighbourhood
+		dataType: string
+		lineageTag: 10000008-0001-0001-0001-000000000012
+		sourceLineageTag: neighbourhood
+		summarizeBy: none
+		sourceColumn: neighbourhood
+
+		annotation SummarizationSetBy = Automatic
+
+	column neighbourhood_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 10000008-0001-0001-0001-000000000030
+		sourceLineageTag: neighbourhood_key
+		summarizeBy: none
+		sourceColumn: neighbourhood_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column time_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 10000008-0001-0001-0001-000000000031
+		sourceLineageTag: time_key
+		summarizeBy: none
+		sourceColumn: time_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 10000008-0001-0001-0001-000000000032
+		sourceLineageTag: date_key
+		summarizeBy: none
+		sourceColumn: date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column hour_of_day
+		dataType: int64
+		formatString: 0
+		lineageTag: 10000008-0001-0001-0001-000000000013
+		sourceLineageTag: hour_of_day
+		summarizeBy: none
+		sourceColumn: hour_of_day
+
+		annotation SummarizationSetBy = Automatic
+
+	column day_of_week
+		dataType: int64
+		formatString: 0
+		lineageTag: 10000008-0001-0001-0001-000000000014
+		sourceLineageTag: day_of_week
+		summarizeBy: none
+		sourceColumn: day_of_week
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_rush_hour
+		dataType: boolean
+		formatString: &quot;TRUE&quot;;&quot;TRUE&quot;;&quot;FALSE&quot;
+		lineageTag: 10000008-0001-0001-0001-000000000015
+		sourceLineageTag: is_rush_hour
+		summarizeBy: none
+		sourceColumn: is_rush_hour
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_weekend
+		dataType: boolean
+		formatString: &quot;TRUE&quot;;&quot;TRUE&quot;;&quot;FALSE&quot;
+		lineageTag: 10000008-0001-0001-0001-000000000016
+		sourceLineageTag: is_weekend
+		summarizeBy: none
+		sourceColumn: is_weekend
+
+		annotation SummarizationSetBy = Automatic
+
+	column predicted_demand
+		dataType: double
+		formatString: 0.0
+		lineageTag: 10000008-0001-0001-0001-000000000017
+		sourceLineageTag: predicted_demand
+		summarizeBy: sum
+		sourceColumn: predicted_demand
+
+		annotation SummarizationSetBy = Automatic
+
+	column demand_lower_bound
+		dataType: double
+		formatString: 0.0
+		lineageTag: 10000008-0001-0001-0001-000000000018
+		sourceLineageTag: demand_lower_bound
+		summarizeBy: sum
+		sourceColumn: demand_lower_bound
+
+		annotation SummarizationSetBy = Automatic
+
+	column demand_upper_bound
+		dataType: double
+		formatString: 0.0
+		lineageTag: 10000008-0001-0001-0001-000000000019
+		sourceLineageTag: demand_upper_bound
+		summarizeBy: sum
+		sourceColumn: demand_upper_bound
+
+		annotation SummarizationSetBy = Automatic
+
+	column demand_tier
+		dataType: string
+		lineageTag: 10000008-0001-0001-0001-00000000001a
+		sourceLineageTag: demand_tier
+		summarizeBy: none
+		sourceColumn: demand_tier
+
+		annotation SummarizationSetBy = Automatic
+
+	column pre_position_recommended
+		dataType: boolean
+		formatString: &quot;TRUE&quot;;&quot;TRUE&quot;;&quot;FALSE&quot;
+		lineageTag: 10000008-0001-0001-0001-00000000001b
+		sourceLineageTag: pre_position_recommended
+		summarizeBy: none
+		sourceColumn: pre_position_recommended
+
+		annotation SummarizationSetBy = Automatic
+
+	column forecast_generated_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 10000008-0001-0001-0001-00000000001c
+		sourceLineageTag: forecast_generated_at
+		summarizeBy: none
+		sourceColumn: forecast_generated_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column model_quality
+		dataType: string
+		lineageTag: 10000008-0001-0001-0001-00000000001d
+		sourceLineageTag: model_quality
+		summarizeBy: none
+		sourceColumn: model_quality
+
+		annotation SummarizationSetBy = Automatic
+
+	partition forecast_demand = entity
+		mode: directLake
+		source
+			entityName: forecast_demand
+			expressionSource: 'DirectLake - bicycles_gold'

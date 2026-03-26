@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "05_KQL_Realtime_Queries"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "b6d4258c-3e96-55ca-879a-9a60991e9b9f"
+  }
+}

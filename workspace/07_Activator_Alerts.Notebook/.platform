@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "07_Activator_Alerts"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "54675fc7-cb39-5652-87b7-00a85d66b3e4"
+  }
+}

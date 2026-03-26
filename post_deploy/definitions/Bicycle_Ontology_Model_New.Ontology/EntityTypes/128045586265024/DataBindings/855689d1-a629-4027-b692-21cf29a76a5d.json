@@ -1,0 +1,96 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/dataBinding/1.0.0/schema.json",
+  "id": "855689d1-a629-4027-b692-21cf29a76a5d",
+  "dataBindingConfiguration": {
+    "dataBindingType": "NonTimeSeries",
+    "propertyBindings": [
+      {
+        "sourceColumnName": "station_key",
+        "targetPropertyId": "4101851395214791158"
+      },
+      {
+        "sourceColumnName": "station_id",
+        "targetPropertyId": "4101851417193806094"
+      },
+      {
+        "sourceColumnName": "street_address",
+        "targetPropertyId": "4101851439516613643"
+      },
+      {
+        "sourceColumnName": "neighbourhood",
+        "targetPropertyId": "4101851458586561962"
+      },
+      {
+        "sourceColumnName": "latitude",
+        "targetPropertyId": "4101851480325220942"
+      },
+      {
+        "sourceColumnName": "longitude",
+        "targetPropertyId": "4101851504474816686"
+      },
+      {
+        "sourceColumnName": "total_docks",
+        "targetPropertyId": "4101851522455978215"
+      },
+      {
+        "sourceColumnName": "station_size",
+        "targetPropertyId": "4101851546595096269"
+      },
+      {
+        "sourceColumnName": "zone",
+        "targetPropertyId": "4101851567580395048"
+      },
+      {
+        "sourceColumnName": "bikes_available",
+        "targetPropertyId": "4101851590046024783"
+      },
+      {
+        "sourceColumnName": "empty_docks",
+        "targetPropertyId": "4101851610694238797"
+      },
+      {
+        "sourceColumnName": "utilization_pct",
+        "targetPropertyId": "4101851631638519296"
+      },
+      {
+        "sourceColumnName": "availability_band",
+        "targetPropertyId": "4101851651291481945"
+      },
+      {
+        "sourceColumnName": "is_critical",
+        "targetPropertyId": "4101851676285036911"
+      },
+      {
+        "sourceColumnName": "last_event_at",
+        "targetPropertyId": "4101851696559429291"
+      },
+      {
+        "sourceColumnName": "last_event_type",
+        "targetPropertyId": "4101851715130862892"
+      },
+      {
+        "sourceColumnName": "rebalance_priority",
+        "targetPropertyId": "4101851737259717300"
+      },
+      {
+        "sourceColumnName": "operational_status",
+        "targetPropertyId": "4101851759452945299"
+      },
+      {
+        "sourceColumnName": "needs_attention",
+        "targetPropertyId": "4101851781355972438"
+      },
+      {
+        "sourceColumnName": "snapshot_at",
+        "targetPropertyId": "4101851803956418178"
+      }
+    ],
+    "sourceTableProperties": {
+      "sourceType": "LakehouseTable",
+      "workspaceId": "__WORKSPACE_ID__",
+      "itemId": "__LH_BICYCLES_GOLD__",
+      "sourceTableName": "onto_station_snapshot",
+      "sourceSchema": null
+    }
+  }
+}

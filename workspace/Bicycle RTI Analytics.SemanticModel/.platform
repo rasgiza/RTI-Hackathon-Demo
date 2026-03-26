@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Bicycle RTI Analytics"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "340a85b8-9423-55e5-afd2-896cbe7ad542"
+  }
+}

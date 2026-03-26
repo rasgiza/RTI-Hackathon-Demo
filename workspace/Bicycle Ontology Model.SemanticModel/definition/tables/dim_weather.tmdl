@@ -1,0 +1,253 @@
+/// Weather dimension. One row per unique observation hour.
+table dim_weather
+	lineageTag: 20000009-0001-0001-0001-000000000001
+	sourceLineageTag: [dim_weather]
+
+	column weather_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 20000009-0001-0001-0001-000000000011
+		sourceLineageTag: weather_key
+		summarizeBy: none
+		sourceColumn: weather_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column observation_hour
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 20000009-0001-0001-0001-000000000012
+		sourceLineageTag: observation_hour
+		summarizeBy: none
+		sourceColumn: observation_hour
+
+		annotation SummarizationSetBy = Automatic
+
+	column observation_date
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 20000009-0001-0001-0001-000000000013
+		sourceLineageTag: observation_date
+		summarizeBy: none
+		sourceColumn: observation_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column time_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 20000009-0001-0001-0001-000000000014
+		sourceLineageTag: time_key
+		summarizeBy: none
+		sourceColumn: time_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column weather_description
+		dataType: string
+		lineageTag: 20000009-0001-0001-0001-000000000015
+		sourceLineageTag: weather_description
+		summarizeBy: none
+		sourceColumn: weather_description
+
+		annotation SummarizationSetBy = Automatic
+
+	column weather_category
+		dataType: string
+		lineageTag: 20000009-0001-0001-0001-000000000016
+		sourceLineageTag: weather_category
+		summarizeBy: none
+		sourceColumn: weather_category
+
+		annotation SummarizationSetBy = Automatic
+
+	column weather_severity
+		dataType: string
+		lineageTag: 20000009-0001-0001-0001-000000000017
+		sourceLineageTag: weather_severity
+		summarizeBy: none
+		sourceColumn: weather_severity
+
+		annotation SummarizationSetBy = Automatic
+
+	column has_precipitation
+		dataType: boolean
+		lineageTag: 20000009-0001-0001-0001-000000000018
+		sourceLineageTag: has_precipitation
+		summarizeBy: none
+		sourceColumn: has_precipitation
+
+		annotation SummarizationSetBy = Automatic
+
+	column temperature_c
+		dataType: double
+		formatString: 0.0
+		lineageTag: 20000009-0001-0001-0001-000000000019
+		sourceLineageTag: temperature_c
+		summarizeBy: average
+		sourceColumn: temperature_c
+
+		annotation SummarizationSetBy = Automatic
+
+	column feels_like_c
+		dataType: double
+		formatString: 0.0
+		lineageTag: 20000009-0001-0001-0001-00000000001a
+		sourceLineageTag: feels_like_c
+		summarizeBy: average
+		sourceColumn: feels_like_c
+
+		annotation SummarizationSetBy = Automatic
+
+	column relative_humidity
+		dataType: double
+		formatString: 0.0
+		lineageTag: 20000009-0001-0001-0001-00000000001b
+		sourceLineageTag: relative_humidity
+		summarizeBy: average
+		sourceColumn: relative_humidity
+
+		annotation SummarizationSetBy = Automatic
+
+	column wind_speed_kmh
+		dataType: double
+		formatString: 0.0
+		lineageTag: 20000009-0001-0001-0001-00000000001c
+		sourceLineageTag: wind_speed_kmh
+		summarizeBy: average
+		sourceColumn: wind_speed_kmh
+
+		annotation SummarizationSetBy = Automatic
+
+	column wind_gust_kmh
+		dataType: double
+		formatString: 0.0
+		lineageTag: 20000009-0001-0001-0001-00000000001d
+		sourceLineageTag: wind_gust_kmh
+		summarizeBy: average
+		sourceColumn: wind_gust_kmh
+
+		annotation SummarizationSetBy = Automatic
+
+	column wind_direction_desc
+		dataType: string
+		lineageTag: 20000009-0001-0001-0001-00000000001e
+		sourceLineageTag: wind_direction_desc
+		summarizeBy: none
+		sourceColumn: wind_direction_desc
+
+		annotation SummarizationSetBy = Automatic
+
+	column visibility_km
+		dataType: double
+		formatString: 0.0
+		lineageTag: 20000009-0001-0001-0001-00000000001f
+		sourceLineageTag: visibility_km
+		summarizeBy: average
+		sourceColumn: visibility_km
+
+		annotation SummarizationSetBy = Automatic
+
+	column cloud_cover_pct
+		dataType: int64
+		formatString: 0
+		lineageTag: 20000009-0001-0001-0001-000000000020
+		sourceLineageTag: cloud_cover_pct
+		summarizeBy: average
+		sourceColumn: cloud_cover_pct
+
+		annotation SummarizationSetBy = Automatic
+
+	column pressure_mb
+		dataType: double
+		formatString: 0.0
+		lineageTag: 20000009-0001-0001-0001-000000000021
+		sourceLineageTag: pressure_mb
+		summarizeBy: average
+		sourceColumn: pressure_mb
+
+		annotation SummarizationSetBy = Automatic
+
+	column uv_index
+		dataType: int64
+		formatString: 0
+		lineageTag: 20000009-0001-0001-0001-000000000022
+		sourceLineageTag: uv_index
+		summarizeBy: average
+		sourceColumn: uv_index
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_daytime
+		dataType: boolean
+		lineageTag: 20000009-0001-0001-0001-000000000023
+		sourceLineageTag: is_daytime
+		summarizeBy: none
+		sourceColumn: is_daytime
+
+		annotation SummarizationSetBy = Automatic
+
+	column cycling_comfort_index
+		dataType: double
+		formatString: 0.0
+		lineageTag: 20000009-0001-0001-0001-000000000024
+		sourceLineageTag: cycling_comfort_index
+		summarizeBy: average
+		sourceColumn: cycling_comfort_index
+
+		annotation SummarizationSetBy = Automatic
+
+	column icon_code
+		dataType: int64
+		formatString: 0
+		lineageTag: 20000009-0001-0001-0001-000000000025
+		sourceLineageTag: icon_code
+		summarizeBy: none
+		sourceColumn: icon_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column weather_latitude
+		dataType: double
+		formatString: 0.000000
+		lineageTag: 20000009-0001-0001-0001-000000000026
+		sourceLineageTag: weather_latitude
+		summarizeBy: none
+		sourceColumn: weather_latitude
+
+		annotation SummarizationSetBy = Automatic
+
+	column weather_longitude
+		dataType: double
+		formatString: 0.000000
+		lineageTag: 20000009-0001-0001-0001-000000000027
+		sourceLineageTag: weather_longitude
+		summarizeBy: none
+		sourceColumn: weather_longitude
+
+		annotation SummarizationSetBy = Automatic
+
+	column location_name
+		dataType: string
+		lineageTag: 20000009-0001-0001-0001-000000000028
+		sourceLineageTag: location_name
+		summarizeBy: none
+		sourceColumn: location_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column loaded_at
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 20000009-0001-0001-0001-000000000029
+		sourceLineageTag: loaded_at
+		summarizeBy: none
+		sourceColumn: loaded_at
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_weather = entity
+		mode: directLake
+		source
+			entityName: dim_weather
+			expressionSource: 'DirectLake - bicycles_gold'

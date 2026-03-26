@@ -1,0 +1,75 @@
+/// Time dimension (24 hours). One row per hour.
+table dim_time
+	lineageTag: 20000003-0001-0001-0001-000000000001
+	sourceLineageTag: [dim_time]
+
+	column time_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 20000003-0001-0001-0001-000000000011
+		sourceLineageTag: time_key
+		summarizeBy: none
+		sourceColumn: time_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column hour_of_day
+		dataType: int64
+		formatString: 0
+		lineageTag: 20000003-0001-0001-0001-000000000012
+		sourceLineageTag: hour_of_day
+		summarizeBy: none
+		sourceColumn: hour_of_day
+
+		annotation SummarizationSetBy = Automatic
+
+	column hour_label
+		dataType: string
+		lineageTag: 20000003-0001-0001-0001-000000000013
+		sourceLineageTag: hour_label
+		summarizeBy: none
+		sourceColumn: hour_label
+
+		annotation SummarizationSetBy = Automatic
+
+	column time_period
+		dataType: string
+		lineageTag: 20000003-0001-0001-0001-000000000014
+		sourceLineageTag: time_period
+		summarizeBy: none
+		sourceColumn: time_period
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_rush_hour
+		dataType: boolean
+		lineageTag: 20000003-0001-0001-0001-000000000015
+		sourceLineageTag: is_rush_hour
+		summarizeBy: none
+		sourceColumn: is_rush_hour
+
+		annotation SummarizationSetBy = Automatic
+
+	column am_pm
+		dataType: string
+		lineageTag: 20000003-0001-0001-0001-000000000016
+		sourceLineageTag: am_pm
+		summarizeBy: none
+		sourceColumn: am_pm
+
+		annotation SummarizationSetBy = Automatic
+
+	column demand_tier
+		dataType: string
+		lineageTag: 20000003-0001-0001-0001-000000000017
+		sourceLineageTag: demand_tier
+		summarizeBy: none
+		sourceColumn: demand_tier
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_time = entity
+		mode: directLake
+		source
+			entityName: dim_time
+			expressionSource: 'DirectLake - bicycles_gold'

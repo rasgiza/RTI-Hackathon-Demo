@@ -1,0 +1,23 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/ontology/contextualization/1.0.0/schema.json",
+  "id": "14216221-c7ce-4c21-ac9d-d31ae18bfb65",
+  "dataBindingTable": {
+    "workspaceId": "__WORKSPACE_ID__",
+    "itemId": "__LH_BICYCLES_GOLD__",
+    "sourceTableName": "onto_fact_rebalancing",
+    "sourceSchema": null,
+    "sourceType": "LakehouseTable"
+  },
+  "sourceKeyRefBindings": [
+    {
+      "sourceColumnName": "neighbourhood_key",
+      "targetPropertyId": "4101849993720733175"
+    }
+  ],
+  "targetKeyRefBindings": [
+    {
+      "sourceColumnName": "neighbourhood_key",
+      "targetPropertyId": "4101847829119868485"
+    }
+  ]
+}
