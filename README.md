@@ -6,23 +6,166 @@ A **complete, one-click deployable** Real-Time Intelligence (RTI) solution on Mi
 
 ## Table of Contents
 
-1. [Solution Overview](#solution-overview)
-2. [Architecture](#architecture)
-3. [Task Flow](#task-flow)
-4. [Quick Start — One-Click Deploy](#quick-start--one-click-deploy)
-5. [Post-Deployment Steps](#post-deployment-steps)
-6. [Item Inventory](#item-inventory)
-7. [Data Model](#data-model)
-8. [Notebooks Reference](#notebooks-reference)
-9. [Pipeline](#pipeline)
-10. [Semantic Models](#semantic-models)
-11. [Data Agents](#data-agents)
-12. [Real-Time Components](#real-time-components)
-13. [Task Flow Import](#task-flow-import)
-14. [Alternative — Local Python Scripts](#alternative--local-python-scripts)
-15. [Repo Structure](#repo-structure)
-16. [Troubleshooting](#troubleshooting)
-17. [License](#license)
+1. [The Problem](#the-problem)
+2. [Why This Matters — Real-World Challenges](#why-this-matters--real-world-challenges)
+3. [Our Solution — Fabric RTI + Medallion ETL](#our-solution--fabric-rti--medallion-etl)
+4. [Solution Overview](#solution-overview)
+5. [Architecture](#architecture)
+6. [Task Flow](#task-flow)
+7. [Quick Start — One-Click Deploy](#quick-start--one-click-deploy)
+8. [Post-Deployment Steps](#post-deployment-steps)
+9. [Item Inventory](#item-inventory)
+10. [Data Model](#data-model)
+11. [Notebooks Reference](#notebooks-reference)
+12. [Pipeline](#pipeline)
+13. [Semantic Models](#semantic-models)
+14. [Data Agents](#data-agents)
+15. [Real-Time Components](#real-time-components)
+16. [Task Flow Import](#task-flow-import)
+17. [Alternative — Local Python Scripts](#alternative--local-python-scripts)
+18. [Repo Structure](#repo-structure)
+19. [Troubleshooting](#troubleshooting)
+20. [License](#license)
+
+---
+
+## The Problem
+
+> **Real-world operations move in minutes, but decisions still happen on yesterday's data.**
+
+Bike-sharing systems are booming in cities worldwide — London alone operates **800+ docking stations** serving millions of rides per year. Yet behind the scenes, operators face the same painful cycle every single day:
+
+🚲 **Stations run empty** — riders arrive, find zero bikes, and leave frustrated. Every empty station is a missed ride, a lost fare, and a hit to customer satisfaction. During morning rush hour in London, popular stations like Waterloo or King's Cross can drain completely within 15 minutes.
+
+🚛 **Trucks dispatched to wrong locations** — rebalancing vans carry bikes from full stations to empty ones, but dispatchers rely on stale spreadsheets or gut instinct. A truck sent to the wrong neighbourhood wastes 30-45 minutes of crew time, fuel, and road capacity — while the actual problem station stays empty.
+
+🌧️ **Weather shifts demand — but no one acts until it's too late** — a sudden rainstorm can cut cycling demand by 40-60% in minutes. Conversely, an unexpected sunny afternoon drives demand spikes that overwhelm stations near parks and riverfronts. Operators only discover this after the fact, buried in next-day reports.
+
+📋 **Reports arrive 24 hours later** — traditional BI dashboards refresh overnight. By the time a manager sees that Station X was critically empty yesterday at 8:30 AM, the same problem has already repeated this morning. Decisions are made on yesterday's data for today's problems.
+
+### This Problem Is Universal
+
+While this project is set in **London** (using real TfL Santander Cycles station data and Open-Meteo weather feeds), the underlying challenge applies to **any city, any fleet, any real-time operation**:
+
+| City | System | Stations | Same Problems |
+|------|--------|----------|---------------|
+| London | Santander Cycles | 800+ | Empty stations during rush, weather-driven demand swings |
+| New York | Citi Bike | 1,700+ | Rebalancing trucks can't keep up with commuter surges |
+| Paris | Vélib' | 1,400+ | Morning/evening asymmetry leaves residential stations full, business districts empty |
+| Barcelona | Bicing | 500+ | Tourist demand is weather-dependent and unpredictable |
+| Toronto | Bike Share | 600+ | Seasonal extremes make static schedules useless |
+
+The data changes. The pain stays the same: **you can't fix what you can't see in real time.**
+
+---
+
+## Why This Matters — Real-World Challenges
+
+Bike-sharing operations sit at the intersection of several hard data problems:
+
+### 1. Demand Is Hyper-Local and Hyper-Temporal
+
+A station outside a train terminal behaves completely differently from one in a residential neighbourhood. Demand varies by:
+- **Hour** — morning rush (07:00–09:00) vs. lunch vs. evening commute vs. late night
+- **Day type** — weekday commuting patterns vs. weekend leisure rides
+- **Season** — summer peaks can be 3-4x winter baselines
+- **Weather** — rain, wind, temperature, and "feels-like" comfort all shift behaviour
+- **Events** — football matches, concerts, and public holidays create unpredictable surges
+
+No static report can capture this. You need **streaming data + ML forecasting + real-time alerting**.
+
+### 2. Weather Is the Invisible Multiplier
+
+Weather doesn't just affect whether people ride — it changes *where* and *when* they ride:
+
+| Weather Condition | Impact on Demand | Operational Effect |
+|-------------------|-----------------|--------------------|
+| Heavy rain | -40% to -60% demand | Bikes pile up at destinations; origins stay full |
+| Wind > 30 km/h | -20% to -35% demand | Leisure riders vanish; commuters still ride |
+| Sudden sunshine after rain | +25% spike within 30 min | Stations near parks drain instantly |
+| Temperature < 5°C | -30% baseline | Rebalancing trucks sit idle; waste of crew hours |
+| Heat wave > 30°C | +15% tourism, -10% commuting | Demand shifts from business zones to waterfront |
+
+Integrating weather data in real time — not as a next-day footnote — transforms reactive firefighting into **proactive fleet positioning**.
+
+### 3. Rebalancing Is Expensive and Time-Sensitive
+
+Every rebalancing truck run costs £15–£25 in direct costs (fuel, crew, wear). London's system may run **hundreds of truck dispatches per day**. If even 20% are suboptimal (wrong station, wrong time, wrong quantity), that's thousands of pounds wasted weekly.
+
+The difference between a good rebalancing decision and a bad one is often **15 minutes of data freshness**. A report that's one hour stale is already too late.
+
+### 4. Customer Experience Degrades Silently
+
+Unlike a crashed website that triggers immediate alarms, an empty bike station just... sits there. Riders walk away. They don't file tickets — they just stop using the service. The operator sees a slow decline in ridership months later and can't pinpoint why.
+
+Real-time station monitoring with automatic alerting catches these silent failures **as they happen**, not after the damage is done.
+
+---
+
+## Our Solution — Fabric RTI + Medallion ETL
+
+This project solves every problem above using **Microsoft Fabric's Real-Time Intelligence** capabilities combined with a classic **Medallion Architecture** ETL pipeline:
+
+```
+  THE PROBLEM                          OUR SOLUTION
+  ─────────────────────                ─────────────────────────────────────
+  Stations run empty         ──────▶   Real-time availability monitoring
+                                       via Eventstream + KQL Dashboard
+                                       (seconds latency, not hours)
+
+  Trucks go to wrong places  ──────▶   ML demand forecasting (Prophet)
+                                       + priority-scored rebalancing
+                                       recommendations per station
+
+  Weather shifts demand      ──────▶   Live Open-Meteo weather feed
+                                       joined to station data in Silver
+                                       layer → cycling comfort index
+                                       → weather-adjusted demand scores
+
+  Reports arrive too late    ──────▶   Hot path: KQL Dashboard (seconds)
+                                       Warm path: Direct Lake PBI (minutes)
+                                       Alert path: Reflex → Teams (seconds)
+
+  Can't ask questions        ──────▶   AI Data Agents with natural language
+  about the data                       queries across SQL, DAX, and Graph
+```
+
+### How the Layers Work Together
+
+| Layer | What It Does | Fabric Items | Latency |
+|-------|-------------|-------------|--------|
+| **Streaming Ingest** | Captures live bike station events + weather observations every 60 seconds | 2 Eventstreams, 1 Eventhouse, 1 KQL Database | **Seconds** |
+| **Bronze (Raw)** | Stores raw JSON as-is for auditability and replay | 3 Lakehouses (bike, weather, bronze) | Minutes |
+| **Silver (Clean)** | Deduplicates, validates, enriches with weather joins, adds time/date dimensions | Notebooks 03, 03a | Minutes |
+| **Gold (Star Schema)** | 12 fact + dimension tables optimized for analytics; ML forecast outputs; station snapshots | Notebook 04, 06 | Minutes |
+| **Semantic Layer** | 2 Semantic Models (Direct Lake) with 47+ DAX measures for self-service BI | Bicycle RTI Analytics, Bicycle Ontology Model | Refresh |
+| **Ontology + Graph** | 12 entity types, 23 relationships — enables graph traversals and neighbourhood-scoped reasoning | Ontology, Graph Model | Refresh |
+| **AI Agents** | Natural language interface: "Which stations need rebalancing?" routes to SQL/DAX/GQL automatically | 2 Data Agents + 1 Operations Agent | On-demand |
+| **Alerts** | Reflex/Activator fires when utilization drops below threshold → Power Automate → Teams notification | 2 Reflexes | **Seconds** |
+
+### What Makes This Different from a Standard BI Project
+
+| Traditional Approach | This Project |
+|---------------------|-------------|
+| Nightly batch refresh | Streaming ingest every 60 seconds |
+| Single Power BI report | Hot path (KQL) + warm path (PBI) + AI agents |
+| No weather integration | Live weather feed with cycling comfort index |
+| Manual rebalancing decisions | ML-scored priority recommendations per station |
+| Static entity lookup | Ontology-backed graph model with 23 relationship traversals |
+| Email-based alerts (if any) | Reflex → Power Automate → Teams in seconds |
+| Ask an analyst | Ask the AI Agent in natural language |
+
+### Built for London — Works Anywhere
+
+The project uses **London Santander Cycles** station data and **Open-Meteo** weather APIs, but the architecture is location-agnostic:
+
+- **Swap the station feed** — point the Eventstream at any GBFS-compliant bike-share API (Citi Bike, Vélib', Bicing, etc.)
+- **Swap the weather feed** — Open-Meteo covers the entire globe; just change the lat/lon coordinates
+- **Same medallion pipeline** — Bronze/Silver/Gold notebooks parameterize by station ID and location
+- **Same ontology structure** — entity types (Station, Neighbourhood, WeatherObservation, etc.) are universal
+- **Same agents** — the Data Agent instructions work with any city's data once the schema is populated
+
+> **Bottom line:** This isn't just a London bike demo. It's a **reusable pattern** for any real-time fleet intelligence scenario — scooters, delivery vans, EV chargers, transit vehicles — wherever operations need to move faster than yesterday's report.
 
 ---
 
