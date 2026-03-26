@@ -12,7 +12,7 @@ A **complete, one-click deployable** Real-Time Intelligence (RTI) solution on Mi
 4. [Solution Overview](#solution-overview)
 5. [Architecture](#architecture)
 6. [Task Flow](#task-flow)
-7. [Quick Start — One-Click Deploy](#quick-start--one-click-deploy)
+7. [Quick Start — Deploy in 6 Steps](#quick-start--deploy-in-6-steps)
 8. [Post-Deployment Steps](#post-deployment-steps)
 9. [Item Inventory](#item-inventory)
 10. [Data Model](#data-model)
@@ -272,36 +272,62 @@ The Fabric **Task Flow** provides a visual overview of how all items relate in t
 
 ---
 
-## Quick Start — One-Click Deploy
+## Quick Start — Deploy in 6 Steps
 
 ### Prerequisites
 
+- **Python 3.10+** on your local machine
 - A Fabric workspace with **F64 or higher** capacity
 - **Contributor** or higher permissions on the workspace
-- If the GitHub repo is **private**: a GitHub Personal Access Token (PAT) with `repo` scope
 
-### Step 1: Deploy 26 Items (Fabric Notebook)
+### Step 1: Clone the repo
 
-1. Upload [Deploy_Bicycle_RTI.ipynb](Deploy_Bicycle_RTI.ipynb) to your workspace
-2. **Cell 1** — installs `fabric-cicd` and restarts the Python session
-3. **Cell 2** — downloads the repo from GitHub, extracts the `workspace/` folder, and deploys all 26 items in 4 staged rounds using `fabric-cicd`
+```bash
+git clone https://github.com/kwamesefah_microsoft/RTI-Hackathon-Demo.git
+cd RTI-Hackathon-Demo
+```
 
-> **Private repo?** Set `GITHUB_TOKEN = "ghp_your_token_here"` at the top of Cell 2 before running.
+### Step 2: Install dependencies
 
-The notebook uses `fabric-cicd` to read item definitions from the extracted `workspace/` folder, resolve cross-item references via `logicalId` UUIDs in `.platform` files, and deploy in dependency order. No hardcoded workspace IDs — everything is portable.
+```bash
+pip install -r requirements.txt
+```
 
-### Step 2: Post-Deploy (Ontology + Graph + Operations Agent)
+### Step 3: Deploy 26 items to your workspace
 
-Upload [Post_Deploy_Setup.ipynb](Post_Deploy_Setup.ipynb) and run all cells. This creates:
+```bash
+python deploy.py
+```
+
+You'll be prompted for your workspace ID or name, then a browser window opens for sign-in. The script deploys all 26 items in 4 staged rounds (Infrastructure → Compute → Analytics → Presentation).
+
+> **Alternatively**, if you prefer to deploy from inside Fabric: upload `Deploy_Bicycle_RTI.ipynb` to your workspace and run all cells (set `GITHUB_TOKEN` in Cell 2 if the repo is private).
+
+### Step 4: Deploy Ontology + Graph + Operations Agent
+
+Upload [Post_Deploy_Setup.ipynb](Post_Deploy_Setup.ipynb) to your Fabric workspace and **Run all cells**. This creates:
 - **Bicycle_Ontology_Model_New** — Ontology with 12 entity types, 23 relationship types
 - **Bicycle_Ontology_Model_New_graph** — Graph Model linked to bicycles_gold lakehouse
 - **Cycling-Campaign-Agent** — Operations Agent for campaign automation
 
-### Step 3: Run the Pipeline
+### Step 5: Run the pipeline (first data load)
 
 1. Open **PL_BicycleRTI_Medallion** in the workspace
-2. Click **Run** — processes 6 activities: Silver → Weather → Gold → ML → Ontology → SM Refresh
+2. Click **Run** — processes: Silver → Weather → Gold → ML → Ontology → SM Refresh
 3. Wait ~15–25 minutes for the first load to complete
+
+### Step 6: One-time manual setup (~10 min)
+
+| Action | Where | Time |
+|--------|-------|------|
+| Open Graph Model → click **Refresh now** | Fabric UI | 5 min |
+| Open each Eventstream → click **Start** (if not running) | Fabric UI | 2 min |
+| Open KQL Dashboard → update Eventhouse query URI | Fabric UI | 2 min |
+| Test the Data Agent → ask *"Which stations need rebalancing?"* | Fabric UI | 1 min |
+
+### You're done! 🎉
+
+See [AGENT_SAMPLE_QUESTIONS.md](AGENT_SAMPLE_QUESTIONS.md) for 52 tested questions to try with the Data Agent.
 
 ---
 
