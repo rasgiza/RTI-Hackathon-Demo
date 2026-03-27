@@ -298,26 +298,35 @@ def main():
     credential = InteractiveBrowserCredential()
 
     # Deploy in 6 stages — each stage gets a PHYSICALLY ISOLATED temp directory
-    # containing ONLY that stage's folders to prevent fabric-cicd from seeing
-    # (and deploying) items from other stages.
+    # containing ONLY that stage's folders plus any reference folders needed
+    # for logicalId resolution. fabric-cicd resolves cross-item references
+    # by scanning the local directory, so dependent items must be present.
+    #
+    # Key: KQLDatabase has "parentEventhouseItemId" = Eventhouse logicalId.
+    # Eventstreams reference Lakehouse/KQLDatabase logicalIds, etc.
     import tempfile, shutil
 
+    # Each stage: (label, types_to_deploy, extra_reference_types)
     stages = [
-        ("Stage 1/6: Lakehouses",          ["Lakehouse"]),
-        ("Stage 2/6: Eventhouse",           ["Eventhouse"]),
-        ("Stage 3/6: KQL Database",         ["KQLDatabase"]),
-        ("Stage 4/6: Notebooks + Streams",  ["Notebook", "Eventstream"]),
-        ("Stage 5/6: Semantic Models + Pipeline", ["SemanticModel", "DataPipeline"]),
+        ("Stage 1/6: Lakehouses",          ["Lakehouse"],    []),
+        ("Stage 2/6: Eventhouse",           ["Eventhouse"],   []),
+        ("Stage 3/6: KQL Database",         ["KQLDatabase"],  ["Eventhouse"]),
+        ("Stage 4/6: Notebooks + Streams",  ["Notebook", "Eventstream"],
+         ["Lakehouse", "Eventhouse", "KQLDatabase"]),
+        ("Stage 5/6: Semantic Models + Pipeline",
+         ["SemanticModel", "DataPipeline"],
+         ["Lakehouse", "Notebook"]),
         ("Stage 6/6: Report + Dashboard + Agents + Activators",
-         ["Report", "KQLDashboard", "DataAgent", "Reflex"]),
+         ["Report", "KQLDashboard", "DataAgent", "Reflex"],
+         ["Lakehouse", "Eventhouse", "KQLDatabase", "SemanticModel"]),
     ]
 
-    for label, item_types in stages:
+    for label, item_types, ref_types in stages:
         print(f"\n{'='*60}")
         print(f"🚀 {label}")
         print(f"{'='*60}")
 
-        # Collect folders for this stage
+        # Collect primary folders for this stage
         stage_folders = []
         for it in item_types:
             stage_folders.extend(item_index.get(it, []))
@@ -326,14 +335,22 @@ def main():
             print(f"   ⏭️  No items for types {item_types} — skipping")
             continue
 
-        print(f"   📦 Items: {', '.join(f.rsplit('.', 1)[0] for f in stage_folders)}")
+        # Also include reference folders (for logicalId resolution only)
+        ref_folders = []
+        for rt in ref_types:
+            ref_folders.extend(item_index.get(rt, []))
 
-        # Create isolated temp dir with ONLY this stage's folders
+        all_stage_folders = stage_folders + ref_folders
+        print(f"   📦 Deploying: {', '.join(f.rsplit('.', 1)[0] for f in stage_folders)}")
+        if ref_folders:
+            print(f"   🔗 References: {', '.join(f.rsplit('.', 1)[0] for f in ref_folders)}")
+
+        # Create isolated temp dir with stage + reference folders
         stage_dir = tempfile.mkdtemp(prefix="rti_stage_")
         stage_ws_dir = os.path.join(stage_dir, "workspace")
         os.makedirs(stage_ws_dir)
 
-        for folder_name in stage_folders:
+        for folder_name in all_stage_folders:
             src = os.path.join(workspace_dir, folder_name)
             dst = os.path.join(stage_ws_dir, folder_name)
             shutil.copytree(src, dst)
