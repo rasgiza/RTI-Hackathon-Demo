@@ -1,6 +1,6 @@
 # Bicycle Real-Time Intelligence — Hackathon Demo
 
-A **complete, one-click deployable** Real-Time Intelligence (RTI) solution on Microsoft Fabric. This repo packages 29+ Fabric items — from streaming eventstreams to ontology-backed AI agents — into a self-contained project that any teammate can deploy to their own workspace in under 10 minutes.
+A **complete, one-click deployable** Real-Time Intelligence (RTI) solution on Microsoft Fabric. This repo packages 26 Fabric items — from streaming eventstreams to ontology-backed AI agents — into a self-contained project that any teammate can deploy to their own workspace in under 15 minutes.
 
 ---
 
@@ -12,7 +12,7 @@ A **complete, one-click deployable** Real-Time Intelligence (RTI) solution on Mi
 4. [Solution Overview](#solution-overview)
 5. [Architecture](#architecture)
 6. [Task Flow](#task-flow)
-7. [Quick Start — Deploy in 6 Steps](#quick-start--deploy-in-6-steps)
+7. [Quick Start — Deploy in 7 Steps](#quick-start--deploy-in-7-steps)
 8. [Post-Deployment Steps](#post-deployment-steps)
 9. [Item Inventory](#item-inventory)
 10. [Data Model](#data-model)
@@ -272,7 +272,7 @@ The Fabric **Task Flow** provides a visual overview of how all items relate in t
 
 ---
 
-## Quick Start — Deploy in 6 Steps
+## Quick Start — Deploy in 7 Steps
 
 ### Prerequisites
 
@@ -308,29 +308,45 @@ git clone https://github.com/kwamesefah_microsoft/RTI-Hackathon-Demo.git
 1. Upload `Deploy_Bicycle_RTI.ipynb` from the cloned repo to your workspace
 2. Open it → **attach** the `deploy_staging` lakehouse (left sidebar → Add lakehouse)
 3. Run **Cell 1** — installs `fabric-cicd` (ignore pip warnings)
-4. Run **Cell 2** — deploys all 26 items in 4 staged rounds. No GitHub, no PAT, no auth prompts.
-5. Run **Cell 3** — validates all items were created
+4. Run **Cell 2** — deploys all 23 items in 5 staged rounds. No GitHub, no PAT, no auth prompts.
+5. Run **Cell 3** — auto-fixes KQL Dashboard query URI + removes broken Pipeline SM refresh activity
+6. Run **Cell 4** — validates all items were created
 
-#### Step 4: Deploy Ontology + Graph + Operations Agent
+#### Step 4: Start Eventstreams (data must flow first)
+
+The eventstreams feed the **Bronze layer** — nothing downstream works without them.
+
+1. Open **RTIbikeRental** Eventstream → confirm it's running (click **Start** if not)
+2. Open **RTI-WeatherDemo** Eventstream → confirm it's running (click **Start** if not)
+3. **Wait until you see data arriving** — open a Bronze Lakehouse and refresh; you should see rows in the tables
+4. Let the streams run for 10–30 min to accumulate enough data for meaningful dashboards
+
+> **Tip:** You can pause/stop the eventstreams once you have enough data to save capacity. Restart them anytime.
+
+#### Step 5: Run the pipeline (Medallion processing)
+
+The pipeline processes Bronze → Silver → Gold → ML → Ontology. **It requires Bronze data from Step 4.**
+
+1. Open **PL_BicycleRTI_Medallion** in the workspace
+2. Click **Run** (~15–25 minutes)
+3. After pipeline completes, **manually refresh** both Semantic Models:
+   - Open each model → click **Refresh now**
+   - (Cell 3 removed the auto-refresh pipeline activity because it needs a connection that can't be created programmatically)
+
+#### Step 6: Deploy Ontology + Graph + Operations Agent
 
 Upload `Post_Deploy_Setup.ipynb` to your workspace and **Run all cells**. This creates:
 - **Bicycle_Ontology_Model_New** — Ontology with 12 entity types, 23 relationship types
 - **Bicycle_Ontology_Model_New_graph** — Graph Model linked to bicycles_gold lakehouse
 - **Cycling-Campaign-Agent** — Operations Agent for campaign automation
 
-#### Step 5: Run the pipeline (first data load)
+Then: Open the **Graph Model** → click **Refresh now** (must be done after ontology creation AND after pipeline data loads).
 
-1. Open **PL_BicycleRTI_Medallion** in the workspace
-2. Click **Run** — processes: Silver → Weather → Gold → ML → Ontology → SM Refresh
-3. Wait ~15–25 minutes for the first load to complete
-
-#### Step 6: One-time manual setup (~10 min)
+#### Step 7: Verify everything is working
 
 | Action | Where | Time |
 |--------|-------|------|
-| Open Graph Model → click **Refresh now** | Fabric UI | 5 min |
-| Open each Eventstream → click **Start** (if not running) | Fabric UI | 2 min |
-| Open KQL Dashboard → update Eventhouse query URI | Fabric UI | 2 min |
+| Open KQL Dashboard → confirm tiles show Eventhouse data | Fabric UI | 2 min |
 | Test the Data Agent → ask *"Which stations need rebalancing?"* | Fabric UI | 1 min |
 | *(Optional)* Delete the `deploy_staging` lakehouse | Fabric UI | 1 min |
 
@@ -351,13 +367,13 @@ pip install -r requirements.txt
 python deploy.py
 ```
 
-You'll be prompted for your workspace ID or name, then a browser window opens for Microsoft sign-in. After that, follow Steps 4–6 from Path A above.
+You'll be prompted for your workspace ID or name, then a browser window opens for Microsoft sign-in. After that, follow Steps 4–7 from Path A above.
 
 ---
 
 ## Post-Deployment Steps
 
-After `Deploy_Bicycle_RTI.ipynb` completes and the first pipeline run finishes:
+After `Deploy_Bicycle_RTI.ipynb` (Cells 1–4) completes:
 
 ### Automated (via Post_Deploy_Setup.ipynb)
 
@@ -381,19 +397,22 @@ The `Post_Deploy_Setup.ipynb` notebook programmatically deploys 3 items that `fa
 
 | Step | Action | Time |
 |------|--------|------|
-| **Refresh Graph Model** | Open Graph Model in Fabric UI → click **Refresh now** (API refresh returns `InvalidJobType` for ontology-managed graphs) | 5 min |
-| **Verify Eventstreams** | Open RTIbikeRental and RTI-WeatherDemo — click **Start** if not running | 2 min |
-| **Import Task Flow** | See [Task Flow Import](#task-flow-import) — import `bicycle_rti_task_flow.json` | 5 min |
-| **Configure Activator Rules** | Open each Reflex item, add alert triggers | 10 min |
-| **Update KQL Dashboard URI** | Open KQL Dashboard → Data sources → point to your Eventhouse query URI | 2 min |
-| **Test Data Agent** | Open Bicycle Fleet Intelligence Agent → ask: *"What are the top 5 busiest stations?"* | 1 min |
-| **Set up Power Automate** | Create flows triggered by Activator → send Teams notifications | 15 min |
+| **1. Start Eventstreams** | Open RTIbikeRental and RTI-WeatherDemo — click **Start** if not running. Wait for Bronze data. | 10–30 min |
+| **2. Run Pipeline** | Open PL_BicycleRTI_Medallion → click **Run** (Bronze → Silver → Gold → ML → Ontology) | 15–25 min |
+| **3. Refresh Semantic Models** | Open each Semantic Model → click **Refresh now** | 5 min |
+| **4. Deploy Ontology + Graph** | Upload & run `Post_Deploy_Setup.ipynb` | 5 min |
+| **5. Refresh Graph Model** | Open Graph Model in Fabric UI → click **Refresh now** (must be after ontology + pipeline data) | 5 min |
+| **6. Verify KQL Dashboard** | Open KQL Dashboard → confirm tiles show data from Eventhouse | 2 min |
+| **7. Test Data Agent** | Open Bicycle Fleet Intelligence Agent → ask: *"What are the top 5 busiest stations?"* | 1 min |
+| **Import Task Flow** *(optional)* | See [Task Flow Import](#task-flow-import) — import `bicycle_rti_task_flow.json` | 5 min |
+| **Configure Activators** *(optional)* | Create Reflex items manually, add alert triggers. See `docs/ACTIVATOR_SETUP.md` | 10 min |
+| **Set up Power Automate** *(optional)* | Create flows triggered by Activator → send Teams notifications | 15 min |
 
 ---
 
 ## Item Inventory
 
-### Automated Deployment (26 items via fabric-cicd / fabric-launcher)
+### Automated Deployment (23 items via fabric-cicd)
 
 | # | Item | Type | Description |
 |---|------|------|-------------|
@@ -416,13 +435,12 @@ The `Post_Deploy_Setup.ipynb` notebook programmatically deploys 3 items that `fa
 | 17 | `RTI-WeatherDemo` | Eventstream | Live weather (London) → Eventhouse |
 | 18 | `Bicycle RTI Analytics` | SemanticModel | Direct Lake — fleet operations (10 tables) |
 | 19 | `Bicycle Ontology Model` | SemanticModel | Direct Lake — entity relationships (12 tables) |
-| 20 | `PL_BicycleRTI_Medallion` | DataPipeline | 6 activities: 5 notebooks + SM refresh |
-| 21 | `Bicycle Fleet Operations Report` | Report | PBIR interactive dashboards |
-| 22 | `Bicycle Fleet Intelligence — Live Operations` | KQLDashboard | Real-time KQL visuals |
-| 23 | `Bicycle Fleet Intelligence Agent` | DataAgent | NL→SQL across lakehouse + SM + graph |
-| 24 | `ontology data agent` | DataAgent | Graph-backed ontology reasoning |
-| 25 | `BicycleFleet_Activator` | Reflex | Low stock / high demand alerts |
-| 26 | `Cycling Campaign Activator` | Reflex | Weather-triggered campaign alerts |
+| 20 | `PL_BicycleRTI_Medallion` | DataPipeline | 5 activities: Bronze → Silver → Gold → ML → Ontology |
+| 21 | `Bicycle Fleet Intelligence — Live Operations` | KQLDashboard | Real-time KQL visuals |
+| 22 | `Bicycle Fleet Intelligence Agent` | DataAgent | NL→SQL across lakehouse + SM + graph |
+| 23 | `ontology data agent` | DataAgent | Graph-backed ontology reasoning |
+
+> **Not deployed automatically:** `Bicycle Fleet Operations Report` (Report — enhanced format, needs manual creation), `BicycleFleet_Activator` and `Cycling Campaign Activator` (Reflex — require manual alert rule configuration). See `docs/ACTIVATOR_SETUP.md`.
 
 ### Post-Deploy (3 items via Ontology & GraphModel REST APIs)
 
