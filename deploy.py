@@ -484,8 +484,8 @@ def main():
     print(f"\n{'='*60}")
     print("🚀 Stage 4/5: Semantic Models + Notebooks")
     print(f"{'='*60}")
-    all_except_kqldb = [t for t in item_index.keys() if t != "KQLDatabase"]
-    stage_dir, stage_ws, _ = make_stage_dir(all_except_kqldb, ref_types=["KQLDatabase"])
+    stage_dir, stage_ws, _ = make_stage_dir(["SemanticModel", "Notebook"],
+                                            ref_types=["KQLDatabase", "Lakehouse", "Eventhouse"])
     deploy_types = ["SemanticModel", "Notebook"]
     print(f"   📦 Deploying: {', '.join(f.rsplit('.', 1)[0] for f in sum([item_index.get(t, []) for t in deploy_types], []))}")
     kwargs = {"repository_directory": stage_ws, "item_type_in_scope": deploy_types,
@@ -504,8 +504,9 @@ def main():
     print(f"\n{'='*60}")
     print("🚀 Stage 5/5: Eventstreams + Analytics + Presentation")
     print(f"{'='*60}")
-    stage_dir, stage_ws, _ = make_stage_dir(all_except_kqldb, ref_types=["KQLDatabase"])
-    deploy_types = ["Eventstream", "Reflex", "DataPipeline",
+    stage_dir, stage_ws, _ = make_stage_dir(["Eventstream", "DataPipeline", "KQLDashboard", "DataAgent"],
+                                            ref_types=["KQLDatabase", "Lakehouse", "Eventhouse"])
+    deploy_types = ["Eventstream", "DataPipeline",
                     "KQLDashboard", "DataAgent"]
     print(f"   📦 Deploying: {', '.join(f.rsplit('.', 1)[0] for f in sum([item_index.get(t, []) for t in deploy_types], []))}")
     kwargs = {"repository_directory": stage_ws, "item_type_in_scope": deploy_types,
@@ -519,7 +520,7 @@ def main():
     print("   ✅ Stage 5/5 complete")
 
     print(f"\n{'='*60}")
-    print("✅ ALL 25 ITEMS DEPLOYED SUCCESSFULLY")
+    print("✅ ALL 23 ITEMS DEPLOYED SUCCESSFULLY")
     print(f"{'='*60}")
 
     # ── Auto-fix placeholders ──
