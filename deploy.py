@@ -388,9 +388,9 @@ def main():
         print("   Creating KQL Database...")
         create_body = {
             "displayName": "bikerentaleventhouse",
-            "parentEventhouseItemId": eventhouse_id,
             "creationPayload": {
                 "databaseType": "ReadWrite",
+                "parentEventhouseItemId": eventhouse_id,
                 "oneLakeCachingPeriod": "P36500D",
                 "oneLakeStandardStoragePeriod": "P36500D",
             },
