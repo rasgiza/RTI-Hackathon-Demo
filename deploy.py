@@ -1,13 +1,13 @@
 ﻿#!/usr/bin/env python3
 """
-deploy.py — Deploy all 25 Bicycle RTI items to a Fabric workspace.
+deploy.py — Deploy all 23 Bicycle RTI items to a Fabric workspace.
 
 Usage:
     1. pip install fabric-cicd azure-identity
     2. python deploy.py
 
 You will be prompted to sign in via browser (InteractiveBrowserCredential).
-Items are deployed in 4 staged rounds to respect dependencies.
+Items are deployed in 5 staged rounds to respect dependencies.
 """
 
 import os
@@ -27,6 +27,9 @@ WORKSPACE_NAME = None   # Set your workspace name, OR
 WORKSPACE_ID   = None   # Set your workspace ID (takes precedence)
 
 # If both are None, you'll be prompted to enter one.
+
+# Source workspace GUID baked into exported files — replaced at deploy time
+SOURCE_WORKSPACE_ID = "573cc7c7-a45a-4fd9-886e-9db4e9798db4"
 # ────────────────────────────────────────────────────────────────────
 
 import requests, json, base64, time
@@ -298,9 +301,44 @@ def main():
 
     import tempfile, shutil
 
+    # Resolve target workspace ID for GUID replacement
+    target_ws_id = ws_id  # may be None if using ws_name
+    if not target_ws_id and ws_name:
+        # We'll get it after first deploy; for now just note it
+        print(f"   ℹ️  Workspace GUID replacement will use resolved ID")
+
+    # ── Helper: replace source workspace GUID with target ──
+    TEXT_EXTENSIONS = {".json", ".tmdl", ".pbism", ".ipynb", ".xml", ".yml", ".yaml", ".md"}
+
+    def patch_workspace_guid(stage_ws_path, target_id):
+        """Replace SOURCE_WORKSPACE_ID with target_id in all text files."""
+        if not target_id or target_id == SOURCE_WORKSPACE_ID:
+            return 0
+        count = 0
+        for root, dirs, files in os.walk(stage_ws_path):
+            for fname in files:
+                ext = os.path.splitext(fname)[1].lower()
+                if ext not in TEXT_EXTENSIONS and fname != ".platform":
+                    continue
+                fpath = os.path.join(root, fname)
+                try:
+                    with open(fpath, "r", encoding="utf-8") as f:
+                        content = f.read()
+                    if SOURCE_WORKSPACE_ID in content:
+                        content = content.replace(SOURCE_WORKSPACE_ID, target_id)
+                        with open(fpath, "w", encoding="utf-8") as f:
+                            f.write(content)
+                        count += 1
+                except (UnicodeDecodeError, PermissionError):
+                    continue
+        if count:
+            print(f"   🔄 Patched workspace GUID in {count} file(s)")
+        return count
+
     # ── Helper: make isolated stage dir ──
     def make_stage_dir(type_list, ref_types=None):
-        """Copy folders for given item types. For ref_types, copy only .platform files."""
+        """Copy folders for given item types. For ref_types, copy only .platform files.
+        Replaces source workspace GUID with target workspace ID."""
         sd = tempfile.mkdtemp(prefix="rti_stage_")
         sw = os.path.join(sd, "workspace")
         os.makedirs(sw)
@@ -320,6 +358,8 @@ def main():
                     src_platform = os.path.join(workspace_dir, f, ".platform")
                     if os.path.exists(src_platform):
                         shutil.copy2(src_platform, os.path.join(ref_dir, ".platform"))
+        # Replace source workspace GUID with target
+        patch_workspace_guid(sw, ws_id)
         return sd, sw, folders
 
     # ═══════════════════════════════════════════════════════════
