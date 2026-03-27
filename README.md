@@ -1,6 +1,6 @@
 # Bicycle Real-Time Intelligence — Hackathon Demo
 
-A **complete, one-click deployable** Real-Time Intelligence (RTI) solution on Microsoft Fabric. This repo packages 28 Fabric items — from streaming eventstreams to ontology-backed AI agents — into a self-contained project that any teammate can deploy to their own workspace in under 15 minutes.
+A **complete, one-click deployable** Real-Time Intelligence (RTI) solution on Microsoft Fabric. This repo packages 28 Fabric items (23 automated + 5 post-deploy) — from streaming eventstreams to ontology-backed AI agents — into a self-contained project that any teammate can deploy to their own workspace in under 15 minutes.
 
 ---
 
@@ -439,7 +439,7 @@ The `Post_Deploy_Setup.ipynb` notebook programmatically deploys 3 items that `fa
 | 13 | `07_Activator_Alerts` | Notebook | Activator alert configuration |
 | 14 | `08_GeoAnalytics_HotSpots` | Notebook | Geographic demand heat maps |
 | 15 | `09_Ontology_Neighbourhood_Filter` | Notebook | Ontology table population |
-| 16 | `RTIbikeRental` | Eventstream | Sample bike data → Lakehouse + Eventhouse + Activator |
+| 16 | `RTIbikeRental` | Eventstream | Sample bike data → Lakehouse + Eventhouse |
 | 17 | `RTI-WeatherDemo` | Eventstream | Live weather (London) → Eventhouse + Lakehouse |
 | 18 | `Bicycle RTI Analytics` | SemanticModel | Direct Lake — fleet operations (10 tables) |
 | 19 | `Bicycle Ontology Model` | SemanticModel | Direct Lake — entity relationships (12 tables) |
@@ -447,25 +447,25 @@ The `Post_Deploy_Setup.ipynb` notebook programmatically deploys 3 items that `fa
 | 21 | `Bicycle Fleet Intelligence — Live Operations` | KQLDashboard | Real-time KQL visuals |
 | 22 | `Bicycle Fleet Intelligence Agent` | DataAgent | NL→SQL across lakehouse + SM + graph |
 | 23 | `ontology data agent` | DataAgent | Graph-backed ontology reasoning |
-| 24 | `BicycleFleet_Activator` | Reflex | 4 alert rules: Empty Station, Full Station, Low Availability, High Demand |
 
-> **Not deployed automatically:** `Bicycle Fleet Operations Report` (Report — enhanced format, needs manual creation), `Cycling Campaign Activator` (Reflex — depends on ontology, deployed in Post_Deploy_Setup).
+> **Not deployed automatically:** `Bicycle Fleet Operations Report` (Report — enhanced format, needs manual creation), both Activators (Reflex — `fabric-cicd` doesn't support Reflex, deployed in Post_Deploy_Setup via REST API).
 
-### Post-Deploy (4 items via REST APIs — Post_Deploy_Setup.ipynb)
+### Post-Deploy (5 items via REST APIs — Post_Deploy_Setup.ipynb)
 
 | # | Item | Type | API | Description |
 |---|------|------|-----|-------------|
 | 25 | `Bicycle_Ontology_Model_New` | Ontology | `/ontologies` + `/updateDefinition` | 12 entity types, 23 relationships, 12 data bindings, 23 contextualizations |
 | 26 | `Bicycle_Ontology_Model_New_graph` | GraphModel | `/graphModels` + `/updateDefinition` | 4-part visual graph (graphType, dataSources, graphDefinition, styling) |
 | 27 | `Cycling-Campaign-Agent` | OperationsAgent | `/items` | Campaign automation agent |
-| 28 | `Cycling Campaign Activator` | Reflex | `/items` | 3 rules: High Demand Forecast (Teams), Station Critical (Teams), Cycling Campaign (Power Automate) |
+| 28 | `BicycleFleet_Activator` | Reflex | `/items` | 4 rules: Empty Station, Full Station, Low Availability, High Demand |
+| 29 | `Cycling Campaign Activator` | Reflex | `/items` | 3 rules: High Demand Forecast (Teams), Station Critical (Teams), Cycling Campaign (Power Automate) |
 
 ### Activator / Reflex Items (manual setup)
 
 The project includes 2 Reflex Activators with different deployment paths:
 
-- **BicycleFleet_Activator** — deployed automatically in Stage 5. The `__ALERT_RECIPIENT_EMAIL__` placeholder is replaced with the deploying user's email (auto-detected from auth token).
-- **Cycling Campaign Activator** — deployed in `Post_Deploy_Setup.ipynb` (Cell 5) because it depends on the Ontology created in that notebook. Also requires Power Automate for one rule.
+- **BicycleFleet_Activator** — deployed in `Post_Deploy_Setup.ipynb` (Cell 5) via REST API. The `__ALERT_RECIPIENT_EMAIL__` placeholder is replaced with the deploying user's email (auto-detected from auth token). After deployment, manually connect it to the `RTIbikeRental` eventstream as a destination.
+- **Cycling Campaign Activator** — deployed in `Post_Deploy_Setup.ipynb` (Cell 6) because it depends on the Ontology created in that notebook. Also requires Power Automate for one rule.
 
 #### BicycleFleet_Activator (Eventstream-based — bike rental data)
 

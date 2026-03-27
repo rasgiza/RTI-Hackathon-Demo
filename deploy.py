@@ -586,15 +586,8 @@ def main():
     print(f"{'='*60}")
     stage_dir, stage_ws, _ = make_stage_dir(["Eventstream", "DataPipeline", "KQLDashboard", "DataAgent"],
                                             ref_types=["KQLDatabase", "Lakehouse", "Eventhouse"])
-    # Selectively add BicycleFleet_Activator (not Cycling Campaign — needs ontology)
-    bf_reflex = "BicycleFleet_Activator.Reflex"
-    bf_src = os.path.join(workspace_dir, bf_reflex)
-    if os.path.isdir(bf_src):
-        shutil.copytree(bf_src, os.path.join(stage_ws, bf_reflex))
-        patch_workspace_guid(os.path.join(stage_ws, bf_reflex), ws_id)
-        patch_alert_email(os.path.join(stage_ws, bf_reflex))
     deploy_types = ["Eventstream", "DataPipeline",
-                    "KQLDashboard", "DataAgent", "Reflex"]
+                    "KQLDashboard", "DataAgent"]
     print(f"   📦 Deploying: {', '.join(f.rsplit('.', 1)[0] for f in sum([item_index.get(t, []) for t in deploy_types], []))}")
     kwargs = {"repository_directory": stage_ws, "item_type_in_scope": deploy_types,
               "token_credential": credential}
@@ -607,7 +600,7 @@ def main():
     print("   ✅ Stage 5/5 complete")
 
     print(f"\n{'='*60}")
-    print("✅ ALL 24 ITEMS DEPLOYED SUCCESSFULLY")
+    print("✅ ALL 23 ITEMS DEPLOYED SUCCESSFULLY")
     print(f"{'='*60}")
 
     # ── Auto-fix placeholders ──
