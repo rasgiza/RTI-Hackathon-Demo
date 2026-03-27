@@ -15,9 +15,10 @@ A **complete, one-click deployable** Real-Time Intelligence (RTI) solution on Mi
 7. [Quick Start — Deploy in 7 Steps](#quick-start--deploy-in-7-steps)
 8. [Post-Deployment Steps](#post-deployment-steps)
 9. [Item Inventory](#item-inventory)
-10. [Data Model](#data-model)
-11. [Notebooks Reference](#notebooks-reference)
-12. [Pipeline](#pipeline)
+10. [Activator / Reflex Setup](#activator--reflex-items-manual-setup)
+11. [Data Model](#data-model)
+12. [Notebooks Reference](#notebooks-reference)
+13. [Pipeline](#pipeline)
 13. [Semantic Models](#semantic-models)
 14. [Data Agents](#data-agents)
 15. [Real-Time Components](#real-time-components)
@@ -457,12 +458,66 @@ The `Post_Deploy_Setup.ipynb` notebook programmatically deploys 3 items that `fa
 | 28 | `Bicycle_Ontology_Model_New_graph` | GraphModel | `/graphModels` + `/updateDefinition` | 4-part visual graph (graphType, dataSources, graphDefinition, styling) |
 | 29 | `Cycling-Campaign-Agent` | OperationsAgent | `/items` | Campaign automation agent |
 
-### External Integrations (manual setup)
+### Activator / Reflex Items (manual setup)
 
-| Integration | Purpose |
-|-------------|---------|
-| Power Automate | Flows triggered by Activator rules |
-| Microsoft Teams | Alert notifications channel |
+The 2 Reflex Activators are **not deployed automatically** because they contain placeholder email addresses (`__ALERT_RECIPIENT_EMAIL__`) that must be configured per user. They also reference Power Automate flows that require a separate license.
+
+#### BicycleFleet_Activator (Eventstream-based — bike rental data)
+
+| Rule | Trigger | Action | Condition |
+|------|---------|--------|-----------|
+| **Empty Station** | `No_Bikes == 0` | Teams message | Station has zero bikes — dispatch rebalancing truck |
+| **Full Station** | `No_Empty_Docks == 0` | Teams message | Station full — reroute riders to nearby stations |
+| **Low Availability** | `No_Bikes < 3` | **Email** (Outlook) | Station running low — dispatch additional bikes |
+| **High Demand** | `No_Empty_Docks < 3` | Teams message | Station nearly full — redistribute bikes |
+
+#### Cycling Campaign Activator (Ontology-based — demand forecast data)
+
+| Rule | Trigger | Action | Condition |
+|------|---------|--------|-----------|
+| **High Demand Forecast** | `pre_position_recommended == true` | Teams message | ML model predicts high demand — pre-position bikes |
+| **Station Critical — Rebalance** | `is_rush_hour == true` | Teams message | Station critically low during rush hour |
+| **Cycling Campaign** | `temperature_c > 10` | **Power Automate flow** | Good weather detected — trigger customer campaign (passes `neighbourhoods` + `temperature_c`) |
+
+#### How to Set Up Activators in Your Workspace
+
+1. **Create the Activator** — In your Fabric workspace, click **+ New** → **Reflex** (Activator)
+2. **Connect to the Eventstream** — Select `RTIbikeRental` or `RTI-WeatherDemo` as the data source
+3. **Add rules** — Recreate the rules above using your own email address
+4. **Enable** — Toggle each rule to **Active**
+
+> **Teams rules** work with any Microsoft 365 account.
+> **Email rules** send via Outlook — no extra license needed.
+
+#### Power Automate Setup (for Cycling Campaign rule)
+
+The "Cycling Campaign" rule in the `Cycling Campaign Activator` triggers a **Power Automate flow** instead of a simple Teams/Email message. This flow can send templated campaigns, update CRM systems, or trigger multi-step workflows.
+
+**Prerequisites — Power Automate Developer Plan (free):**
+
+1. Go to [https://make.powerautomate.com](https://make.powerautomate.com)
+2. If you see "You don't have a license", sign up for the **Power Automate Developer Plan**:
+   - Visit [https://powerapps.microsoft.com/en-us/developerplan/](https://powerapps.microsoft.com/en-us/developerplan/)
+   - Click **Get started free** and sign in with your Microsoft 365 account
+   - This gives you a full Power Automate environment at no cost
+3. Once you have access, create a new **Automated cloud flow**:
+   - Trigger: **When a Fabric Activator triggers this flow**
+   - Input parameters: `neighbourhoods` (text), `temperature_c` (number)
+   - Actions: Add your desired steps (e.g., Send Teams message, Send email, Update SharePoint list)
+4. Save and copy the flow URL
+5. In the Fabric Activator, link the "Cycling Campaign" rule to your new Power Automate flow
+
+> **Note:** Power Automate flows are per-user and per-environment. Each hackathon participant
+> who wants to see the campaign flow working must set up their own Power Automate Developer Plan
+> and connect it to their Activator.
+
+### External Integrations (summary)
+
+| Integration | Purpose | License Required |
+|-------------|---------|-----------------|
+| Power Automate | Flows triggered by Activator "Cycling Campaign" rule | Power Automate Developer Plan (free) |
+| Microsoft Teams | Alert notifications from Teams-based rules | Microsoft 365 (included) |
+| Outlook | Email alerts from Email-based rules | Microsoft 365 (included) |
 
 ---
 
