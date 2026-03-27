@@ -299,7 +299,8 @@ def main():
     import tempfile, shutil
 
     # ── Helper: make isolated stage dir ──
-    def make_stage_dir(type_list):
+    def make_stage_dir(type_list, ref_types=None):
+        """Copy folders for given item types. For ref_types, copy only .platform files."""
         sd = tempfile.mkdtemp(prefix="rti_stage_")
         sw = os.path.join(sd, "workspace")
         os.makedirs(sw)
@@ -308,6 +309,17 @@ def main():
             folders.extend(item_index.get(t, []))
         for f in folders:
             shutil.copytree(os.path.join(workspace_dir, f), os.path.join(sw, f))
+        # Add reference-only .platform files for logicalId resolution
+        if ref_types:
+            for t in ref_types:
+                for f in item_index.get(t, []):
+                    if os.path.exists(os.path.join(sw, f)):
+                        continue  # Already copied as full folder
+                    ref_dir = os.path.join(sw, f)
+                    os.makedirs(ref_dir, exist_ok=True)
+                    src_platform = os.path.join(workspace_dir, f, ".platform")
+                    if os.path.exists(src_platform):
+                        shutil.copy2(src_platform, os.path.join(ref_dir, ".platform"))
         return sd, sw, folders
 
     # ═══════════════════════════════════════════════════════════
@@ -415,49 +427,67 @@ def main():
     schema_path = os.path.join(workspace_dir,
                                "bikerentaleventhouse.KQLDatabase", "DatabaseSchema.kql")
     if os.path.exists(schema_path):
-        resp = requests.get(f"{API}/workspaces/{target_ws_id}/kqlDatabases/{kqldb_id}",
-                            headers=hdrs)
-        if resp.status_code == 200:
-            props = resp.json().get("properties", {})
-            query_uri = props.get("queryUri") or props.get("parentEventhouseUri")
-            if query_uri:
-                with open(schema_path, "r", encoding="utf-8") as sf:
-                    schema_text = sf.read()
-                commands = []
-                current = []
-                for line in schema_text.split("\n"):
-                    s = line.strip()
-                    if s.startswith(".") and current:
-                        commands.append("\n".join(current))
-                        current = [line]
-                    elif s and not s.startswith("//"):
-                        current.append(line)
-                if current:
+        # Wait for query URI to become available (may take a few seconds after creation)
+        query_uri = None
+        print("   Waiting for KQL Database query URI...")
+        for attempt in range(12):  # Retry up to ~60 seconds
+            resp = requests.get(f"{API}/workspaces/{target_ws_id}/kqlDatabases/{kqldb_id}",
+                                headers=hdrs)
+            if resp.status_code == 200:
+                props = resp.json().get("properties", {})
+                query_uri = props.get("queryUri") or props.get("parentEventhouseUri")
+                if query_uri:
+                    break
+            if attempt < 11:
+                time.sleep(5)
+
+        if query_uri:
+            print(f"   Query URI: {query_uri}")
+            with open(schema_path, "r", encoding="utf-8") as sf:
+                schema_text = sf.read()
+            commands = []
+            current = []
+            for line in schema_text.split("\n"):
+                s = line.strip()
+                if s.startswith(".") and current:
                     commands.append("\n".join(current))
-                ok = 0
-                for cmd in commands:
-                    c = cmd.strip()
-                    if not c or c.startswith("//"):
-                        continue
-                    try:
-                        r = requests.post(f"{query_uri}/v1/rest/mgmt", headers=hdrs,
-                                          json={"csl": c, "db": "bikerentaleventhouse"})
-                        if r.status_code == 200:
-                            ok += 1
-                    except Exception:
-                        pass
-                print(f"   ✅ Schema: {ok}/{len(commands)} commands succeeded")
+                    current = [line]
+                elif s and not s.startswith("//"):
+                    current.append(line)
+            if current:
+                commands.append("\n".join(current))
+            # Use Kusto-scoped token for management commands
+            kusto_token = credential.get_token("https://kusto.kusto.windows.net/.default").token
+            kusto_hdrs = {"Authorization": f"Bearer {kusto_token}", "Content-Type": "application/json"}
+            ok = 0
+            for cmd in commands:
+                c = cmd.strip()
+                if not c or c.startswith("//"):
+                    continue
+                try:
+                    r = requests.post(f"{query_uri}/v1/rest/mgmt", headers=kusto_hdrs,
+                                      json={"csl": c, "db": "bikerentaleventhouse"})
+                    if r.status_code == 200:
+                        ok += 1
+                    else:
+                        print(f"   ⚠️ Command failed ({r.status_code}): {c.split(chr(10))[0][:60]}...")
+                except Exception as e:
+                    print(f"   ⚠️ Command error: {e}")
+            print(f"   ✅ Schema: {ok}/{len(commands)} commands succeeded")
+        else:
+            print("   ⚠️ Could not get query URI after 60s — schema will need manual setup")
     print("   ✅ Stage 3/5 complete")
 
     # ═══════════════════════════════════════════════════════════
-    # STAGE 4/5: Notebooks + Eventstreams
+    # STAGE 4/5: Semantic Models + Notebooks
+    #   Deploy SM first so NB09 can resolve its SM reference
     # ═══════════════════════════════════════════════════════════
     print(f"\n{'='*60}")
-    print("🚀 Stage 4/5: Notebooks + Eventstreams")
+    print("🚀 Stage 4/5: Semantic Models + Notebooks")
     print(f"{'='*60}")
     all_except_kqldb = [t for t in item_index.keys() if t != "KQLDatabase"]
-    stage_dir, stage_ws, _ = make_stage_dir(all_except_kqldb)
-    deploy_types = ["Notebook", "Eventstream"]
+    stage_dir, stage_ws, _ = make_stage_dir(all_except_kqldb, ref_types=["KQLDatabase"])
+    deploy_types = ["SemanticModel", "Notebook"]
     print(f"   📦 Deploying: {', '.join(f.rsplit('.', 1)[0] for f in sum([item_index.get(t, []) for t in deploy_types], []))}")
     kwargs = {"repository_directory": stage_ws, "item_type_in_scope": deploy_types,
               "token_credential": credential}
@@ -470,14 +500,14 @@ def main():
     print("   ✅ Stage 4/5 complete")
 
     # ═══════════════════════════════════════════════════════════
-    # STAGE 5/5: Analytics + Presentation
+    # STAGE 5/5: Eventstreams + Analytics + Presentation
     # ═══════════════════════════════════════════════════════════
     print(f"\n{'='*60}")
-    print("🚀 Stage 5/5: Analytics + Presentation")
+    print("🚀 Stage 5/5: Eventstreams + Analytics + Presentation")
     print(f"{'='*60}")
-    stage_dir, stage_ws, _ = make_stage_dir(all_except_kqldb)
-    deploy_types = ["SemanticModel", "DataPipeline", "Report",
-                    "KQLDashboard", "DataAgent", "Reflex"]
+    stage_dir, stage_ws, _ = make_stage_dir(all_except_kqldb, ref_types=["KQLDatabase"])
+    deploy_types = ["Eventstream", "Reflex", "DataPipeline", "Report",
+                    "KQLDashboard", "DataAgent"]
     print(f"   📦 Deploying: {', '.join(f.rsplit('.', 1)[0] for f in sum([item_index.get(t, []) for t in deploy_types], []))}")
     kwargs = {"repository_directory": stage_ws, "item_type_in_scope": deploy_types,
               "token_credential": credential}
