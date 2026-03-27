@@ -1,6 +1,6 @@
 ﻿#!/usr/bin/env python3
 """
-deploy.py — Deploy all 26 Bicycle RTI items to a Fabric workspace.
+deploy.py — Deploy all 25 Bicycle RTI items to a Fabric workspace.
 
 Usage:
     1. pip install fabric-cicd azure-identity
@@ -505,7 +505,7 @@ def main():
     print("🚀 Stage 5/5: Eventstreams + Analytics + Presentation")
     print(f"{'='*60}")
     stage_dir, stage_ws, _ = make_stage_dir(all_except_kqldb, ref_types=["KQLDatabase"])
-    deploy_types = ["Eventstream", "Reflex", "DataPipeline", "Report",
+    deploy_types = ["Eventstream", "Reflex", "DataPipeline",
                     "KQLDashboard", "DataAgent"]
     print(f"   📦 Deploying: {', '.join(f.rsplit('.', 1)[0] for f in sum([item_index.get(t, []) for t in deploy_types], []))}")
     kwargs = {"repository_directory": stage_ws, "item_type_in_scope": deploy_types,
@@ -519,7 +519,7 @@ def main():
     print("   ✅ Stage 5/5 complete")
 
     print(f"\n{'='*60}")
-    print("✅ ALL 26 ITEMS DEPLOYED SUCCESSFULLY")
+    print("✅ ALL 25 ITEMS DEPLOYED SUCCESSFULLY")
     print(f"{'='*60}")
 
     # ── Auto-fix placeholders ──
