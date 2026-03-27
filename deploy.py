@@ -476,18 +476,17 @@ def main():
             print(f"   ✅ Schema: {ok}/{len(commands)} commands succeeded")
         else:
             print("   ⚠️ Could not get query URI after 60s — schema will need manual setup")
-    print("   ✅ Stage 3/6 complete")
+    print("   ✅ Stage 3/5 complete")
 
     # ═══════════════════════════════════════════════════════════
-    # STAGE 4/6: Semantic Models
-    #   Must deploy BEFORE Notebooks — NB09 references SM logicalId
+    # STAGE 4/5: Semantic Models + Notebooks
     # ═══════════════════════════════════════════════════════════
     print(f"\n{'='*60}")
-    print("🚀 Stage 4/6: Semantic Models")
+    print("🚀 Stage 4/5: Semantic Models + Notebooks")
     print(f"{'='*60}")
     all_except_kqldb = [t for t in item_index.keys() if t != "KQLDatabase"]
     stage_dir, stage_ws, _ = make_stage_dir(all_except_kqldb, ref_types=["KQLDatabase"])
-    deploy_types = ["SemanticModel"]
+    deploy_types = ["SemanticModel", "Notebook"]
     print(f"   📦 Deploying: {', '.join(f.rsplit('.', 1)[0] for f in sum([item_index.get(t, []) for t in deploy_types], []))}")
     kwargs = {"repository_directory": stage_ws, "item_type_in_scope": deploy_types,
               "token_credential": credential}
@@ -497,33 +496,13 @@ def main():
         kwargs["workspace_name"] = ws_name
     publish_all_items(FabricWorkspace(**kwargs))
     shutil.rmtree(stage_dir, ignore_errors=True)
-    print("   ✅ Stage 4/6 complete")
+    print("   ✅ Stage 4/5 complete")
 
     # ═══════════════════════════════════════════════════════════
-    # STAGE 5/6: Notebooks
-    #   SM is now deployed — NB09 logicalId reference will resolve
+    # STAGE 5/5: Eventstreams + Analytics + Presentation
     # ═══════════════════════════════════════════════════════════
     print(f"\n{'='*60}")
-    print("🚀 Stage 5/6: Notebooks")
-    print(f"{'='*60}")
-    stage_dir, stage_ws, _ = make_stage_dir(all_except_kqldb, ref_types=["KQLDatabase"])
-    deploy_types = ["Notebook"]
-    print(f"   📦 Deploying: {', '.join(f.rsplit('.', 1)[0] for f in sum([item_index.get(t, []) for t in deploy_types], []))}")
-    kwargs = {"repository_directory": stage_ws, "item_type_in_scope": deploy_types,
-              "token_credential": credential}
-    if ws_id:
-        kwargs["workspace_id"] = ws_id
-    else:
-        kwargs["workspace_name"] = ws_name
-    publish_all_items(FabricWorkspace(**kwargs))
-    shutil.rmtree(stage_dir, ignore_errors=True)
-    print("   ✅ Stage 5/6 complete")
-
-    # ═══════════════════════════════════════════════════════════
-    # STAGE 6/6: Eventstreams + Analytics + Presentation
-    # ═══════════════════════════════════════════════════════════
-    print(f"\n{'='*60}")
-    print("🚀 Stage 6/6: Eventstreams + Analytics + Presentation")
+    print("🚀 Stage 5/5: Eventstreams + Analytics + Presentation")
     print(f"{'='*60}")
     stage_dir, stage_ws, _ = make_stage_dir(all_except_kqldb, ref_types=["KQLDatabase"])
     deploy_types = ["Eventstream", "Reflex", "DataPipeline", "Report",
@@ -537,7 +516,7 @@ def main():
         kwargs["workspace_name"] = ws_name
     publish_all_items(FabricWorkspace(**kwargs))
     shutil.rmtree(stage_dir, ignore_errors=True)
-    print("   ✅ Stage 6/6 complete")
+    print("   ✅ Stage 5/5 complete")
 
     print(f"\n{'='*60}")
     print("✅ ALL 26 ITEMS DEPLOYED SUCCESSFULLY")
