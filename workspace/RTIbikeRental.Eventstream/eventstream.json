@@ -156,6 +156,77 @@
           }
         }
       ]
+    },
+    {
+      "id": "c051f1a3-1669-49cb-a03c-ae30405c21cd",
+      "name": "Activator",
+      "type": "Activator",
+      "properties": {
+        "workspaceId": "573cc7c7-a45a-4fd9-886e-9db4e9798db4",
+        "itemId": "93b57365-2c5f-5aa6-ad3e-cbc6bf83e9e3",
+        "inputSerialization": {
+          "type": "Json",
+          "properties": {
+            "encoding": "UTF8"
+          }
+        }
+      },
+      "inputNodes": [
+        {
+          "name": "RTIbikeRental-stream"
+        }
+      ],
+      "inputSchemas": [
+        {
+          "name": "RTIbikeRental-stream",
+          "schema": {
+            "columns": [
+              {
+                "name": "BikepointID",
+                "type": "Nvarchar(max)",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "Street",
+                "type": "Nvarchar(max)",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "Neighbourhood",
+                "type": "Nvarchar(max)",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "Latitude",
+                "type": "Float",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "Longitude",
+                "type": "Float",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "No_Bikes",
+                "type": "BigInt",
+                "fields": null,
+                "items": null
+              },
+              {
+                "name": "No_Empty_Docks",
+                "type": "BigInt",
+                "fields": null,
+                "items": null
+              }
+            ]
+          }
+        }
+      ]
     }
   ],
   "streams": [

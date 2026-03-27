@@ -299,6 +299,20 @@ def main():
     print("\n🔐 Authenticating... (a browser window will open)")
     credential = InteractiveBrowserCredential()
 
+    # Auto-detect user email for Activator alerts
+    ALERT_PLACEHOLDER = "__ALERT_RECIPIENT_EMAIL__"
+    alert_email = ""
+    try:
+        tok = credential.get_token("https://api.fabric.microsoft.com/.default").token
+        payload = tok.split(".")[1]
+        payload += "=" * (-len(payload) % 4)
+        claims = json.loads(base64.b64decode(payload))
+        alert_email = claims.get("upn") or claims.get("unique_name") or claims.get("preferred_username", "")
+        if alert_email:
+            print(f"   📧 Alert email (from token): {alert_email}")
+    except Exception:
+        print("   ⚠️ Could not detect email — Activator alerts will keep placeholder")
+
     import tempfile, shutil
 
     # Resolve target workspace ID for GUID replacement
@@ -335,6 +349,31 @@ def main():
             print(f"   🔄 Patched workspace GUID in {count} file(s)")
         return count
 
+    def patch_alert_email(stage_ws_path):
+        """Replace __ALERT_RECIPIENT_EMAIL__ with user's email."""
+        if not alert_email:
+            return 0
+        count = 0
+        for root, dirs, files in os.walk(stage_ws_path):
+            for fname in files:
+                ext = os.path.splitext(fname)[1].lower()
+                if ext not in TEXT_EXTENSIONS and fname != ".platform":
+                    continue
+                fpath = os.path.join(root, fname)
+                try:
+                    with open(fpath, "r", encoding="utf-8") as f:
+                        content = f.read()
+                    if ALERT_PLACEHOLDER in content:
+                        content = content.replace(ALERT_PLACEHOLDER, alert_email)
+                        with open(fpath, "w", encoding="utf-8") as f:
+                            f.write(content)
+                        count += 1
+                except (UnicodeDecodeError, PermissionError):
+                    continue
+        if count:
+            print(f"   📧 Patched alert email in {count} file(s)")
+        return count
+
     # ── Helper: make isolated stage dir ──
     def make_stage_dir(type_list, ref_types=None):
         """Copy folders for given item types. For ref_types, copy only .platform files.
@@ -360,6 +399,7 @@ def main():
                         shutil.copy2(src_platform, os.path.join(ref_dir, ".platform"))
         # Replace source workspace GUID with target
         patch_workspace_guid(sw, ws_id)
+        patch_alert_email(sw)
         return sd, sw, folders
 
     # ═══════════════════════════════════════════════════════════
@@ -546,8 +586,15 @@ def main():
     print(f"{'='*60}")
     stage_dir, stage_ws, _ = make_stage_dir(["Eventstream", "DataPipeline", "KQLDashboard", "DataAgent"],
                                             ref_types=["KQLDatabase", "Lakehouse", "Eventhouse"])
+    # Selectively add BicycleFleet_Activator (not Cycling Campaign — needs ontology)
+    bf_reflex = "BicycleFleet_Activator.Reflex"
+    bf_src = os.path.join(workspace_dir, bf_reflex)
+    if os.path.isdir(bf_src):
+        shutil.copytree(bf_src, os.path.join(stage_ws, bf_reflex))
+        patch_workspace_guid(os.path.join(stage_ws, bf_reflex), ws_id)
+        patch_alert_email(os.path.join(stage_ws, bf_reflex))
     deploy_types = ["Eventstream", "DataPipeline",
-                    "KQLDashboard", "DataAgent"]
+                    "KQLDashboard", "DataAgent", "Reflex"]
     print(f"   📦 Deploying: {', '.join(f.rsplit('.', 1)[0] for f in sum([item_index.get(t, []) for t in deploy_types], []))}")
     kwargs = {"repository_directory": stage_ws, "item_type_in_scope": deploy_types,
               "token_credential": credential}
@@ -560,7 +607,7 @@ def main():
     print("   ✅ Stage 5/5 complete")
 
     print(f"\n{'='*60}")
-    print("✅ ALL 23 ITEMS DEPLOYED SUCCESSFULLY")
+    print("✅ ALL 24 ITEMS DEPLOYED SUCCESSFULLY")
     print(f"{'='*60}")
 
     # ── Auto-fix placeholders ──
