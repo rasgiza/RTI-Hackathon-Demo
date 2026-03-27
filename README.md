@@ -188,6 +188,11 @@ Lakehouse, Eventhouse, KQL Database, Eventstream, Notebook (PySpark), Data Pipel
 
 ## Architecture
 
+![Architecture Diagram](images/architecture.png)
+
+<details>
+<summary>Text-based architecture diagram</summary>
+
 ```
  ┌───────────────────────────────────────────────────────────────────────────────┐
  │                     Microsoft Fabric — "Bike Rental Hackathon" Workspace      │
@@ -228,6 +233,8 @@ Lakehouse, Eventhouse, KQL Database, Eventstream, Notebook (PySpark), Data Pipel
  │               └────────────┘                           └────────────┘        │
  └───────────────────────────────────────────────────────────────────────────────┘
 ```
+
+</details>
 
 ### Data Flow Summary
 
