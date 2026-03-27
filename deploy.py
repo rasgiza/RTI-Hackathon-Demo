@@ -264,9 +264,16 @@ def main():
         print(f"❌ Cannot find workspace/ folder at: {workspace_dir}")
         sys.exit(1)
 
-    item_count = len([d for d in os.listdir(workspace_dir)
-                      if os.path.isdir(os.path.join(workspace_dir, d))])
-    print(f"📂 Found {item_count} items in workspace/")
+    # Build item-type index from folder names (e.g. "foo.Lakehouse" → type "Lakehouse")
+    all_items = [d for d in os.listdir(workspace_dir)
+                 if os.path.isdir(os.path.join(workspace_dir, d))]
+    print(f"📂 Found {len(all_items)} items in workspace/")
+
+    item_index = {}
+    for folder_name in all_items:
+        parts = folder_name.rsplit(".", 1)
+        if len(parts) == 2:
+            item_index.setdefault(parts[1], []).append(folder_name)
 
     # Resolve workspace target
     ws_id = WORKSPACE_ID
@@ -290,7 +297,11 @@ def main():
     print("\n🔐 Authenticating... (a browser window will open)")
     credential = InteractiveBrowserCredential()
 
-    # Deploy in 6 stages (each is a SEPARATE publish call)
+    # Deploy in 6 stages — each stage gets a PHYSICALLY ISOLATED temp directory
+    # containing ONLY that stage's folders to prevent fabric-cicd from seeing
+    # (and deploying) items from other stages.
+    import tempfile, shutil
+
     stages = [
         ("Stage 1/6: Lakehouses",          ["Lakehouse"]),
         ("Stage 2/6: Eventhouse",           ["Eventhouse"]),
@@ -306,7 +317,28 @@ def main():
         print(f"🚀 {label}")
         print(f"{'='*60}")
 
-        kwargs = {"repository_directory": workspace_dir,
+        # Collect folders for this stage
+        stage_folders = []
+        for it in item_types:
+            stage_folders.extend(item_index.get(it, []))
+
+        if not stage_folders:
+            print(f"   ⏭️  No items for types {item_types} — skipping")
+            continue
+
+        print(f"   📦 Items: {', '.join(f.rsplit('.', 1)[0] for f in stage_folders)}")
+
+        # Create isolated temp dir with ONLY this stage's folders
+        stage_dir = tempfile.mkdtemp(prefix="rti_stage_")
+        stage_ws_dir = os.path.join(stage_dir, "workspace")
+        os.makedirs(stage_ws_dir)
+
+        for folder_name in stage_folders:
+            src = os.path.join(workspace_dir, folder_name)
+            dst = os.path.join(stage_ws_dir, folder_name)
+            shutil.copytree(src, dst)
+
+        kwargs = {"repository_directory": stage_ws_dir,
                   "item_type_in_scope": item_types,
                   "token_credential": credential}
         if ws_id:
@@ -317,6 +349,8 @@ def main():
         ws = FabricWorkspace(**kwargs)
         publish_all_items(ws)
         print(f"   ✅ {label.split(':')[0]} complete")
+
+        shutil.rmtree(stage_dir, ignore_errors=True)
 
     print(f"\n{'='*60}")
     print("✅ ALL 26 ITEMS DEPLOYED SUCCESSFULLY")
