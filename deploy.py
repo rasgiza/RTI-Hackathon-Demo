@@ -287,7 +287,6 @@ def main():
         if not user_input:
             print("❌ No workspace specified. Exiting.")
             sys.exit(1)
-        # If it looks like a GUID, treat as ID; otherwise treat as name
         if len(user_input) == 36 and user_input.count("-") == 4:
             ws_id = user_input
         else:
@@ -297,77 +296,198 @@ def main():
     print("\n🔐 Authenticating... (a browser window will open)")
     credential = InteractiveBrowserCredential()
 
-    # Deploy in 6 stages — each stage gets a PHYSICALLY ISOLATED temp directory
-    # containing ONLY that stage's folders plus any reference folders needed
-    # for logicalId resolution. fabric-cicd resolves cross-item references
-    # by scanning the local directory, so dependent items must be present.
-    #
-    # Key: KQLDatabase has "parentEventhouseItemId" = Eventhouse logicalId.
-    # Eventstreams reference Lakehouse/KQLDatabase logicalIds, etc.
     import tempfile, shutil
 
-    # Each stage: (label, types_to_deploy, extra_reference_types)
-    stages = [
-        ("Stage 1/6: Lakehouses",          ["Lakehouse"],    []),
-        ("Stage 2/6: Eventhouse",           ["Eventhouse"],   []),
-        ("Stage 3/6: KQL Database",         ["KQLDatabase"],  ["Eventhouse"]),
-        ("Stage 4/6: Notebooks + Streams",  ["Notebook", "Eventstream"],
-         ["Lakehouse", "Eventhouse", "KQLDatabase"]),
-        ("Stage 5/6: Semantic Models + Pipeline",
-         ["SemanticModel", "DataPipeline"],
-         ["Lakehouse", "Notebook"]),
-        ("Stage 6/6: Report + Dashboard + Agents + Activators",
-         ["Report", "KQLDashboard", "DataAgent", "Reflex"],
-         ["Lakehouse", "Eventhouse", "KQLDatabase", "SemanticModel"]),
-    ]
+    # ── Helper: make isolated stage dir ──
+    def make_stage_dir(type_list):
+        sd = tempfile.mkdtemp(prefix="rti_stage_")
+        sw = os.path.join(sd, "workspace")
+        os.makedirs(sw)
+        folders = []
+        for t in type_list:
+            folders.extend(item_index.get(t, []))
+        for f in folders:
+            shutil.copytree(os.path.join(workspace_dir, f), os.path.join(sw, f))
+        return sd, sw, folders
 
-    for label, item_types, ref_types in stages:
-        print(f"\n{'='*60}")
-        print(f"🚀 {label}")
-        print(f"{'='*60}")
+    # ═══════════════════════════════════════════════════════════
+    # STAGE 1/5: Lakehouses
+    # ═══════════════════════════════════════════════════════════
+    print(f"\n{'='*60}")
+    print("🚀 Stage 1/5: Lakehouses")
+    print(f"{'='*60}")
+    stage_dir, stage_ws, folders = make_stage_dir(["Lakehouse"])
+    print(f"   📦 {', '.join(f.rsplit('.', 1)[0] for f in folders)}")
+    kwargs = {"repository_directory": stage_ws, "item_type_in_scope": ["Lakehouse"],
+              "token_credential": credential}
+    if ws_id:
+        kwargs["workspace_id"] = ws_id
+    else:
+        kwargs["workspace_name"] = ws_name
+    publish_all_items(FabricWorkspace(**kwargs))
+    shutil.rmtree(stage_dir, ignore_errors=True)
+    print("   ✅ Stage 1/5 complete")
 
-        # Collect primary folders for this stage
-        stage_folders = []
-        for it in item_types:
-            stage_folders.extend(item_index.get(it, []))
+    # ═══════════════════════════════════════════════════════════
+    # STAGE 2/5: Eventhouse
+    # ═══════════════════════════════════════════════════════════
+    print(f"\n{'='*60}")
+    print("🚀 Stage 2/5: Eventhouse")
+    print(f"{'='*60}")
+    stage_dir, stage_ws, folders = make_stage_dir(["Eventhouse"])
+    print(f"   📦 {', '.join(f.rsplit('.', 1)[0] for f in folders)}")
+    kwargs = {"repository_directory": stage_ws, "item_type_in_scope": ["Eventhouse"],
+              "token_credential": credential}
+    if ws_id:
+        kwargs["workspace_id"] = ws_id
+    else:
+        kwargs["workspace_name"] = ws_name
+    publish_all_items(FabricWorkspace(**kwargs))
+    shutil.rmtree(stage_dir, ignore_errors=True)
+    print("   ✅ Stage 2/5 complete")
 
-        if not stage_folders:
-            print(f"   ⏭️  No items for types {item_types} — skipping")
-            continue
+    # ═══════════════════════════════════════════════════════════
+    # STAGE 3/5: KQL Database (REST API — bypasses fabric-cicd)
+    # ═══════════════════════════════════════════════════════════
+    print(f"\n{'='*60}")
+    print("🚀 Stage 3/5: KQL Database (via REST API)")
+    print(f"{'='*60}")
 
-        # Also include reference folders (for logicalId resolution only)
-        ref_folders = []
-        for rt in ref_types:
-            ref_folders.extend(item_index.get(rt, []))
+    token = credential.get_token("https://api.fabric.microsoft.com/.default").token
+    hdrs = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
 
-        all_stage_folders = stage_folders + ref_folders
-        print(f"   📦 Deploying: {', '.join(f.rsplit('.', 1)[0] for f in stage_folders)}")
-        if ref_folders:
-            print(f"   🔗 References: {', '.join(f.rsplit('.', 1)[0] for f in ref_folders)}")
+    # Resolve ws_id if we only have name
+    target_ws_id = ws_id
+    if not target_ws_id:
+        target_ws_id = _resolve_workspace_id(hdrs, ws_name)
 
-        # Create isolated temp dir with stage + reference folders
-        stage_dir = tempfile.mkdtemp(prefix="rti_stage_")
-        stage_ws_dir = os.path.join(stage_dir, "workspace")
-        os.makedirs(stage_ws_dir)
+    # Find deployed Eventhouse
+    resp = requests.get(f"{API}/workspaces/{target_ws_id}/eventhouses", headers=hdrs)
+    resp.raise_for_status()
+    eventhouse_id = None
+    for eh in resp.json().get("value", []):
+        if eh["displayName"] == "bikerentaleventhouse":
+            eventhouse_id = eh["id"]
+            break
+    if not eventhouse_id:
+        raise RuntimeError("❌ Eventhouse not found")
+    print(f"   Found Eventhouse: {eventhouse_id}")
 
-        for folder_name in all_stage_folders:
-            src = os.path.join(workspace_dir, folder_name)
-            dst = os.path.join(stage_ws_dir, folder_name)
-            shutil.copytree(src, dst)
+    # Check if KQL DB exists
+    resp = requests.get(f"{API}/workspaces/{target_ws_id}/kqlDatabases", headers=hdrs)
+    resp.raise_for_status()
+    kqldb_id = None
+    for db in resp.json().get("value", []):
+        if db["displayName"] == "bikerentaleventhouse":
+            kqldb_id = db["id"]
+            break
 
-        kwargs = {"repository_directory": stage_ws_dir,
-                  "item_type_in_scope": item_types,
-                  "token_credential": credential}
-        if ws_id:
-            kwargs["workspace_id"] = ws_id
-        else:
-            kwargs["workspace_name"] = ws_name
+    if kqldb_id:
+        print(f"   ℹ️  KQL Database already exists: {kqldb_id}")
+    else:
+        print("   Creating KQL Database...")
+        create_body = {
+            "displayName": "bikerentaleventhouse",
+            "parentEventhouseItemId": eventhouse_id,
+            "creationPayload": {
+                "databaseType": "ReadWrite",
+                "oneLakeCachingPeriod": "P36500D",
+                "oneLakeStandardStoragePeriod": "P36500D",
+            },
+        }
+        resp = requests.post(f"{API}/workspaces/{target_ws_id}/kqlDatabases",
+                             headers=hdrs, json=create_body)
+        result = _wait_lro(resp, hdrs, "Create KQLDatabase")
+        if resp.status_code in (200, 201):
+            kqldb_id = resp.json().get("id")
+        elif result:
+            resp2 = requests.get(f"{API}/workspaces/{target_ws_id}/kqlDatabases", headers=hdrs)
+            for db in resp2.json().get("value", []):
+                if db["displayName"] == "bikerentaleventhouse":
+                    kqldb_id = db["id"]
+                    break
+        if not kqldb_id:
+            raise RuntimeError("❌ Failed to create KQL Database")
+        print(f"   ✅ Created: {kqldb_id}")
 
-        ws = FabricWorkspace(**kwargs)
-        publish_all_items(ws)
-        print(f"   ✅ {label.split(':')[0]} complete")
+    # Run schema KQL commands
+    print("   Running schema commands...")
+    schema_path = os.path.join(workspace_dir,
+                               "bikerentaleventhouse.KQLDatabase", "DatabaseSchema.kql")
+    if os.path.exists(schema_path):
+        resp = requests.get(f"{API}/workspaces/{target_ws_id}/kqlDatabases/{kqldb_id}",
+                            headers=hdrs)
+        if resp.status_code == 200:
+            props = resp.json().get("properties", {})
+            query_uri = props.get("queryUri") or props.get("parentEventhouseUri")
+            if query_uri:
+                with open(schema_path, "r", encoding="utf-8") as sf:
+                    schema_text = sf.read()
+                commands = []
+                current = []
+                for line in schema_text.split("\n"):
+                    s = line.strip()
+                    if s.startswith(".") and current:
+                        commands.append("\n".join(current))
+                        current = [line]
+                    elif s and not s.startswith("//"):
+                        current.append(line)
+                if current:
+                    commands.append("\n".join(current))
+                ok = 0
+                for cmd in commands:
+                    c = cmd.strip()
+                    if not c or c.startswith("//"):
+                        continue
+                    try:
+                        r = requests.post(f"{query_uri}/v1/rest/mgmt", headers=hdrs,
+                                          json={"csl": c, "db": "bikerentaleventhouse"})
+                        if r.status_code == 200:
+                            ok += 1
+                    except Exception:
+                        pass
+                print(f"   ✅ Schema: {ok}/{len(commands)} commands succeeded")
+    print("   ✅ Stage 3/5 complete")
 
-        shutil.rmtree(stage_dir, ignore_errors=True)
+    # ═══════════════════════════════════════════════════════════
+    # STAGE 4/5: Notebooks + Eventstreams
+    # ═══════════════════════════════════════════════════════════
+    print(f"\n{'='*60}")
+    print("🚀 Stage 4/5: Notebooks + Eventstreams")
+    print(f"{'='*60}")
+    all_except_kqldb = [t for t in item_index.keys() if t != "KQLDatabase"]
+    stage_dir, stage_ws, _ = make_stage_dir(all_except_kqldb)
+    deploy_types = ["Notebook", "Eventstream"]
+    print(f"   📦 Deploying: {', '.join(f.rsplit('.', 1)[0] for f in sum([item_index.get(t, []) for t in deploy_types], []))}")
+    kwargs = {"repository_directory": stage_ws, "item_type_in_scope": deploy_types,
+              "token_credential": credential}
+    if ws_id:
+        kwargs["workspace_id"] = ws_id
+    else:
+        kwargs["workspace_name"] = ws_name
+    publish_all_items(FabricWorkspace(**kwargs))
+    shutil.rmtree(stage_dir, ignore_errors=True)
+    print("   ✅ Stage 4/5 complete")
+
+    # ═══════════════════════════════════════════════════════════
+    # STAGE 5/5: Analytics + Presentation
+    # ═══════════════════════════════════════════════════════════
+    print(f"\n{'='*60}")
+    print("🚀 Stage 5/5: Analytics + Presentation")
+    print(f"{'='*60}")
+    stage_dir, stage_ws, _ = make_stage_dir(all_except_kqldb)
+    deploy_types = ["SemanticModel", "DataPipeline", "Report",
+                    "KQLDashboard", "DataAgent", "Reflex"]
+    print(f"   📦 Deploying: {', '.join(f.rsplit('.', 1)[0] for f in sum([item_index.get(t, []) for t in deploy_types], []))}")
+    kwargs = {"repository_directory": stage_ws, "item_type_in_scope": deploy_types,
+              "token_credential": credential}
+    if ws_id:
+        kwargs["workspace_id"] = ws_id
+    else:
+        kwargs["workspace_name"] = ws_name
+    publish_all_items(FabricWorkspace(**kwargs))
+    shutil.rmtree(stage_dir, ignore_errors=True)
+    print("   ✅ Stage 5/5 complete")
 
     print(f"\n{'='*60}")
     print("✅ ALL 26 ITEMS DEPLOYED SUCCESSFULLY")
