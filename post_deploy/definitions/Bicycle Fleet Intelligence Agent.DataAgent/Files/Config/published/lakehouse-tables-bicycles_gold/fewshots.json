@@ -1,0 +1,245 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/dataAgent/definition/fewShots/1.0.0/schema.json",
+  "fewShots": [
+    {
+      "id": "d79b94b9-eea6-48d9-ad2e-86ac353db335",
+      "question": "Which stations currently have the lowest bike availability?",
+      "query": "SELECT TOP 10 station_id, street_address, neighbourhood, bikes_available, total_docks, ROUND(utilization_pct * 100, 1) AS utilization_pct, operational_status FROM gold_station_snapshot ORDER BY bikes_available ASC"
+    },
+    {
+      "id": "4f872511-adf4-4e46-8988-2764aeb3d353",
+      "question": "What is the current status of all stations?",
+      "query": "SELECT station_id, street_address, neighbourhood, bikes_available, empty_docks, total_docks, ROUND(utilization_pct * 100, 1) AS utilization_pct, operational_status, needs_attention FROM gold_station_snapshot ORDER BY street_address"
+    },
+    {
+      "id": "42801613-7cde-44b0-aee5-7a9caaca7cf3",
+      "question": "Which stations need attention right now?",
+      "query": "SELECT station_id, street_address, neighbourhood, bikes_available, empty_docks, total_docks, ROUND(utilization_pct * 100, 1) AS utilization_pct, operational_status FROM gold_station_snapshot WHERE needs_attention = 1 ORDER BY bikes_available ASC"
+    },
+    {
+      "id": "ef9dde40-be49-4feb-a13e-32490b944a50",
+      "question": "How many stations are empty or full right now?",
+      "query": "SELECT SUM(CASE WHEN operational_status = 'empty' THEN 1 ELSE 0 END) AS empty_stations, SUM(CASE WHEN operational_status = 'full' THEN 1 ELSE 0 END) AS full_stations, SUM(CASE WHEN needs_attention = 1 THEN 1 ELSE 0 END) AS stations_needing_attention, COUNT(*) AS total_stations, ROUND(AVG(utilization_pct) * 100, 1) AS fleet_avg_utilization_pct FROM gold_station_snapshot"
+    },
+    {
+      "id": "e7ce6ff5-6ff1-4ad8-9650-6a6afd493089",
+      "question": "What is the average station utilization during morning rush hour?",
+      "query": "SELECT t.time_period, ROUND(AVG(r.avg_utilization) * 100, 1) AS avg_utilization_pct, SUM(r.event_count) AS total_events FROM gold_availability_recent r JOIN dim_time t ON r.time_key = t.time_key WHERE t.time_period = 'Morning Rush' GROUP BY t.time_period"
+    },
+    {
+      "id": "39eb1792-d65e-47a6-bbab-91825f5b1ff6",
+      "question": "How many critical availability events happened today?",
+      "query": "SELECT SUM(critical_events) AS critical_events, COUNT(DISTINCT station_key) AS affected_stations FROM gold_availability_recent WHERE critical_events > 0"
+    },
+    {
+      "id": "804787cf-f6d9-41ca-9a37-07cf45321bfc",
+      "question": "Show hourly utilization trend for the last 24 hours",
+      "query": "SELECT event_hour, ROUND(AVG(avg_utilization) * 100, 1) AS avg_utilization_pct, SUM(event_count) AS total_events, SUM(critical_events) AS critical_events FROM gold_availability_recent GROUP BY event_hour ORDER BY event_hour"
+    },
+    {
+      "id": "347e3869-3708-465d-8b97-280d64e49de7",
+      "question": "What happened at a specific station in the last 24 hours?",
+      "query": "SELECT r.event_hour, r.avg_bikes, r.min_bikes, r.max_bikes, s.total_docks, ROUND(r.avg_utilization * 100, 1) AS utilization_pct, r.event_count, r.critical_events, r.utilization_band FROM gold_availability_recent r JOIN dim_station s ON r.station_key = s.station_key WHERE s.street_address LIKE '%Hyde Park%' ORDER BY r.event_hour"
+    },
+    {
+      "id": "7f7d89f5-1273-4cde-b038-9f7413a52951",
+      "question": "Show me availability SLA by neighbourhood for the last 7 days",
+      "query": "SELECT s.neighbourhood, COUNT(*) AS total_events, SUM(CASE WHEN a.bikes_available > 0 AND a.empty_docks > 0 THEN 1 ELSE 0 END) AS sla_met_events, ROUND(100.0 * SUM(CASE WHEN a.bikes_available > 0 AND a.empty_docks > 0 THEN 1 ELSE 0 END) / NULLIF(COUNT(*), 0), 1) AS sla_pct FROM fact_availability a JOIN dim_station s ON a.station_key = s.station_key WHERE a.event_timestamp >= DATEADD(day, -7, GETDATE()) GROUP BY s.neighbourhood ORDER BY sla_pct ASC"
+    },
+    {
+      "id": "e1231d94-8cfb-41cf-87e3-fffa519d0f99",
+      "question": "What is the utilization distribution across all stations?",
+      "query": "SELECT utilization_band, COUNT(*) AS station_count, ROUND(100.0 * COUNT(*) / NULLIF(SUM(COUNT(*)) OVER(), 0), 1) AS pct_of_total FROM gold_availability_recent GROUP BY utilization_band ORDER BY station_count DESC"
+    },
+    {
+      "id": "cb095fbe-49ca-4650-88e4-3ca5f8edc031",
+      "question": "Which neighbourhoods have the highest demand right now?",
+      "query": "SELECT TOP 10 n.neighbourhood_name, d.event_count, d.demand_intensity, ROUND(d.avg_utilization * 100, 1) AS avg_utilization_pct, d.critical_events, d.demand_spike_count FROM fact_hourly_demand d JOIN dim_neighbourhood n ON d.neighbourhood_key = n.neighbourhood_key ORDER BY d.event_hour DESC, d.event_count DESC"
+    },
+    {
+      "id": "c7c73f69-0c9e-42f2-a791-191a599727c1",
+      "question": "Show me the hourly demand trend for today",
+      "query": "SELECT t.hour_label, t.time_period, SUM(d.event_count) AS total_events, ROUND(AVG(d.avg_utilization) * 100, 1) AS avg_utilization_pct, SUM(d.critical_events) AS critical_events, t.is_rush_hour FROM fact_hourly_demand d JOIN dim_time t ON d.time_key = t.time_key WHERE CAST(d.demand_date AS DATE) = CAST(GETDATE() AS DATE) GROUP BY t.hour_label, t.time_period, t.is_rush_hour, t.time_key ORDER BY t.time_key"
+    },
+    {
+      "id": "3dfb3923-1d63-451b-a82e-bebddf7cb3a6",
+      "question": "Compare rush hour vs off-peak demand across neighbourhoods",
+      "query": "SELECT n.neighbourhood_name, SUM(CASE WHEN d.is_rush_hour = 1 THEN d.event_count ELSE 0 END) AS rush_hour_demand, SUM(CASE WHEN d.is_rush_hour = 0 THEN d.event_count ELSE 0 END) AS off_peak_demand, ROUND(1.0 * SUM(CASE WHEN d.is_rush_hour = 1 THEN d.event_count ELSE 0 END) / NULLIF(SUM(CASE WHEN d.is_rush_hour = 0 THEN d.event_count ELSE 0 END), 0), 2) AS rush_to_offpeak_ratio FROM fact_hourly_demand d JOIN dim_neighbourhood n ON d.neighbourhood_key = n.neighbourhood_key GROUP BY n.neighbourhood_name ORDER BY rush_to_offpeak_ratio DESC"
+    },
+    {
+      "id": "3463b7ad-190c-45ce-af17-42341aeaa81f",
+      "question": "Which neighbourhoods experience the most demand spikes?",
+      "query": "SELECT TOP 10 n.neighbourhood_name, SUM(d.demand_spike_count) AS total_spikes, SUM(d.rebalance_triggers) AS rebalance_triggers, SUM(d.event_count) AS total_demand FROM fact_hourly_demand d JOIN dim_neighbourhood n ON d.neighbourhood_key = n.neighbourhood_key GROUP BY n.neighbourhood_name ORDER BY total_spikes DESC"
+    },
+    {
+      "id": "f13e4dbc-28b9-43ab-9aaf-4d3c2806fc09",
+      "question": "What stations need rebalancing most urgently?",
+      "query": "SELECT TOP 20 r.station_id, r.neighbourhood, r.bikes_available, r.empty_docks, r.total_docks, ROUND(r.utilization_pct * 100, 1) AS utilization_pct, r.priority_score, r.recommended_action, r.bikes_to_target, r.availability_status, ROUND(r.estimated_rebalance_cost, 2) AS cost_usd FROM fact_rebalancing r WHERE r.assessed_at = (SELECT MAX(assessed_at) FROM fact_rebalancing) ORDER BY r.priority_score DESC"
+    },
+    {
+      "id": "7ab64508-0224-46bd-abaf-6075d68d0b07",
+      "question": "What is the total rebalancing cost by neighbourhood?",
+      "query": "SELECT r.neighbourhood, COUNT(*) AS stations_needing_rebalance, SUM(ABS(r.bikes_to_target)) AS total_bikes_to_move, ROUND(SUM(r.estimated_rebalance_cost), 2) AS total_cost_usd, ROUND(AVG(r.priority_score), 2) AS avg_priority FROM fact_rebalancing r WHERE r.assessed_at = (SELECT MAX(assessed_at) FROM fact_rebalancing) AND r.recommended_action != 'none' GROUP BY r.neighbourhood ORDER BY total_cost_usd DESC"
+    },
+    {
+      "id": "86d23bb8-edb4-4f88-8594-bb13c9583ad7",
+      "question": "Show the breakdown of station availability status",
+      "query": "SELECT r.availability_status, COUNT(*) AS station_count, ROUND(100.0 * COUNT(*) / NULLIF(SUM(COUNT(*)) OVER(), 0), 1) AS pct_of_total, ROUND(AVG(r.utilization_pct) * 100, 1) AS avg_utilization_pct FROM fact_rebalancing r WHERE r.assessed_at = (SELECT MAX(assessed_at) FROM fact_rebalancing) GROUP BY r.availability_status ORDER BY station_count DESC"
+    },
+    {
+      "id": "1dd5258c-9c92-4d4a-b186-1fb01efecadb",
+      "question": "Which empty or critically low stations need bikes delivered?",
+      "query": "SELECT TOP 20 r.station_id, s.street_address, r.neighbourhood, r.bikes_available, r.total_docks, r.availability_status, r.bikes_to_target, r.recommended_action, ROUND(r.estimated_rebalance_cost, 2) AS cost_usd FROM fact_rebalancing r JOIN dim_station s ON r.station_key = s.station_key WHERE r.availability_status IN ('empty', 'critical_low') AND r.assessed_at = (SELECT MAX(assessed_at) FROM fact_rebalancing) ORDER BY r.priority_score DESC"
+    },
+    {
+      "id": "e5693747-7b58-40d5-91a5-d8cb91366b85",
+      "question": "What is the current weather and cycling comfort?",
+      "query": "SELECT TOP 1 w.observation_hour, w.weather_description, w.weather_category, w.weather_severity, w.temperature_c, w.feels_like_c, w.wind_speed_kmh, w.relative_humidity, w.cycling_comfort_index, w.has_precipitation, w.visibility_km, w.cloud_cover_pct FROM dim_weather w ORDER BY w.observation_hour DESC"
+    },
+    {
+      "id": "65cfc6ed-d2ad-4bd5-b4bc-7dd8b17579c8",
+      "question": "How does weather severity break down over the last week?",
+      "query": "SELECT w.weather_severity, COUNT(*) AS hours, ROUND(AVG(w.temperature_c), 1) AS avg_temp_c, ROUND(AVG(w.cycling_comfort_index), 1) AS avg_comfort, SUM(CASE WHEN w.has_precipitation = 1 THEN 1 ELSE 0 END) AS rain_hours FROM dim_weather w WHERE w.observation_hour >= DATEADD(day, -7, GETDATE()) GROUP BY w.weather_severity ORDER BY hours DESC"
+    },
+    {
+      "id": "fb9a4d61-8c4c-49e9-a1a6-52827491deb7",
+      "question": "What are the best and worst cycling hours based on comfort index?",
+      "query": "SELECT TOP 5 w.observation_hour, w.weather_description, w.temperature_c, w.wind_speed_kmh, w.cycling_comfort_index, CASE WHEN w.cycling_comfort_index >= 70 THEN 'Good' WHEN w.cycling_comfort_index >= 50 THEN 'Fair' ELSE 'Poor' END AS comfort_rating FROM dim_weather w WHERE w.observation_hour >= DATEADD(day, -1, GETDATE()) ORDER BY w.cycling_comfort_index DESC"
+    },
+    {
+      "id": "63feeaf0-4350-4040-9c40-fef936269d63",
+      "question": "How does weather impact bike demand across neighbourhoods?",
+      "query": "SELECT TOP 20 wi.neighbourhood, wi.weather_category, wi.weather_severity, wi.event_count AS raw_demand, ROUND(wi.weather_adjusted_demand, 0) AS adjusted_demand, ROUND(wi.weather_demand_impact, 3) AS impact_multiplier, wi.impact_category, wi.cycling_comfort_index FROM fact_weather_impact wi ORDER BY wi.event_hour DESC, ABS(wi.weather_demand_impact - 1.0) DESC"
+    },
+    {
+      "id": "900532b7-df07-4cd0-b7d7-12dee436b11d",
+      "question": "Which weather conditions suppress demand the most?",
+      "query": "SELECT wi.weather_category, wi.weather_severity, COUNT(*) AS observations, ROUND(AVG(wi.weather_demand_impact), 3) AS avg_impact_multiplier, ROUND(AVG(wi.demand_gap), 1) AS avg_demand_gap, ROUND(AVG(wi.cycling_comfort_index), 1) AS avg_comfort FROM fact_weather_impact wi WHERE wi.weather_demand_impact < 1.0 GROUP BY wi.weather_category, wi.weather_severity ORDER BY avg_impact_multiplier ASC"
+    },
+    {
+      "id": "7724f496-96de-4533-8f59-d73818ef84e8",
+      "question": "Show the weather impact distribution by category",
+      "query": "SELECT wi.impact_category, COUNT(*) AS event_count, ROUND(AVG(wi.weather_demand_impact), 3) AS avg_multiplier, ROUND(AVG(wi.temperature_c), 1) AS avg_temp, ROUND(AVG(wi.cycling_comfort_index), 1) AS avg_comfort, SUM(CASE WHEN wi.has_precipitation = 1 THEN 1 ELSE 0 END) AS precipitation_hours FROM fact_weather_impact wi GROUP BY wi.impact_category ORDER BY avg_multiplier ASC"
+    },
+    {
+      "id": "bae33977-049e-49bc-852e-78159a472f69",
+      "question": "How does rain affect demand compared to sunny weather?",
+      "query": "SELECT wi.weather_category, COUNT(*) AS hours_observed, ROUND(AVG(wi.event_count), 0) AS avg_raw_demand, ROUND(AVG(wi.weather_adjusted_demand), 0) AS avg_adjusted_demand, ROUND(AVG(wi.weather_demand_impact), 3) AS avg_impact_multiplier FROM fact_weather_impact wi WHERE wi.weather_category IN ('Sunny/Clear', 'Rain') GROUP BY wi.weather_category"
+    },
+    {
+      "id": "827a12a0-1fee-499c-abf3-61f1a182246c",
+      "question": "What are the demand forecasts for the next 24 hours?",
+      "query": "SELECT f.forecast_hour, f.neighbourhood, f.predicted_demand, f.demand_lower_bound, f.demand_upper_bound, f.demand_tier, f.is_rush_hour, f.pre_position_recommended FROM forecast_demand f WHERE f.forecast_hour >= GETDATE() AND f.forecast_hour < DATEADD(hour, 24, GETDATE()) ORDER BY f.forecast_hour, f.predicted_demand DESC"
+    },
+    {
+      "id": "909d02c2-4625-4348-b628-95bde5310688",
+      "question": "Which neighbourhoods need pre-positioning of bikes?",
+      "query": "SELECT f.neighbourhood, f.forecast_hour, f.predicted_demand, f.demand_tier, f.demand_upper_bound FROM forecast_demand f WHERE f.pre_position_recommended = 1 AND f.forecast_hour >= GETDATE() ORDER BY f.forecast_hour, f.predicted_demand DESC"
+    },
+    {
+      "id": "16ba3282-af85-49d0-86c1-6bb7f2b22351",
+      "question": "Compare predicted vs actual demand for today",
+      "query": "SELECT f.neighbourhood, f.forecast_hour, ROUND(f.predicted_demand, 0) AS predicted, d.event_count AS actual, ROUND(ABS(f.predicted_demand - d.event_count), 0) AS absolute_error, f.model_quality FROM forecast_demand f LEFT JOIN fact_hourly_demand d ON f.neighbourhood = (SELECT n.neighbourhood_name FROM dim_neighbourhood n WHERE n.neighbourhood_key = d.neighbourhood_key) AND f.forecast_hour = d.event_hour WHERE CAST(f.forecast_hour AS DATE) = CAST(GETDATE() AS DATE) ORDER BY f.forecast_hour, f.neighbourhood"
+    },
+    {
+      "id": "9f9a2620-5974-4321-890c-4c0eecf31fc0",
+      "question": "Weekend vs weekday demand comparison",
+      "query": "SELECT CASE WHEN dd.is_weekend = 1 THEN 'Weekend' ELSE 'Weekday' END AS day_type, SUM(d.event_count) AS total_demand, ROUND(AVG(d.avg_utilization) * 100, 1) AS avg_utilization_pct, SUM(d.critical_events) AS total_critical, SUM(d.demand_spike_count) AS total_spikes FROM fact_hourly_demand d JOIN dim_date dd ON CAST(d.demand_date AS DATE) = dd.date_value GROUP BY dd.is_weekend"
+    },
+    {
+      "id": "bfdac2ab-09fb-41d1-8be6-c36a7163827b",
+      "question": "What is the seasonal demand pattern?",
+      "query": "SELECT dd.season, SUM(d.event_count) AS total_demand, ROUND(AVG(d.avg_utilization) * 100, 1) AS avg_utilization_pct, SUM(d.critical_events) AS total_critical, COUNT(DISTINCT dd.date_value) AS days_in_season FROM fact_hourly_demand d JOIN dim_date dd ON CAST(d.demand_date AS DATE) = dd.date_value GROUP BY dd.season ORDER BY total_demand DESC"
+    },
+    {
+      "id": "739a0ef6-0223-4020-9921-bc3ef6bf938c",
+      "question": "List all neighbourhoods with their health scores and capacity status",
+      "query": "SELECT neighbourhood_name, station_count, total_capacity, total_bikes_available, total_empty_docks, ROUND(neighbourhood_utilization_pct * 100, 1) AS utilization_pct, health_score, capacity_status, empty_stations, full_stations, stations_needing_rebalance, density_tier FROM dim_neighbourhood ORDER BY health_score ASC"
+    },
+    {
+      "id": "08cebbb5-ac65-450a-ad87-900f31e4d50d",
+      "question": "Which neighbourhoods have the most stations needing rebalance?",
+      "query": "SELECT neighbourhood_name, stations_needing_rebalance, station_count, ROUND(100.0 * stations_needing_rebalance / NULLIF(station_count, 0), 1) AS pct_needing_rebalance, health_score, capacity_status FROM dim_neighbourhood WHERE stations_needing_rebalance > 0 ORDER BY stations_needing_rebalance DESC"
+    },
+    {
+      "id": "4f244e3b-cf0b-48b8-b632-9ab0fdf34139",
+      "question": "How does temperature correlate with cycling demand?",
+      "query": "SELECT CASE WHEN wi.temperature_c < 0 THEN 'Below 0°C' WHEN wi.temperature_c < 10 THEN '0-10°C' WHEN wi.temperature_c < 20 THEN '10-20°C' WHEN wi.temperature_c < 30 THEN '20-30°C' ELSE '30+°C' END AS temp_range, COUNT(*) AS observations, ROUND(AVG(wi.event_count), 0) AS avg_demand, ROUND(AVG(wi.weather_demand_impact), 3) AS avg_impact, ROUND(AVG(wi.cycling_comfort_index), 1) AS avg_comfort FROM fact_weather_impact wi GROUP BY CASE WHEN wi.temperature_c < 0 THEN 'Below 0°C' WHEN wi.temperature_c < 10 THEN '0-10°C' WHEN wi.temperature_c < 20 THEN '10-20°C' WHEN wi.temperature_c < 30 THEN '20-30°C' ELSE '30+°C' END ORDER BY avg_demand DESC"
+    },
+    {
+      "id": "44ba1e44-eace-4391-8c07-6b9275bd5601",
+      "question": "What is the fleet utilization summary across all station sizes?",
+      "query": "SELECT s.station_size, COUNT(DISTINCT s.station_key) AS station_count, SUM(s.total_docks) AS total_capacity, ROUND(AVG(s.current_utilization_pct) * 100, 1) AS avg_utilization_pct, SUM(CASE WHEN s.rebalance_priority > 0.7 THEN 1 ELSE 0 END) AS high_priority_stations FROM dim_station s GROUP BY s.station_size ORDER BY avg_utilization_pct DESC"
+    },
+    {
+      "id": "73382070-2058-4285-86f4-bcf6b2145013",
+      "question": "Show me demand by time period with weather impact",
+      "query": "SELECT t.time_period, t.is_rush_hour, SUM(wi.event_count) AS raw_demand, ROUND(SUM(wi.weather_adjusted_demand), 0) AS adjusted_demand, ROUND(AVG(wi.weather_demand_impact), 3) AS avg_weather_multiplier, ROUND(AVG(wi.cycling_comfort_index), 1) AS avg_comfort FROM fact_weather_impact wi JOIN dim_time t ON wi.time_key = t.time_key GROUP BY t.time_period, t.is_rush_hour ORDER BY raw_demand DESC"
+    },
+    {
+      "id": "01331c44-3941-4954-8535-9145e8847964",
+      "question": "What is the forecast accuracy by neighbourhood?",
+      "query": "SELECT f.neighbourhood, COUNT(*) AS forecast_count, ROUND(AVG(f.predicted_demand), 0) AS avg_predicted, ROUND(AVG(f.demand_upper_bound - f.demand_lower_bound), 1) AS avg_confidence_width, SUM(CASE WHEN f.pre_position_recommended = 1 THEN 1 ELSE 0 END) AS pre_position_hours, f.model_quality FROM forecast_demand f GROUP BY f.neighbourhood, f.model_quality ORDER BY avg_predicted DESC"
+    },
+    {
+      "id": "667bbd78-b679-4c76-8873-a5ab147f649c",
+      "question": "Show rebalancing cost vs priority for large stations",
+      "query": "SELECT TOP 20 r.station_id, r.neighbourhood, r.station_size, r.total_docks, r.bikes_available, ROUND(r.utilization_pct * 100, 1) AS utilization_pct, r.priority_score, r.recommended_action, r.bikes_to_target, ROUND(r.estimated_rebalance_cost, 2) AS cost_usd FROM fact_rebalancing r WHERE r.station_size = 'large' AND r.assessed_at = (SELECT MAX(assessed_at) FROM fact_rebalancing) ORDER BY r.priority_score DESC"
+    },
+    {
+      "id": "c1059fa1-bac5-4f62-adc9-494d50c11194",
+      "question": "What is the overall fleet health dashboard summary?",
+      "query": "SELECT (SELECT COUNT(*) FROM gold_station_snapshot) AS total_stations, (SELECT SUM(total_docks) FROM gold_station_snapshot) AS total_fleet_capacity, (SELECT ROUND(AVG(utilization_pct) * 100, 1) FROM gold_station_snapshot) AS avg_utilization_pct, (SELECT SUM(CAST(needs_attention AS INT)) FROM gold_station_snapshot) AS stations_needing_attention, (SELECT ROUND(AVG(health_score), 1) FROM dim_neighbourhood) AS avg_neighbourhood_health, (SELECT TOP 1 cycling_comfort_index FROM dim_weather ORDER BY observation_hour DESC) AS current_comfort_index"
+    },
+    {
+      "id": "1f2666ae-5ecd-412f-a4bf-d8974a476586",
+      "question": "Which stations in a specific neighbourhood have the highest rebalance priority?",
+      "query": "SELECT TOP 10 r.station_id, s.street_address, r.bikes_available, r.total_docks, ROUND(r.utilization_pct * 100, 1) AS utilization_pct, r.priority_score, r.recommended_action, r.bikes_to_target, r.availability_status FROM fact_rebalancing r JOIN dim_station s ON r.station_key = s.station_key WHERE r.neighbourhood = 'Downtown' AND r.assessed_at = (SELECT MAX(assessed_at) FROM fact_rebalancing) ORDER BY r.priority_score DESC"
+    },
+    {
+      "id": "2973550e-92b3-4757-8e23-62a0e60d86ac",
+      "question": "How has weather severity changed hour by hour today?",
+      "query": "SELECT w.observation_hour, w.weather_description, w.weather_severity, w.temperature_c, w.feels_like_c, w.wind_speed_kmh, w.cycling_comfort_index, w.has_precipitation FROM dim_weather w WHERE CAST(w.observation_hour AS DATE) = CAST(GETDATE() AS DATE) ORDER BY w.observation_hour"
+    },
+    {
+      "id": "79e3a5a0-e68b-4dd6-bb7a-ba4295fc754d",
+      "question": "Which premium customers are near Sands End?",
+      "query": "SELECT CustomerID, FirstName, LastName, Email, MembershipTier, RiderSegment, Neighbourhood FROM dim_customers WHERE Neighbourhood = 'Sands End' AND MembershipTier IN ('Annual', 'Corporate') AND AccountStatus = 'Active' ORDER BY MembershipTier, LastName"
+    },
+    {
+      "id": "0a3d67f2-8839-44db-83ac-d61b46a24e10",
+      "question": "How many customers are in each neighbourhood by membership tier?",
+      "query": "SELECT Neighbourhood, MembershipTier, COUNT(*) AS customer_count FROM dim_customers WHERE AccountStatus = 'Active' GROUP BY Neighbourhood, MembershipTier ORDER BY Neighbourhood, customer_count DESC"
+    },
+    {
+      "id": "590826af-ac16-4a9c-8fdb-34d3d9ef1f09",
+      "question": "Which customers opted in for marketing in affected areas?",
+      "query": "SELECT CustomerID, FirstName, LastName, Email, Neighbourhood, MembershipTier, RiderSegment FROM dim_customers WHERE MarketingOptIn = 1 AND AccountStatus = 'Active' ORDER BY Neighbourhood, MembershipTier"
+    },
+    {
+      "id": "f7082a03-5655-4058-a5b4-1b2b388fdc79",
+      "question": "Show me the customer impact for stations needing attention",
+      "query": "SELECT c.Neighbourhood, c.MembershipTier, COUNT(*) AS affected_customers, STRING_AGG(CONCAT(c.FirstName, ' ', c.LastName), ', ') AS customer_names FROM dim_customers c WHERE c.AccountStatus = 'Active' AND c.Neighbourhood IN (SELECT DISTINCT neighbourhood FROM gold_station_snapshot WHERE needs_attention = 1) GROUP BY c.Neighbourhood, c.MembershipTier ORDER BY affected_customers DESC"
+    },
+    {
+      "id": "bbafe867-2d37-4fd0-a26e-23c894550bd4",
+      "question": "What is the revenue risk from station outages by customer tier?",
+      "query": "SELECT c.MembershipTier, COUNT(*) AS affected_customers, CASE WHEN c.MembershipTier = 'Corporate' THEN COUNT(*) * 50 WHEN c.MembershipTier = 'Annual' THEN COUNT(*) * 30 WHEN c.MembershipTier = 'Casual' THEN COUNT(*) * 10 ELSE 0 END AS estimated_daily_revenue_risk_gbp FROM dim_customers c WHERE c.AccountStatus = 'Active' AND c.Neighbourhood IN (SELECT DISTINCT neighbourhood FROM gold_station_snapshot WHERE needs_attention = 1) GROUP BY c.MembershipTier ORDER BY estimated_daily_revenue_risk_gbp DESC"
+    },
+    {
+      "id": "9de75d8f-26d9-485e-8568-b45f5d1eaed6",
+      "question": "Which customers should we notify about bad cycling weather today?",
+      "query": "SELECT c.CustomerID, c.FirstName, c.LastName, c.Email, c.Neighbourhood, c.MembershipTier, c.RiderSegment, w.weather_description, w.weather_severity, w.cycling_comfort_index FROM dim_customers c CROSS JOIN (SELECT TOP 1 weather_description, weather_severity, cycling_comfort_index FROM dim_weather ORDER BY observation_hour DESC) w WHERE c.AccountStatus = 'Active' AND c.MarketingOptIn = 1 AND w.cycling_comfort_index < 50 ORDER BY c.Neighbourhood, c.MembershipTier"
+    },
+    {
+      "id": "92da8a47-22fa-4372-a949-244c5c3a2dca",
+      "question": "Which customers are near neighbourhoods where we need to pre-position bikes?",
+      "query": "SELECT c.CustomerID, c.FirstName, c.LastName, c.Email, c.Neighbourhood, c.MembershipTier, f.forecast_hour, f.predicted_demand, f.demand_tier FROM dim_customers c JOIN forecast_demand f ON c.Neighbourhood = f.neighbourhood WHERE c.AccountStatus = 'Active' AND f.pre_position_recommended = 1 AND f.forecast_hour >= GETDATE() ORDER BY f.forecast_hour, c.Neighbourhood, c.MembershipTier"
+    },
+    {
+      "id": "6fe77962-0f6b-43cc-bfc5-80a74376347d",
+      "question": "Show Casual members in high-demand neighbourhoods as upsell candidates",
+      "query": "SELECT c.CustomerID, c.FirstName, c.LastName, c.Email, c.Neighbourhood, c.RiderSegment, c.MemberSince, d.event_count AS recent_demand, d.demand_intensity FROM dim_customers c JOIN fact_hourly_demand d ON c.Neighbourhood = (SELECT n.neighbourhood_name FROM dim_neighbourhood n WHERE n.neighbourhood_key = d.neighbourhood_key) WHERE c.MembershipTier = 'Casual' AND c.AccountStatus = 'Active' AND d.demand_intensity IN ('high', 'very_high') AND d.event_hour >= DATEADD(hour, -24, GETDATE()) ORDER BY d.event_count DESC"
+    }
+  ]
+}

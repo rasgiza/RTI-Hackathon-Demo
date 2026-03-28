@@ -657,10 +657,10 @@ def main():
             else:
                 print(f"   ❌ Eventstream '{es_name}' HTTP {resp.status_code}: {resp.text[:400]}")
 
-    # --- 5b: Pipeline + Dashboard + Agents via fabric-cicd ---
-    stage_dir, stage_ws, _ = make_stage_dir(["DataPipeline", "KQLDashboard", "DataAgent"],
+    # --- 5b: Pipeline + Dashboard via fabric-cicd ---
+    stage_dir, stage_ws, _ = make_stage_dir(["DataPipeline", "KQLDashboard"],
                                             ref_types=["KQLDatabase", "Lakehouse", "Eventhouse", "Eventstream", "Notebook", "SemanticModel"])
-    deploy_types = ["DataPipeline", "KQLDashboard", "DataAgent"]
+    deploy_types = ["DataPipeline", "KQLDashboard"]
     # Sanitize pipeline: strip activities with unresolvable externalReferences
     for pl_folder in item_index.get("DataPipeline", []):
         pl_path = os.path.join(stage_ws, pl_folder, "pipeline-content.json")
@@ -689,7 +689,7 @@ def main():
     print("   ✅ Stage 5/5 complete")
 
     print(f"\n{'='*60}")
-    print("✅ ALL 23 ITEMS DEPLOYED SUCCESSFULLY")
+    print("✅ ALL 21 ITEMS DEPLOYED SUCCESSFULLY")
     print(f"{'='*60}")
 
     # ── Auto-fix placeholders ──

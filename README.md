@@ -1,6 +1,6 @@
 # Bicycle Real-Time Intelligence — Hackathon Demo
 
-A **complete, one-click deployable** Real-Time Intelligence (RTI) solution on Microsoft Fabric. This repo packages 28 Fabric items (23 automated + 5 post-deploy) — from streaming eventstreams to ontology-backed AI agents — into a self-contained project that any teammate can deploy to their own workspace in under 15 minutes.
+A **complete, one-click deployable** Real-Time Intelligence (RTI) solution on Microsoft Fabric. This repo packages 28 Fabric items (21 automated + 7 post-deploy) — from streaming eventstreams to ontology-backed AI agents — into a self-contained project that any teammate can deploy to their own workspace in under 15 minutes.
 
 ---
 
@@ -445,20 +445,20 @@ The `Post_Deploy_Setup.ipynb` notebook programmatically deploys 3 items that `fa
 | 19 | `Bicycle Ontology Model` | SemanticModel | Direct Lake — entity relationships (12 tables) |
 | 20 | `PL_BicycleRTI_Medallion` | DataPipeline | 5 activities: Bronze → Silver → Gold → ML → Ontology |
 | 21 | `Bicycle Fleet Intelligence — Live Operations` | KQLDashboard | Real-time KQL visuals |
-| 22 | `Bicycle Fleet Intelligence Agent` | DataAgent | NL→SQL across lakehouse + SM + graph |
-| 23 | `ontology data agent` | DataAgent | Graph-backed ontology reasoning |
 
-> **Not deployed automatically:** `Bicycle Fleet Operations Report` (Report — enhanced format, needs manual creation), both Activators (Reflex — `fabric-cicd` doesn't support Reflex, deployed in Post_Deploy_Setup via REST API).
+> **Not deployed automatically:** `Bicycle Fleet Operations Report` (Report — enhanced format, needs manual creation), both DataAgents (complex datasource configs with artifact GUIDs), both Activators (Reflex — `fabric-cicd` doesn't support Reflex). All deployed in Post_Deploy_Setup via REST API.
 
-### Post-Deploy (5 items via REST APIs — Post_Deploy_Setup.ipynb)
+### Post-Deploy (7 items via REST APIs — Post_Deploy_Setup.ipynb)
 
 | # | Item | Type | API | Description |
 |---|------|------|-----|-------------|
-| 25 | `Bicycle_Ontology_Model_New` | Ontology | `/ontologies` + `/updateDefinition` | 12 entity types, 23 relationships, 12 data bindings, 23 contextualizations |
-| 26 | `Bicycle_Ontology_Model_New_graph` | GraphModel | `/graphModels` + `/updateDefinition` | 4-part visual graph (graphType, dataSources, graphDefinition, styling) |
-| 27 | `Cycling-Campaign-Agent` | OperationsAgent | `/items` | Campaign automation agent |
-| 28 | `BicycleFleet_Activator` | Reflex | `/items` | 4 rules: Empty Station, Full Station, Low Availability, High Demand |
-| 29 | `Cycling Campaign Activator` | Reflex | `/items` | 3 rules: High Demand Forecast (Teams), Station Critical (Teams), Cycling Campaign (Power Automate) |
+| 22 | `Bicycle Fleet Intelligence Agent` | DataAgent | `/items` | NL→SQL across lakehouse + SM + graph |
+| 23 | `ontology data agent` | DataAgent | `/items` | Graph-backed ontology reasoning |
+| 24 | `Bicycle_Ontology_Model_New` | Ontology | `/ontologies` + `/updateDefinition` | 12 entity types, 23 relationships, 12 data bindings, 23 contextualizations |
+| 25 | `Bicycle_Ontology_Model_New_graph` | GraphModel | `/graphModels` + `/updateDefinition` | 4-part visual graph (graphType, dataSources, graphDefinition, styling) |
+| 26 | `Cycling-Campaign-Agent` | OperationsAgent | `/items` | Campaign automation agent |
+| 27 | `BicycleFleet_Activator` | Reflex | `/items` | 4 rules: Empty Station, Full Station, Low Availability, High Demand |
+| 28 | `Cycling Campaign Activator` | Reflex | `/items` | 3 rules: High Demand Forecast (Teams), Station Critical (Teams), Cycling Campaign (Power Automate) |
 
 ### Activator / Reflex Items (manual setup)
 

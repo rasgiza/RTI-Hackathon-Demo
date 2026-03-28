@@ -1,0 +1,215 @@
+{
+
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/dataAgent/definition/dataSource/1.0.0/schema.json",
+
+  "artifactId": "__ONTOLOGY_FLEET__",
+
+  "workspaceId": "573cc7c7-a45a-4fd9-886e-9db4e9798db4",
+
+  "dataSourceInstructions": null,
+
+  "displayName": "Bicycle_Fleet_Ontology",
+
+  "type": "ontology",
+
+  "userDescription": null,
+
+  "metadata": {},
+
+  "elements": [
+
+    {
+
+      "id": "AvailabilityEvent",
+
+      "is_selected": true,
+
+      "display_name": "AvailabilityEvent",
+
+      "type": "ontology.entity",
+
+      "description": "availability_key,station_key,event_id,event_timestamp,event_date,time_key,bikes_available,empty_docks,total_docks,utilization_pct,event_type,is_critical,availability_band,is_rush_hour,time_period,date_key",
+
+      "children": []
+
+    },
+
+    {
+
+      "id": "HourlyDemand",
+
+      "is_selected": true,
+
+      "display_name": "HourlyDemand",
+
+      "type": "ontology.entity",
+
+      "description": "demand_key,neighbourhood_key,event_hour,demand_date,time_key,event_count,avg_utilization,min_bikes,max_bikes,avg_bikes,critical_events,rebalance_triggers,demand_spike_count,active_stations,is_rush_hour,demand_intensity,date_key",
+
+      "children": []
+
+    },
+
+    {
+
+      "id": "RebalancingAssessment",
+
+      "is_selected": true,
+
+      "display_name": "RebalancingAssessment",
+
+      "type": "ontology.entity",
+
+      "description": "rebalance_key,station_key,station_id,neighbourhood,bikes_available,empty_docks,total_docks,utilization_pct,priority_score,recommended_action,bikes_to_target,availability_status,station_size,assessed_at,estimated_rebalance_cost,neighbourhood_key,time_key,weather_key,date_key",
+
+      "children": []
+
+    },
+
+    {
+
+      "id": "DemandForecast",
+
+      "is_selected": true,
+
+      "display_name": "DemandForecast",
+
+      "type": "ontology.entity",
+
+      "description": "forecast_hour,neighbourhood,hour_of_day,day_of_week,is_rush_hour,is_weekend,predicted_demand,demand_lower_bound,demand_upper_bound,demand_tier,pre_position_recommended,forecast_generated_at,model_quality,forecast_key",
+
+      "children": []
+
+    },
+
+    {
+
+      "id": "WeatherImpact",
+
+      "is_selected": true,
+
+      "display_name": "WeatherImpact",
+
+      "type": "ontology.entity",
+
+      "description": "weather_impact_key,weather_key,neighbourhood_key,time_key,event_hour,impact_date,neighbourhood,event_count,weather_adjusted_demand,weather_demand_impact,temperature_c,feels_like_c,wind_speed_kmh,has_precipitation,cloud_cover_pct,cycling_comfort_index,weather_severity,weather_category,weather_description,visibility_km,impact_category,demand_gap,loaded_at,date_key",
+
+      "children": []
+
+    },
+
+    {
+
+      "id": "WeatherObservation",
+
+      "is_selected": true,
+
+      "display_name": "WeatherObservation",
+
+      "type": "ontology.entity",
+
+      "description": "weather_key,observation_hour,observation_date,time_key,weather_description,weather_category,weather_severity,has_precipitation,temperature_c,feels_like_c,relative_humidity,wind_speed_kmh,wind_gust_kmh,wind_direction_desc,visibility_km,cloud_cover_pct,pressure_mb,uv_index,is_daytime,cycling_comfort_index,icon_code,weather_latitude,weather_longitude,location_name,loaded_at",
+
+      "children": []
+
+    },
+
+    {
+
+      "id": "CalendarDate",
+
+      "is_selected": true,
+
+      "display_name": "CalendarDate",
+
+      "type": "ontology.entity",
+
+      "description": "date_key,date_value,year,quarter,month_num,month_name,week_of_year,day_of_month,day_of_week,day_name,is_weekend,season",
+
+      "children": []
+
+    },
+
+    {
+
+      "id": "Station",
+
+      "is_selected": true,
+
+      "display_name": "Station",
+
+      "type": "ontology.entity",
+
+      "description": "station_key,station_id,street_address,neighbourhood,latitude,longitude,total_docks,station_size,current_status,current_utilization_pct,rebalance_priority,zone,loaded_at",
+
+      "children": []
+
+    },
+
+    {
+
+      "id": "Neighbourhood",
+
+      "is_selected": true,
+
+      "display_name": "Neighbourhood",
+
+      "type": "ontology.entity",
+
+      "description": "neighbourhood_key,neighbourhood_name,station_count,total_capacity,total_bikes_available,total_empty_docks,neighbourhood_utilization_pct,avg_utilization_pct,health_score,capacity_status,empty_stations,full_stations,stations_needing_rebalance,centroid_lat,centroid_lon,density_tier,loaded_at",
+
+      "children": []
+
+    },
+
+    {
+
+      "id": "TimeSlot",
+
+      "is_selected": true,
+
+      "display_name": "TimeSlot",
+
+      "type": "ontology.entity",
+
+      "description": "time_key,hour_of_day,hour_label,time_period,is_rush_hour,am_pm,demand_tier",
+
+      "children": []
+
+    },
+
+    {
+
+      "id": "StationSnapshot",
+
+      "is_selected": true,
+
+      "display_name": "StationSnapshot",
+
+      "type": "ontology.entity",
+
+      "description": "station_key,station_id,street_address,neighbourhood,latitude,longitude,total_docks,station_size,zone,bikes_available,empty_docks,utilization_pct,availability_band,is_critical,last_event_at,last_event_type,rebalance_priority,operational_status,needs_attention,snapshot_at",
+
+      "children": []
+
+    },
+
+    {
+
+      "id": "RecentAvailability",
+
+      "is_selected": true,
+
+      "display_name": "RecentAvailability",
+
+      "type": "ontology.entity",
+
+      "description": "recent_key,station_key,station_id,street_address,neighbourhood,zone,event_hour,event_date,time_key,event_count,avg_bikes,min_bikes,max_bikes,avg_empty_docks,avg_utilization,critical_events,utilization_band,loaded_at,date_key",
+
+      "children": []
+
+    }
+
+  ]
+
+}
