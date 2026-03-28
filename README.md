@@ -309,7 +309,8 @@ git clone https://github.com/kwamesefah_microsoft/RTI-Hackathon-Demo.git
 1. In your Fabric workspace, create a new **Lakehouse** (name it `deploy_staging`)
 2. Open it → click **Upload → Upload folder**
 3. Select the `workspace` folder from the cloned repo
-4. Wait for upload to complete — you'll see ~26 sub-folders under `Files/workspace/`
+4. Upload the `post_deploy` folder the same way (used by `Post_Deploy_Setup.ipynb` in Step 6)
+5. Wait for uploads to complete — you'll see ~26 sub-folders under `Files/workspace/` and a `Files/post_deploy/` folder with definition JSON files
 
 #### Step 3: Upload and run the deploy notebook
 
@@ -341,12 +342,18 @@ The pipeline processes Bronze → Silver → Gold → ML → Ontology. **It requ
    - Open each model → click **Refresh now**
    - (Cell 3 removed the auto-refresh pipeline activity because it needs a connection that can't be created programmatically)
 
-#### Step 6: Deploy Ontology + Graph + Operations Agent
+#### Step 6: Deploy Ontology + Graph + Operations Agent + DataAgents + Activators
 
-Upload `Post_Deploy_Setup.ipynb` to your workspace and **Run all cells**. This creates:
+> **Pre-requisite:** The `post_deploy/` folder must already be uploaded to the `deploy_staging` lakehouse (Step 2, item 4). The notebook reads definition JSON files from `Files/post_deploy/definitions/`.
+
+Upload `Post_Deploy_Setup.ipynb` to your workspace and **Run all cells**. This creates all 7 post-deploy items:
 - **Bicycle_Ontology_Model_New** — Ontology with 12 entity types, 23 relationship types
 - **Bicycle_Ontology_Model_New_graph** — Graph Model linked to bicycles_gold lakehouse
 - **Cycling-Campaign-Agent** — Operations Agent for campaign automation
+- **Bicycle Fleet Data Agent** — Data Agent wired to bicycles_gold + Ontology semantic model
+- **Bicycle Ontology Data Agent** — Data Agent wired to Ontology semantic model
+- **BicycleFleet_Activator** — Reflex Activator for fleet alerts (connect to RTIbikeRental eventstream after deploy)
+- **Cycling Campaign Activator** — Reflex Activator for campaign triggers
 
 Then: Open the **Graph Model** → click **Refresh now** (must be done after ontology creation AND after pipeline data loads).
 
