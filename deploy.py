@@ -621,6 +621,11 @@ def main():
             es_def = es_def.replace(SOURCE_WORKSPACE_ID, target_ws_id)
             for lid, actual in guid_map.items():
                 es_def = es_def.replace(lid, actual)
+            # Strip "schema": "dbo" — target Lakehouses may not have schema enabled
+            es_obj = json.loads(es_def)
+            for dest in es_obj.get("destinations", []):
+                dest.get("properties", {}).pop("schema", None)
+            es_def = json.dumps(es_obj, indent=2, ensure_ascii=False)
             es_b64 = base64.b64encode(es_def.encode("utf-8")).decode("utf-8")
             def_body = {"parts": [{"path": "eventstream.json",
                                    "payload": es_b64, "payloadType": "InlineBase64"}]}

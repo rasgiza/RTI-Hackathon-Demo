@@ -98,41 +98,6 @@
           "notebookId": "6ac83b20-a547-5232-8c69-958cff91f6ff",
           "workspaceId": "573cc7c7-a45a-4fd9-886e-9db4e9798db4"
         }
-      },
-      {
-        "name": "Semantic model refresh1",
-        "type": "PBISemanticModelRefresh",
-        "dependsOn": [
-          {
-            "activity": "Ontology Neighbourhood Filter",
-            "dependencyConditions": [
-              "Succeeded"
-            ]
-          }
-        ],
-        "policy": {
-          "timeout": "0.12:00:00",
-          "retry": 0,
-          "retryIntervalInSeconds": 30,
-          "secureOutput": false,
-          "secureInput": false
-        },
-        "typeProperties": {
-          "method": "post",
-          "waitOnCompletion": true,
-          "commitMode": "Transactional",
-          "operationType": "SemanticModelRefresh",
-          "groupId": "573cc7c7-a45a-4fd9-886e-9db4e9798db4",
-          "datasetId": "acf1dcc4-3396-511b-9392-1f7e4bcabf18",
-          "objects": [
-            {
-              "table": ""
-            }
-          ]
-        },
-        "externalReferences": {
-          "connection": "__SM_REFRESH_CONN__"
-        }
       }
     ]
   }

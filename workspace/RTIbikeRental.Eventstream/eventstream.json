@@ -17,7 +17,6 @@
       "properties": {
         "workspaceId": "573cc7c7-a45a-4fd9-886e-9db4e9798db4",
         "itemId": "890af2be-6762-5333-8e9f-f44bd626c040",
-        "schema": "dbo",
         "deltaTable": "bikeraw_tb",
         "inputSerialization": {
           "type": "Json",
