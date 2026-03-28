@@ -579,15 +579,83 @@ def main():
     print("   ✅ Stage 4/5 complete")
 
     # ═══════════════════════════════════════════════════════════
-    # STAGE 5/5: Eventstreams + Analytics + Presentation
+    # STAGE 5/5: Eventstreams (REST) + Pipeline + Dashboard + Agents
     # ═══════════════════════════════════════════════════════════
     print(f"\n{'='*60}")
     print("🚀 Stage 5/5: Eventstreams + Analytics + Presentation")
     print(f"{'='*60}")
-    stage_dir, stage_ws, _ = make_stage_dir(["Eventstream", "DataPipeline", "KQLDashboard", "DataAgent"],
-                                            ref_types=["KQLDatabase", "Lakehouse", "Eventhouse"])
-    deploy_types = ["Eventstream", "DataPipeline",
-                    "KQLDashboard", "DataAgent"]
+
+    # --- 5a: Eventstreams via REST API (resolve destination GUIDs) ---
+    LOGICAL_IDS = {
+        "890af2be-6762-5333-8e9f-f44bd626c040": ("Lakehouse",   "bikerental_bronze_raw"),
+        "97f37696-79a2-52ad-8fd7-c78a8ecd6106": ("Lakehouse",   "weather_bronze_raw"),
+        "27e1952e-cbd2-5a14-b54b-79f090db2745": ("KQLDatabase", "bikerentaleventhouse"),
+    }
+    guid_map = {}
+    fabric_token = credential.get_token("https://api.fabric.microsoft.com/.default").token
+    hdrs5 = {"Authorization": f"Bearer {fabric_token}", "Content-Type": "application/json"}
+
+    resp = requests.get(f"{API}/workspaces/{target_ws_id}/lakehouses", headers=hdrs5)
+    resp.raise_for_status()
+    for lh in resp.json().get("value", []):
+        for lid, (lt, ln) in LOGICAL_IDS.items():
+            if lt == "Lakehouse" and lh["displayName"] == ln:
+                guid_map[lid] = lh["id"]
+    resp = requests.get(f"{API}/workspaces/{target_ws_id}/kqlDatabases", headers=hdrs5)
+    resp.raise_for_status()
+    for db in resp.json().get("value", []):
+        for lid, (lt, ln) in LOGICAL_IDS.items():
+            if lt == "KQLDatabase" and db["displayName"] == ln:
+                guid_map[lid] = db["id"]
+
+    print(f"   🔍 Resolved {len(guid_map)}/3 destination GUIDs")
+    if len(guid_map) < 3:
+        missing = [LOGICAL_IDS[k][1] for k in LOGICAL_IDS if k not in guid_map]
+        print(f"   ⚠️ Missing: {missing} — Eventstreams skipped")
+    else:
+        for es_folder in item_index.get("Eventstream", []):
+            es_name = es_folder.rsplit(".", 1)[0]
+            es_path = os.path.join(workspace_dir, es_folder, "eventstream.json")
+            with open(es_path, "r", encoding="utf-8") as f:
+                es_def = f.read()
+            es_def = es_def.replace(SOURCE_WORKSPACE_ID, target_ws_id)
+            for lid, actual in guid_map.items():
+                es_def = es_def.replace(lid, actual)
+            es_b64 = base64.b64encode(es_def.encode("utf-8")).decode("utf-8")
+            def_body = {"parts": [{"path": "eventstream.json",
+                                   "payload": es_b64, "payloadType": "InlineBase64"}]}
+            # Check if exists
+            resp = requests.get(f"{API}/workspaces/{target_ws_id}/eventstreams", headers=hdrs5)
+            existing_id = None
+            for es in resp.json().get("value", []):
+                if es["displayName"] == es_name:
+                    existing_id = es["id"]
+                    break
+            if existing_id:
+                print(f"   📝 Updating Eventstream '{es_name}'")
+                resp = requests.post(
+                    f"{API}/workspaces/{target_ws_id}/eventstreams/{existing_id}/updateDefinition",
+                    headers=hdrs5, json={"definition": def_body})
+            else:
+                print(f"   📝 Creating Eventstream '{es_name}'")
+                resp = requests.post(
+                    f"{API}/workspaces/{target_ws_id}/eventstreams",
+                    headers=hdrs5, json={"displayName": es_name, "definition": def_body})
+            if resp.status_code in (200, 201):
+                print(f"   ✅ Eventstream '{es_name}' deployed")
+            elif resp.status_code == 202:
+                result = _wait_lro(resp, hdrs5, f"Eventstream '{es_name}'")
+                if result:
+                    print(f"   ✅ Eventstream '{es_name}' deployed")
+                else:
+                    print(f"   ❌ Eventstream '{es_name}' LRO failed")
+            else:
+                print(f"   ❌ Eventstream '{es_name}' HTTP {resp.status_code}: {resp.text[:400]}")
+
+    # --- 5b: Pipeline + Dashboard + Agents via fabric-cicd ---
+    stage_dir, stage_ws, _ = make_stage_dir(["DataPipeline", "KQLDashboard", "DataAgent"],
+                                            ref_types=["KQLDatabase", "Lakehouse", "Eventhouse", "Eventstream"])
+    deploy_types = ["DataPipeline", "KQLDashboard", "DataAgent"]
     print(f"   📦 Deploying: {', '.join(f.rsplit('.', 1)[0] for f in sum([item_index.get(t, []) for t in deploy_types], []))}")
     kwargs = {"repository_directory": stage_ws, "item_type_in_scope": deploy_types,
               "token_credential": credential}
