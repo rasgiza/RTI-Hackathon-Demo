@@ -659,8 +659,24 @@ def main():
 
     # --- 5b: Pipeline + Dashboard + Agents via fabric-cicd ---
     stage_dir, stage_ws, _ = make_stage_dir(["DataPipeline", "KQLDashboard", "DataAgent"],
-                                            ref_types=["KQLDatabase", "Lakehouse", "Eventhouse", "Eventstream"])
+                                            ref_types=["KQLDatabase", "Lakehouse", "Eventhouse", "Eventstream", "Notebook", "SemanticModel"])
     deploy_types = ["DataPipeline", "KQLDashboard", "DataAgent"]
+    # Sanitize pipeline: strip activities with unresolvable externalReferences
+    for pl_folder in item_index.get("DataPipeline", []):
+        pl_path = os.path.join(stage_ws, pl_folder, "pipeline-content.json")
+        if os.path.exists(pl_path):
+            with open(pl_path, "r", encoding="utf-8") as pf:
+                pl = json.load(pf)
+            original_count = len(pl.get("properties", {}).get("activities", []))
+            pl["properties"]["activities"] = [
+                a for a in pl["properties"]["activities"]
+                if not any("__" in str(v) for v in a.get("externalReferences", {}).values())
+            ]
+            removed = original_count - len(pl["properties"]["activities"])
+            if removed:
+                print(f"   🔧 Stripped {removed} unresolvable activity(ies) from pipeline")
+            with open(pl_path, "w", encoding="utf-8") as pf:
+                json.dump(pl, pf, indent=2, ensure_ascii=False)
     print(f"   📦 Deploying: {', '.join(f.rsplit('.', 1)[0] for f in sum([item_index.get(t, []) for t in deploy_types], []))}")
     kwargs = {"repository_directory": stage_ws, "item_type_in_scope": deploy_types,
               "token_credential": credential}
