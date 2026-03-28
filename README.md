@@ -355,6 +355,12 @@ Upload `Post_Deploy_Setup.ipynb` to your workspace and **Run all cells**. This c
 - **BicycleFleet_Activator** — Reflex Activator for fleet alerts (connect to RTIbikeRental eventstream after deploy)
 - **Cycling Campaign Activator** — Reflex Activator for campaign triggers
 
+> **Re-run notes:**
+> - If you re-upload the notebook after a kernel restart, **run Cell 1 first** to re-establish shared variables (`items`, `ws_id`, `headers`, etc.).
+> - **Cells 2 & 3** (Ontology, Graph Model) are idempotent — safe to re-run.
+> - **Cell 4** (Operations Agent) may return a 500 on first attempt but still creates the agent asynchronously. If you see `ItemDisplayNameNotAvailableYet`, **do NOT re-run** — wait 2–3 minutes and check the workspace. The agent's KQL datasource may need manual configuration in the Fabric UI (point it to `bikerentaleventhouse`).
+> - **Cell 3** (Graph Model) `updateDefinition` may fail for ontology-managed graphs — this is expected. Just click **Refresh now** in the Fabric UI.
+
 Then: Open the **Graph Model** → click **Refresh now** (must be done after ontology creation AND after pipeline data loads).
 
 #### Step 7: Verify everything is working
