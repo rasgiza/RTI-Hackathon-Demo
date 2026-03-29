@@ -367,9 +367,9 @@ Upload `Post_Deploy_Setup.ipynb` to your workspace, **attach `deploy_staging`** 
 > - If you re-upload the notebook after a kernel restart, **run Cell 1 first** to re-establish shared variables (`items`, `ws_id`, `headers`, etc.).
 > - **Cells 2 & 3** (Ontology, Graph Model) are idempotent — safe to re-run.
 > - **Cell 4** (Operations Agent) may return a 500 on first attempt but still creates the agent asynchronously. If you see `ItemDisplayNameNotAvailableYet`, **do NOT re-run** — wait 2–3 minutes and check the workspace. The agent's KQL datasource may need manual configuration in the Fabric UI (point it to `bikerentaleventhouse`).
-> - **Cell 3** (Graph Model) `updateDefinition` may fail for ontology-managed graphs — this is expected. Just click **Refresh now** in the Fabric UI.
+> - **Cell 3** (Graph Model) deletes the auto-provisioned companion graph and creates a standalone graph with the full definition. This is by design — see [Why a Standalone Graph Model?](#why-a-standalone-graph-model) below.
 
-Then: Open the **Graph Model** → click **Refresh now** (must be done after ontology creation AND after pipeline data loads).
+After `Post_Deploy_Setup.ipynb` completes, the Graph Model should show nodes & edges automatically. If it still shows 0, open the Graph Model in Fabric UI → click **Refresh now**.
 
 #### Step 7: Verify everything is working
 
@@ -411,7 +411,7 @@ The `Post_Deploy_Setup.ipynb` notebook programmatically deploys 3 items that `fa
 | Item | API Used | What It Does |
 |------|----------|--------------|
 | **Bicycle_Ontology_Model_New** | `POST /ontologies` + `updateDefinition` | Creates ontology, loads 75 definition parts (12 entity types, 12 data bindings, 23 relationships, 23 contextualizations), patches workspace/lakehouse GUIDs |
-| **Bicycle_Ontology_Model_New_graph** | `POST /graphModels` + `updateDefinition` | Creates graph model with 4-part definition (graphType, dataSources, graphDefinition, stylingConfiguration) |
+| **Bicycle_Ontology_Model_New_graph** | `DELETE` companion + `POST /graphModels` + `refreshGraph` | Deletes the read-only companion, creates a standalone graph with full 4-part definition, and triggers refresh. See [Why a Standalone Graph Model?](#why-a-standalone-graph-model) |
 | **Cycling-Campaign-Agent** | `POST /items` | Creates operations agent with campaign instructions |
 
 > **Ontology REST API**: The Fabric Ontology API (`/v1/workspaces/{id}/ontologies`) is documented at
@@ -422,6 +422,26 @@ The `Post_Deploy_Setup.ipynb` notebook programmatically deploys 3 items that `fa
 > [learn.microsoft.com](https://learn.microsoft.com/en-us/rest/api/fabric/graphmodel/items).
 > The `scripts/clients/graph_client.py` wrapper covers create, getDefinition, updateDefinition, refresh, executeQuery, and getQueryableGraphType.
 
+#### Why a Standalone Graph Model?
+
+When you create an Ontology in Fabric, the platform auto-provisions a **companion graph model** (you'll recognise it by the GUID suffix in its name, e.g. `Bicycle_Ontology_Model_New_graph_e18790af3c65…`). That companion is **ontology-managed**, which means:
+
+- `updateDefinition` → the LRO completes with status **Failed**
+- `refreshGraph` → returns **InvalidJobType**
+- The graph stays permanently empty (0 nodes, 0 edges) because the API cannot push a definition to it
+
+The workaround in Cell 3 is to:
+1. **Delete** the companion graph (it's empty and unusable via API)
+2. **Create a standalone graph model** with the same base name (`Bicycle_Ontology_Model_New_graph`) and push the full 4-part definition (graphType, dataSources, graphDefinition, stylingConfiguration)
+3. **Trigger `refreshGraph`** — which works on standalone graphs — to populate nodes & edges
+
+> **Does this affect the Data Agent?** No. The Bicycle Fleet Intelligence Agent references the **Ontology** item (`artifactId` → ontology ID), not the graph model. The ontology has its own embedded `DataBindings` and `Contextualizations` that point directly to the lakehouse. The graph model is a **separate visual explorer** for humans — same underlying lakehouse tables, different access path.
+>
+> ```
+> Agent question → Ontology → DataBindings → bicycles_gold lakehouse
+> Fabric UI      → Graph Model → dataSources → bicycles_gold lakehouse (same tables)
+> ```
+
 ### Manual Steps
 
 | Step | Action | Time |
@@ -430,7 +450,7 @@ The `Post_Deploy_Setup.ipynb` notebook programmatically deploys 3 items that `fa
 | **2. Run Pipeline** | Open PL_BicycleRTI_Medallion → click **Run** (Bronze → Silver → Gold → ML → Ontology) | 15–25 min |
 | **3. Refresh Semantic Models** | Open each Semantic Model → click **Refresh now** | 5 min |
 | **4. Deploy Ontology + Graph** | Upload & run `Post_Deploy_Setup.ipynb` | 5 min |
-| **5. Refresh Graph Model** | Open Graph Model in Fabric UI → click **Refresh now** (must be after ontology + pipeline data) | 5 min |
+| **5. Refresh Graph Model** | Cell 3 triggers `refreshGraph` automatically. If nodes/edges still show 0, open Graph Model → **Refresh now** | 2 min |
 | **6. Verify KQL Dashboard** | Open KQL Dashboard → confirm tiles show data from Eventhouse | 2 min |
 | **7. Test Data Agent** | Open Bicycle Fleet Intelligence Agent → ask: *"What are the top 5 busiest stations?"* | 1 min |
 | **Import Task Flow** *(optional)* | See [Task Flow Import](#task-flow-import) — import `bicycle_rti_task_flow.json` | 5 min |
