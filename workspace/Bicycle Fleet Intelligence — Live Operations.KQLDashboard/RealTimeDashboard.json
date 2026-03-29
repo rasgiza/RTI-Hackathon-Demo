@@ -133,7 +133,7 @@
       "kind": "kusto",
       "clusterUri": "__EVENTHOUSE_QUERY_URI__",
       "database": "bikerentaldb",
-      "scopeId": "12bbefb2-a1e9-554c-a78e-873a7580aa10"
+      "scopeId": "__KQL_DB_ID__"
     }
   ],
   "queries": [
