@@ -557,33 +557,32 @@ The "Cycling Campaign" rule in the `Cycling Campaign Activator` triggers a **Pow
 | Field | Value |
 |-------|-------|
 | **To** | *(your email or distribution list)* |
-| **Subject** | `🚴 Cycling Campaign — Great Weather in @{triggerBody()?['neighbourhoods']}!` |
+| **Subject** | `🚴 Campaign Alert — Optimal Cycling Conditions Detected` |
 | **Body** | *(see email body template below)* |
 
-**Email Body (paste into the Body field — use HTML view for formatting):**
+**Email Body (paste into the Body field):**
 
-```html
-<h2>🚴 Cycling Campaign Alert</h2>
-<p>Great cycling weather detected! Launch a customer campaign for the area below.</p>
+```
+Hi there! 👋
 
-<table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse;">
-  <tr><td><strong>Neighbourhood</strong></td><td>@{triggerBody()?['neighbourhoods']}</td></tr>
-  <tr><td><strong>Temperature</strong></td><td>@{triggerBody()?['temperature_c']} °C</td></tr>
-</table>
+Great news — London is perfect for cycling right now!
 
-<h3>Recommended Actions</h3>
-<ul>
-  <li>Pre-position extra bikes in <strong>@{triggerBody()?['neighbourhoods']}</strong></li>
-  <li>Send push notification to riders near this neighbourhood</li>
-  <li>Activate promotional pricing for the next 4 hours</li>
-</ul>
+☀️ Weather conditions are ideal and bikes are ready and waiting near you.
 
-<p style="color:gray;font-size:12px;">
-  Sent automatically by the Bicycle Fleet Intelligence Activator.
-</p>
+🎁 TODAY'S OFFERS:
+• 🌟 NEW RIDERS — Use code SUNRIDE25 for 25% off your first trip
+• 🚀 COMMUTERS — Weekly pass just £12.99 (save £5) with code SKIPTHEBUS
+• 👫 GROUPS — Book 4+ bikes, get 1 free with code CREWRIDE
+• ☕ ALL RIDERS — Free coffee at partner cafés after any 30-min ride
+
+Hop on and ride — your city is waiting! 🚴‍♀️
+
+— London Bicycle Fleet Intelligence
+Powered by Microsoft Fabric Real-Time Intelligence
 ```
 
-> **Tip:** Toggle the Body field to **Code view** (the `</>` icon) to paste the HTML above.
+> **Tip:** You can use the dynamic content picker (⚡ icon) to insert `neighbourhoods` and
+> `temperature_c` into the subject or body if you want location-specific campaigns.
 
 ##### Step 4 — (Optional) Add a Teams Message Action
 
