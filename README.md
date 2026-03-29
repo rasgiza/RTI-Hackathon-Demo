@@ -700,7 +700,7 @@ NB03_Silver  →  NB03a_Weather  →  NB04_Gold  →  NB06_ML  →  NB09_Ontolog
 The primary Data Agent with **three data sources**:
 1. **Lakehouse tables** (`bicycles_gold`) — direct SQL over star schema
 2. **Semantic model** (`Bicycle RTI Analytics`) — DAX queries
-3. **Graph / Ontology** (`Bicycle_Fleet_Ontology`) — entity relationship traversal
+3. **Graph / Ontology** (`Bicycle_Ontology_Model_New`) — entity relationship traversal
 
 Includes **44 few-shot examples** for natural language query understanding.
 

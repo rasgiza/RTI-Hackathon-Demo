@@ -4,7 +4,7 @@ Deploy Bicycle Fleet Graph Model via Fabric REST API
 =====================================================
 
 Creates a standalone GraphModel item in the Bike Rental Hackathon workspace
-with a full public definition derived from the Bicycle_Fleet_Ontology metadata.
+with a full public definition derived from the Bicycle_Ontology_Model_New metadata.
 
 The definition consists of four parts:
   - graphType.json            Node/edge type schema
