@@ -286,6 +286,7 @@ The Fabric **Task Flow** provides a visual overview of how all items relate in t
 
 - A Fabric workspace with **F64 or higher** capacity
 - **Contributor** or higher permissions on the workspace
+- Willingness to create a **temporary `deploy_staging` Lakehouse** (explained below — deleted after deployment)
 
 > **Choose your deployment path:**
 >
@@ -304,18 +305,24 @@ The Fabric **Task Flow** provides a visual overview of how all items relate in t
 git clone https://github.com/kwamesefah_microsoft/RTI-Hackathon-Demo.git
 ```
 
-#### Step 2: Upload workspace files to a staging Lakehouse
+#### Step 2: Create a staging Lakehouse and upload files
 
-1. In your Fabric workspace, create a new **Lakehouse** (name it `deploy_staging`)
+> **Why do I need `deploy_staging`?**
+>
+> Fabric notebooks **require a default lakehouse attached** to run Python/PySpark cells. The deployment notebooks read item definition files from the lakehouse's `Files/` area. You can't use one of the project lakehouses (e.g. `bikerental_bronze_raw`) because **those don't exist yet** — they are the items being deployed. So you create a temporary lakehouse, upload the repo files into it, attach it to both deployment notebooks, and delete it when you're done.
+
+1. In your Fabric workspace, create a new **Lakehouse** — name it **`deploy_staging`**
 2. Open it → click **Upload → Upload folder**
-3. Select the `workspace` folder from the cloned repo
-4. Upload the `post_deploy` folder the same way (used by `Post_Deploy_Setup.ipynb` in Step 6)
-5. Wait for uploads to complete — you'll see ~26 sub-folders under `Files/workspace/` and a `Files/post_deploy/` folder with definition JSON files
+3. Upload the **`workspace`** folder from the cloned repo (contains ~26 item definition sub-folders for `fabric-cicd`)
+4. Upload the **`post_deploy`** folder the same way (contains JSON definitions for Ontology, Graph Model, Agents, and Activators — used by `Post_Deploy_Setup.ipynb` in Step 6)
+5. Wait for uploads — you should see:
+   - `Files/workspace/` with ~26 sub-folders (one per item)
+   - `Files/post_deploy/definitions/` with the REST API payload files
 
 #### Step 3: Upload and run the deploy notebook
 
 1. Upload `Deploy_Bicycle_RTI.ipynb` from the cloned repo to your workspace
-2. Open it → **attach** the `deploy_staging` lakehouse (left sidebar → Add lakehouse)
+2. Open it → **attach** the `deploy_staging` lakehouse from Step 2 (left sidebar → Add lakehouse → select `deploy_staging`). The notebook reads item definitions from the lakehouse's `Files/workspace/` folder.
 3. Run **Cell 1** — installs `fabric-cicd` (ignore pip warnings)
 4. Run **Cell 2** — deploys all 23 items in 5 staged rounds. No GitHub, no PAT, no auth prompts.
 5. Run **Cell 3** — auto-fixes KQL Dashboard query URI + removes broken Pipeline SM refresh activity
@@ -347,7 +354,7 @@ The pipeline processes Bronze → Silver → Gold → ML → Ontology. **It requ
 
 > **Pre-requisite:** The `post_deploy/` folder must already be uploaded to the `deploy_staging` lakehouse (Step 2, item 4). The notebook reads definition JSON files from `Files/post_deploy/definitions/`.
 
-Upload `Post_Deploy_Setup.ipynb` to your workspace and **Run all cells**. This creates all 7 post-deploy items:
+Upload `Post_Deploy_Setup.ipynb` to your workspace, **attach `deploy_staging`** (same as Step 3), and **Run all cells**. This creates all 7 post-deploy items:
 - **Bicycle_Ontology_Model_New** — Ontology with 12 entity types, 23 relationship types
 - **Bicycle_Ontology_Model_New_graph** — Graph Model linked to bicycles_gold lakehouse
 - **Cycling-Campaign-Agent** — Operations Agent for campaign automation
@@ -370,7 +377,7 @@ Then: Open the **Graph Model** → click **Refresh now** (must be done after ont
 |--------|-------|------|
 | Open KQL Dashboard → confirm tiles show Eventhouse data | Fabric UI | 2 min |
 | Test the Data Agent → ask *"Which stations need rebalancing?"* | Fabric UI | 1 min |
-| *(Optional)* Delete the `deploy_staging` lakehouse | Fabric UI | 1 min |
+| Delete the `deploy_staging` lakehouse | Fabric UI | 1 min |
 
 #### You're done! 🎉
 
@@ -444,7 +451,7 @@ The `Post_Deploy_Setup.ipynb` notebook programmatically deploys 3 items that `fa
 | 4 | `bicycles_gold` | Lakehouse | Star schema dimensional model |
 | 5 | `bikerentaleventhouse` | Eventhouse | KQL real-time analytics store |
 | 6 | `bikerentaleventhouse` | KQLDatabase | Database within the Eventhouse |
-| 7 | `02_Bronze_Streaming_Ingest` | Notebook | Streaming ingest to bronze lakehouses |
+| 7 | `02_Bronze_Streaming_Ingest` | Notebook | Data quality audit & station reference (manual/diagnostic) |
 | 8 | `03_Silver_Enrich_Transform` | Notebook | Clean, validate, derive columns |
 | 9 | `03a_Silver_Weather_Join` | Notebook | Join weather context to bike data |
 | 10 | `04_Gold_Star_Schema` | Notebook | Build fact/dim tables |
@@ -461,6 +468,14 @@ The `Post_Deploy_Setup.ipynb` notebook programmatically deploys 3 items that `fa
 | 21 | `Bicycle Fleet Intelligence — Live Operations` | KQLDashboard | Real-time KQL visuals |
 
 > **Not deployed automatically:** `Bicycle Fleet Operations Report` (Report — enhanced format, needs manual creation), both DataAgents (complex datasource configs with artifact GUIDs), both Activators (Reflex — `fabric-cicd` doesn't support Reflex). All deployed in Post_Deploy_Setup via REST API.
+
+### Temporary: deploy_staging Lakehouse
+
+| Item | Type | Purpose | When to delete |
+|------|------|---------|----------------|
+| `deploy_staging` | Lakehouse | Holds `workspace/` and `post_deploy/` files uploaded from the repo. Both `Deploy_Bicycle_RTI.ipynb` and `Post_Deploy_Setup.ipynb` are attached to this lakehouse and read their definition files from `Files/`. | After **both** notebooks complete successfully |
+
+> This is **not** a project data lakehouse — it's a temporary deployment artifact. It does not appear in the architecture diagram or Task Flow.
 
 ### Post-Deploy (7 items via REST APIs — Post_Deploy_Setup.ipynb)
 
@@ -601,17 +616,46 @@ bikerental_bronze_raw   bicycles_silver          bicycles_gold
 
 ## Notebooks Reference
 
+### Data Flow: How Bronze Data Gets Structured
+
+The Eventstream (`RTIbikeRental`) handles Bronze ingestion automatically — it parses the incoming JSON and writes a **structured Delta table** (`bikeraw_tb`) with 7 typed columns (BikepointID, Street, Neighbourhood, Latitude, Longitude, No_Bikes, No_Empty_Docks). No notebook is needed for this step.
+
+```
+Eventstream (RTIbikeRental)
+  ├── Destination 1 → Bronze Lakehouse (bikeraw_tb)   ← structured Delta table
+  └── Destination 2 → Eventhouse (bikerentaldb)       ← real-time KQL table
+```
+
+### NB02 — Data Quality & Validation (Not in Pipeline)
+
+`02_Bronze_Streaming_Ingest` is a **diagnostic/operational notebook** — it is NOT part of the automated pipeline. It performs:
+
+1. **Data quality audit** — schema validation, null checks, range checks on `bikeraw_tb`
+2. **Station profile analysis** — unique stations, neighbourhood distribution, capacity breakdown
+3. **Freshness check** — detects stale data if the Eventstream is paused
+4. **Station reference table** — creates `bicycle_station_ref` (deduplicated station master)
+5. **Eventhouse reconciliation** — guides comparison of Lakehouse vs KQL row counts
+
+> **When to use:** Run NB02 manually after starting the Eventstream to verify data is flowing correctly. It is useful for debugging but not required for the pipeline to work.
+
+### Pipeline Notebooks
+
 | Notebook | Stage | Key Operations |
 |----------|-------|----------------|
-| `02_Bronze_Streaming_Ingest` | Bronze | Reads eventstream output, writes to bikerental_bronze_raw |
-| `03_Silver_Enrich_Transform` | Silver | Dedup, null handling, business rule validation, derived columns |
+| `03_Silver_Enrich_Transform` | Silver | Reads Bronze `bikeraw_tb`, deduplicates, adds utilization analytics, creates 5 Silver tables (station profiles, availability events, neighbourhood metrics, rebalancing candidates, hourly demand) |
 | `03a_Silver_Weather_Join` | Silver | Temporal join of weather data to station records |
 | `04_Gold_Star_Schema` | Gold | Builds fact + dimension tables, aggregations, snapshots |
-| `05_KQL_Realtime_Queries` | Analytics | KQL query patterns, anomaly detection, trend analysis |
 | `06_ML_Demand_Forecast` | ML | Prophet time-series + sklearn regression, writes to forecast_demand |
-| `07_Activator_Alerts` | Alerting | Configures Activator alert thresholds and conditions |
-| `08_GeoAnalytics_HotSpots` | Analytics | H3 hex-grid hotspot detection, geographic demand patterns |
 | `09_Ontology_Neighbourhood_Filter` | Ontology | Populates ontology-specific Gold tables + triggers SM refresh |
+
+### Standalone/Diagnostic Notebooks
+
+| Notebook | Purpose |
+|----------|---------|
+| `02_Bronze_Streaming_Ingest` | Data quality audit & Eventhouse reconciliation (run manually) |
+| `05_KQL_Realtime_Queries` | KQL query patterns, anomaly detection, trend analysis |
+| `07_Activator_Alerts` | Configures Activator alert thresholds and conditions |
+| `08_GeoAnalytics_HotSpots` | H3 hex-grid hotspot detection, geographic demand patterns |
 
 ---
 
