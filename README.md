@@ -424,16 +424,20 @@ The `Post_Deploy_Setup.ipynb` notebook programmatically deploys 3 items that `fa
 
 #### Why a Standalone Graph Model?
 
-When you create an Ontology in Fabric, the platform auto-provisions a **companion graph model** (you'll recognise it by the GUID suffix in its name, e.g. `Bicycle_Ontology_Model_New_graph_e18790af3c65…`). That companion is **ontology-managed**, which means:
+> **⚠️ Known Fabric Product Limitation (as of March 2026):** When an Ontology is created, Fabric auto-provisions a companion graph model. However, the companion graph is **ontology-managed and read-only via the REST API** — neither `updateDefinition` nor `refreshGraph` are supported. This means there is currently **no programmatic way** to push a graph definition or trigger a data refresh on the auto-provisioned companion. The only way to populate it is manually through the Fabric UI. This limitation affects any CI/CD or automated deployment workflow that needs to deploy a fully-populated graph model alongside an ontology.
+
+When you create an Ontology in Fabric, the platform auto-provisions a **companion graph model** (you'll recognise it by the GUID suffix in its name, e.g. `Bicycle_Ontology_Model_New_graph_e18790af3c65…`). That companion is **ontology-managed**, which means the REST API rejects both operations:
 
 - `updateDefinition` → the LRO completes with status **Failed**
 - `refreshGraph` → returns **InvalidJobType**
 - The graph stays permanently empty (0 nodes, 0 edges) because the API cannot push a definition to it
 
-The workaround in Cell 3 is to:
+**Our workaround** in Cell 3:
 1. **Delete** the companion graph (it's empty and unusable via API)
 2. **Create a standalone graph model** with the same base name (`Bicycle_Ontology_Model_New_graph`) and push the full 4-part definition (graphType, dataSources, graphDefinition, stylingConfiguration)
 3. **Trigger `refreshGraph`** — which works on standalone graphs — to populate nodes & edges
+
+The standalone graph reads the **same lakehouse tables** as the ontology, so the visual experience is identical. If Microsoft adds API support for ontology-managed companion graphs in a future update, this workaround can be removed.
 
 > **Does this affect the Data Agent?** No. The Bicycle Fleet Intelligence Agent references the **Ontology** item (`artifactId` → ontology ID), not the graph model. The ontology has its own embedded `DataBindings` and `Contextualizations` that point directly to the lakehouse. The graph model is a **separate visual explorer** for humans — same underlying lakehouse tables, different access path.
 >
