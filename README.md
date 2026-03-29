@@ -525,25 +525,121 @@ The project includes 2 Reflex Activators with different deployment paths:
 
 #### Power Automate Setup (for Cycling Campaign rule)
 
-The "Cycling Campaign" rule in the `Cycling Campaign Activator` triggers a **Power Automate flow** instead of a simple Teams/Email message. This flow can send templated campaigns, update CRM systems, or trigger multi-step workflows.
+The "Cycling Campaign" rule in the `Cycling Campaign Activator` triggers a **Power Automate flow** called **"Send Customer Campaign"**. When the Activator detects `temperature_c > 10`, it fires this flow and passes two parameters:
 
-**Prerequisites — Power Automate Developer Plan (free):**
+| Parameter | Type | Example Value | Description |
+|-----------|------|---------------|-------------|
+| `neighbourhoods` | Text | `Sands End` | The neighbourhood where good cycling weather was detected |
+| `temperature_c` | Number | `22` | Current temperature in Celsius |
+
+##### Step 1 — Get a Power Automate License (free)
 
 1. Go to [https://make.powerautomate.com](https://make.powerautomate.com)
 2. If you see "You don't have a license", sign up for the **Power Automate Developer Plan**:
    - Visit [https://powerapps.microsoft.com/en-us/developerplan/](https://powerapps.microsoft.com/en-us/developerplan/)
    - Click **Get started free** and sign in with your Microsoft 365 account
    - This gives you a full Power Automate environment at no cost
-3. Once you have access, create a new **Automated cloud flow**:
-   - Trigger: **When a Fabric Activator triggers this flow**
-   - Input parameters: `neighbourhoods` (text), `temperature_c` (number)
-   - Actions: Add your desired steps (e.g., Send Teams message, Send email, Update SharePoint list)
-4. Save and copy the flow URL
-5. In the Fabric Activator, link the "Cycling Campaign" rule to your new Power Automate flow
+
+##### Step 2 — Create the Flow in Power Automate
+
+1. Go to [https://make.powerautomate.com](https://make.powerautomate.com) → **Create** → **Automated cloud flow**
+2. Name the flow: **Send Customer Campaign**
+3. Search for trigger: **When a Fabric Activator triggers this flow**
+4. Add two input parameters:
+   - `neighbourhoods` — type **Text**
+   - `temperature_c` — type **Number**
+
+##### Step 3 — Add the "Send an Email" Action
+
+1. Click **+ New step** → search **Send an email (V2)** (Office 365 Outlook)
+2. Fill in the fields using the template below:
+
+| Field | Value |
+|-------|-------|
+| **To** | *(your email or distribution list)* |
+| **Subject** | `🚴 Cycling Campaign — Great Weather in @{triggerBody()?['neighbourhoods']}!` |
+| **Body** | *(see email body template below)* |
+
+**Email Body (paste into the Body field — use HTML view for formatting):**
+
+```html
+<h2>🚴 Cycling Campaign Alert</h2>
+<p>Great cycling weather detected! Launch a customer campaign for the area below.</p>
+
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse:collapse;">
+  <tr><td><strong>Neighbourhood</strong></td><td>@{triggerBody()?['neighbourhoods']}</td></tr>
+  <tr><td><strong>Temperature</strong></td><td>@{triggerBody()?['temperature_c']} °C</td></tr>
+</table>
+
+<h3>Recommended Actions</h3>
+<ul>
+  <li>Pre-position extra bikes in <strong>@{triggerBody()?['neighbourhoods']}</strong></li>
+  <li>Send push notification to riders near this neighbourhood</li>
+  <li>Activate promotional pricing for the next 4 hours</li>
+</ul>
+
+<p style="color:gray;font-size:12px;">
+  Sent automatically by the Bicycle Fleet Intelligence Activator.
+</p>
+```
+
+> **Tip:** Toggle the Body field to **Code view** (the `</>` icon) to paste the HTML above.
+
+##### Step 4 — (Optional) Add a Teams Message Action
+
+If you also want a Teams notification alongside the email:
+
+1. Click **+ New step** → search **Post message in a chat or channel** (Microsoft Teams)
+2. Fill in:
+
+| Field | Value |
+|-------|-------|
+| **Post as** | Flow bot |
+| **Post in** | Chat with Flow bot *(or a specific channel)* |
+| **Message** | `🚴 Cycling Campaign — @{triggerBody()?['neighbourhoods']} is @{triggerBody()?['temperature_c']}°C. Pre-position bikes and launch promotions!` |
+
+##### Step 5 — Save and Connect
+
+1. Click **Save** in Power Automate
+2. Go back to your **Fabric workspace** → open **Cycling Campaign Activator**
+3. Open the **Fleet Surplus — Send Campaign** rule
+4. The "Send Customer Campaign" action will show **Re-authentication required**
+5. Click the **Re-authenticate** link → sign in with your Microsoft 365 account
+6. The flow is now connected — the Activator will trigger it whenever `temperature_c > 10`
+
+##### Fixing "Re-authentication Required"
+
+If you see the "Re-authentication required" banner on the Send Customer Campaign action:
+
+1. Click the **Re-authenticate** link directly in the Activator rule
+2. Sign in with the **same Microsoft 365 account** that created the Power Automate flow
+3. If the link doesn't appear, open the flow in [Power Automate](https://make.powerautomate.com), click **Edit**, then **Save** to refresh the connection
+4. Return to the Activator and the connection should show as active
 
 > **Note:** Power Automate flows are per-user and per-environment. Each hackathon participant
 > who wants to see the campaign flow working must set up their own Power Automate Developer Plan
 > and connect it to their Activator.
+
+#### All Alert Message Templates (Reference)
+
+These are the exact messages configured in the Activator definitions:
+
+##### BicycleFleet_Activator (Eventstream-based)
+
+| Rule | Action | Headline | Message |
+|------|--------|----------|---------|
+| **Empty Station** | Teams | `ALERT: Empty Station - No Bikes Available` | Station has 0 bikes available. Riders cannot rent. Dispatch rebalancing truck to deliver bikes immediately. |
+| **Full Station** | Teams | `ALERT: Full Station - No Empty Dock` | 🚨 Station {BikepointID} FULL — reroute riders to nearby stations |
+| **Low Availability** | Email | **Subject:** `Low Bike Availability — Station {BikepointID}` **Heading:** `Station Running Low on Bikes` | Station {BikepointID} on {Street} in {Neighbourhood} has only {No_Bikes} bike(s) remaining. Dispatch additional bikes to prevent the station from going empty. |
+| **High Demand** | Teams | `Activator alert High Demand` | ⚠️ Station {BikepointID} on {Street} in {Neighbourhood} has only {No_Empty_Docks} empty dock(s) — redistribute bikes to nearby stations |
+
+##### Cycling Campaign Activator (Ontology-based)
+
+| Rule | Action | Headline | Message |
+|------|--------|----------|---------|
+| **High Demand Forecast** | Teams | `🚴 High Demand Forecast — Pre-Position Bikes` | ML model predicts high demand. Pre-position bikes to meet expected ridership surge. |
+| **Station Critical** | Teams | `Activator alert ⚠️ Station Critical — Rebalance Needed` | A station has run critically low on bikes. Dispatch rebalancing van immediately. |
+| **Fleet Surplus — Send Campaign** | Power Automate | *(triggers the Send Customer Campaign flow)* | Passes `neighbourhoods` and `temperature_c` to the flow. See email template above. |
 
 ### External Integrations (summary)
 
