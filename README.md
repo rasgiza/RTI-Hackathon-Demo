@@ -327,8 +327,9 @@ The eventstreams feed the **Bronze layer** — nothing downstream works without 
 
 1. Open **RTIbikeRental** Eventstream → confirm it's running (click **Start** if not)
 2. Open **RTI-WeatherDemo** Eventstream → confirm it's running (click **Start** if not)
-3. **Wait until you see data arriving** — open a Bronze Lakehouse and refresh; you should see rows in the tables
-4. Let the streams run for 10–30 min to accumulate enough data for meaningful dashboards
+3. If destinations show **"Error found"**, click **Edit** → **Publish** to refresh the connections — the errors should clear
+4. **Wait until you see data arriving** — open a Bronze Lakehouse and refresh; you should see rows in the tables
+5. Let the streams run for 10–30 min to accumulate enough data for meaningful dashboards
 
 > **Tip:** You can pause/stop the eventstreams once you have enough data to save capacity. Restart them anytime.
 
