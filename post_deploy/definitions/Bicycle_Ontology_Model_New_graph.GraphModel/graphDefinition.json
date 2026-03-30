@@ -916,7 +916,7 @@
       "id": "ff940cca-16c8-44b6-9c44-3da1a99833a6",
       "dataSourceName": "onto_fact_availability_Source",
       "sourceNodeKeyColumns": [
-        "availability_key"
+        "station_key"
       ],
       "propertyMappings": [],
       "destinationNodeKeyColumns": [
@@ -928,7 +928,7 @@
       "id": "1c13d159-dfb1-4b43-a988-7c47ae507699",
       "dataSourceName": "onto_fact_availability_Source",
       "sourceNodeKeyColumns": [
-        "availability_key"
+        "time_key"
       ],
       "propertyMappings": [],
       "destinationNodeKeyColumns": [
@@ -940,7 +940,7 @@
       "id": "64c367c9-fd6b-4499-9996-bad278665e8e",
       "dataSourceName": "onto_fact_availability_Source",
       "sourceNodeKeyColumns": [
-        "availability_key"
+        "date_key"
       ],
       "propertyMappings": [],
       "destinationNodeKeyColumns": [
@@ -952,7 +952,7 @@
       "id": "0d8366f3-4f10-4365-966a-787076f8e92a",
       "dataSourceName": "onto_fact_hourly_demand_Source",
       "sourceNodeKeyColumns": [
-        "demand_key"
+        "neighbourhood_key"
       ],
       "propertyMappings": [],
       "destinationNodeKeyColumns": [
@@ -964,7 +964,7 @@
       "id": "acf90026-58e5-4f7b-84d3-9ead5fe6be53",
       "dataSourceName": "onto_fact_hourly_demand_Source",
       "sourceNodeKeyColumns": [
-        "demand_key"
+        "time_key"
       ],
       "propertyMappings": [],
       "destinationNodeKeyColumns": [
@@ -976,7 +976,7 @@
       "id": "e599bebc-8233-41aa-84d5-0c2ffd7c1110",
       "dataSourceName": "onto_fact_hourly_demand_Source",
       "sourceNodeKeyColumns": [
-        "demand_key"
+        "date_key"
       ],
       "propertyMappings": [],
       "destinationNodeKeyColumns": [
@@ -988,7 +988,7 @@
       "id": "2e90be6a-9a22-470a-878f-82b448c35b89",
       "dataSourceName": "onto_fact_rebalancing_Source",
       "sourceNodeKeyColumns": [
-        "rebalance_key"
+        "station_key"
       ],
       "propertyMappings": [],
       "destinationNodeKeyColumns": [
@@ -1000,7 +1000,7 @@
       "id": "a7f11c1b-09bd-4a7e-b906-e08d74c87916",
       "dataSourceName": "onto_fact_rebalancing_Source",
       "sourceNodeKeyColumns": [
-        "rebalance_key"
+        "neighbourhood_key"
       ],
       "propertyMappings": [],
       "destinationNodeKeyColumns": [
@@ -1012,7 +1012,7 @@
       "id": "d78740f6-4a94-46e4-9245-e7e7c5b4eef8",
       "dataSourceName": "onto_fact_rebalancing_Source",
       "sourceNodeKeyColumns": [
-        "rebalance_key"
+        "time_key"
       ],
       "propertyMappings": [],
       "destinationNodeKeyColumns": [
@@ -1024,7 +1024,7 @@
       "id": "1148e1a6-1576-4d4b-86b8-58a9c3543a25",
       "dataSourceName": "onto_fact_rebalancing_Source",
       "sourceNodeKeyColumns": [
-        "rebalance_key"
+        "date_key"
       ],
       "propertyMappings": [],
       "destinationNodeKeyColumns": [
@@ -1036,7 +1036,7 @@
       "id": "5d121d7d-e82c-40dc-84b6-0349d4872bb3",
       "dataSourceName": "onto_fact_rebalancing_Source",
       "sourceNodeKeyColumns": [
-        "rebalance_key"
+        "weather_key"
       ],
       "propertyMappings": [],
       "destinationNodeKeyColumns": [
@@ -1048,7 +1048,7 @@
       "id": "54bcd0fb-4cbc-4ac1-b4c2-f53e902ed1b9",
       "dataSourceName": "onto_fact_weather_impact_Source",
       "sourceNodeKeyColumns": [
-        "weather_impact_key"
+        "weather_key"
       ],
       "propertyMappings": [],
       "destinationNodeKeyColumns": [
@@ -1060,7 +1060,7 @@
       "id": "c03c281e-d7ab-43c7-bc69-a3e30900c67a",
       "dataSourceName": "onto_fact_weather_impact_Source",
       "sourceNodeKeyColumns": [
-        "weather_impact_key"
+        "neighbourhood_key"
       ],
       "propertyMappings": [],
       "destinationNodeKeyColumns": [
@@ -1072,7 +1072,7 @@
       "id": "699af261-89fd-4298-b020-840c176fd765",
       "dataSourceName": "onto_fact_weather_impact_Source",
       "sourceNodeKeyColumns": [
-        "weather_impact_key"
+        "time_key"
       ],
       "propertyMappings": [],
       "destinationNodeKeyColumns": [
@@ -1084,7 +1084,7 @@
       "id": "1a8ed0fc-6e7f-4c62-b905-b02f839721d2",
       "dataSourceName": "onto_fact_weather_impact_Source",
       "sourceNodeKeyColumns": [
-        "weather_impact_key"
+        "date_key"
       ],
       "propertyMappings": [],
       "destinationNodeKeyColumns": [
@@ -1108,7 +1108,7 @@
       "id": "34d94033-a720-4840-9e83-214c44b526cd",
       "dataSourceName": "onto_availability_recent_Source",
       "sourceNodeKeyColumns": [
-        "recent_key"
+        "station_key"
       ],
       "propertyMappings": [],
       "destinationNodeKeyColumns": [
@@ -1120,7 +1120,7 @@
       "id": "17a665f6-e783-41e1-b608-a427b13521d5",
       "dataSourceName": "onto_availability_recent_Source",
       "sourceNodeKeyColumns": [
-        "recent_key"
+        "time_key"
       ],
       "propertyMappings": [],
       "destinationNodeKeyColumns": [
@@ -1132,7 +1132,7 @@
       "id": "36bd47d1-a7e8-4a1a-ace1-61810c807703",
       "dataSourceName": "onto_availability_recent_Source",
       "sourceNodeKeyColumns": [
-        "recent_key"
+        "date_key"
       ],
       "propertyMappings": [],
       "destinationNodeKeyColumns": [
@@ -1144,7 +1144,7 @@
       "id": "10ad1426-44da-4f7d-a0b6-a506c398ff01",
       "dataSourceName": "onto_forecast_demand_Source",
       "sourceNodeKeyColumns": [
-        "forecast_key"
+        "neighbourhood_key"
       ],
       "propertyMappings": [],
       "destinationNodeKeyColumns": [
@@ -1156,7 +1156,7 @@
       "id": "2139eda0-bd0d-4592-b590-bca3d9070c5f",
       "dataSourceName": "onto_forecast_demand_Source",
       "sourceNodeKeyColumns": [
-        "forecast_key"
+        "time_key"
       ],
       "propertyMappings": [],
       "destinationNodeKeyColumns": [
@@ -1168,7 +1168,7 @@
       "id": "bed8d464-f348-4cb4-b6da-e92e72038a32",
       "dataSourceName": "onto_forecast_demand_Source",
       "sourceNodeKeyColumns": [
-        "forecast_key"
+        "date_key"
       ],
       "propertyMappings": [],
       "destinationNodeKeyColumns": [
@@ -1180,7 +1180,7 @@
       "id": "c9d7d9fc-9d3d-407e-91d0-fdb624dee9aa",
       "dataSourceName": "dim_weather_Source",
       "sourceNodeKeyColumns": [
-        "weather_key"
+        "time_key"
       ],
       "propertyMappings": [],
       "destinationNodeKeyColumns": [
