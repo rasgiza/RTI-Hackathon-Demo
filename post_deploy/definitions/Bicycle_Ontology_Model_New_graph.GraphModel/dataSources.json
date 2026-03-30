@@ -1,191 +1,95 @@
 {
-
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/graphInstance/definition/dataSources/1.0.0/schema.json",
-
   "dataSources": [
-
     {
-
       "name": "onto_dim_station_Source",
-
       "type": "DeltaTable",
-
       "properties": {
-
         "path": "abfss://__WORKSPACE_ID__@onelake.dfs.fabric.microsoft.com/__LH_BICYCLES_GOLD__/Tables/onto_dim_station"
-
       }
-
     },
-
     {
-
       "name": "dim_neighbourhood_Source",
-
       "type": "DeltaTable",
-
       "properties": {
-
         "path": "abfss://__WORKSPACE_ID__@onelake.dfs.fabric.microsoft.com/__LH_BICYCLES_GOLD__/Tables/dim_neighbourhood"
-
       }
-
     },
-
     {
-
       "name": "dim_time_Source",
-
       "type": "DeltaTable",
-
       "properties": {
-
         "path": "abfss://__WORKSPACE_ID__@onelake.dfs.fabric.microsoft.com/__LH_BICYCLES_GOLD__/Tables/dim_time"
-
       }
-
     },
-
     {
-
       "name": "dim_date_Source",
-
       "type": "DeltaTable",
-
       "properties": {
-
         "path": "abfss://__WORKSPACE_ID__@onelake.dfs.fabric.microsoft.com/__LH_BICYCLES_GOLD__/Tables/dim_date"
-
       }
-
     },
-
     {
-
       "name": "dim_weather_Source",
-
       "type": "DeltaTable",
-
       "properties": {
-
         "path": "abfss://__WORKSPACE_ID__@onelake.dfs.fabric.microsoft.com/__LH_BICYCLES_GOLD__/Tables/dim_weather"
-
       }
-
     },
-
     {
-
       "name": "onto_fact_availability_Source",
-
       "type": "DeltaTable",
-
       "properties": {
-
         "path": "abfss://__WORKSPACE_ID__@onelake.dfs.fabric.microsoft.com/__LH_BICYCLES_GOLD__/Tables/onto_fact_availability"
-
       }
-
     },
-
     {
-
       "name": "onto_fact_hourly_demand_Source",
-
       "type": "DeltaTable",
-
       "properties": {
-
         "path": "abfss://__WORKSPACE_ID__@onelake.dfs.fabric.microsoft.com/__LH_BICYCLES_GOLD__/Tables/onto_fact_hourly_demand"
-
       }
-
     },
-
     {
-
       "name": "onto_fact_rebalancing_Source",
-
       "type": "DeltaTable",
-
       "properties": {
-
         "path": "abfss://__WORKSPACE_ID__@onelake.dfs.fabric.microsoft.com/__LH_BICYCLES_GOLD__/Tables/onto_fact_rebalancing"
-
       }
-
     },
-
     {
-
       "name": "onto_forecast_demand_Source",
-
       "type": "DeltaTable",
-
       "properties": {
-
         "path": "abfss://__WORKSPACE_ID__@onelake.dfs.fabric.microsoft.com/__LH_BICYCLES_GOLD__/Tables/onto_forecast_demand"
-
       }
-
     },
-
     {
-
       "name": "onto_fact_weather_impact_Source",
-
       "type": "DeltaTable",
-
       "properties": {
-
         "path": "abfss://__WORKSPACE_ID__@onelake.dfs.fabric.microsoft.com/__LH_BICYCLES_GOLD__/Tables/onto_fact_weather_impact"
-
       }
-
     },
-
     {
-
       "name": "onto_station_snapshot_Source",
-
       "type": "DeltaTable",
-
       "properties": {
-
         "path": "abfss://__WORKSPACE_ID__@onelake.dfs.fabric.microsoft.com/__LH_BICYCLES_GOLD__/Tables/onto_station_snapshot"
-
       }
-
     },
-
     {
-
       "name": "onto_availability_recent_Source",
-
       "type": "DeltaTable",
-
       "properties": {
-
         "path": "abfss://__WORKSPACE_ID__@onelake.dfs.fabric.microsoft.com/__LH_BICYCLES_GOLD__/Tables/onto_availability_recent"
-
       }
-
     },
-
     {
-
       "name": "gold_station_snapshot_Source",
-
       "type": "DeltaTable",
-
       "properties": {
-
         "path": "abfss://__WORKSPACE_ID__@onelake.dfs.fabric.microsoft.com/__LH_BICYCLES_GOLD__/Tables/gold_station_snapshot"
-
       }
-
     }
-
   ]
-
 }

@@ -1,1377 +1,1262 @@
-{
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/graphInstance/definition/graphType/1.0.0/schema.json",
-  "nodeTypes": [
-    {
-      "primaryKeyProperties": [
-        "station_key"
-      ],
-      "alias": "212245027828040",
-      "labels": [
-        "Station"
-      ],
-      "properties": [
-        {
-          "name": "station_key",
-          "type": "INT"
-        },
-        {
-          "name": "station_id",
-          "type": "STRING"
-        },
-        {
-          "name": "street_address",
-          "type": "STRING"
-        },
-        {
-          "name": "neighbourhood",
-          "type": "STRING"
-        },
-        {
-          "name": "latitude",
-          "type": "FLOAT"
-        },
-        {
-          "name": "longitude",
-          "type": "FLOAT"
-        },
-        {
-          "name": "total_docks",
-          "type": "INT"
-        },
-        {
-          "name": "station_size",
-          "type": "STRING"
-        },
-        {
-          "name": "current_status",
-          "type": "STRING"
-        },
-        {
-          "name": "current_utilization_pct",
-          "type": "FLOAT"
-        },
-        {
-          "name": "rebalance_priority",
-          "type": "FLOAT"
-        },
-        {
-          "name": "zone",
-          "type": "STRING"
-        },
-        {
-          "name": "loaded_at",
-          "type": "DATETIME"
-        }
-      ]
-    },
-    {
-      "primaryKeyProperties": [
-        "neighbourhood_key"
-      ],
-      "alias": "234584979673062",
-      "labels": [
-        "Neighbourhood"
-      ],
-      "properties": [
-        {
-          "name": "neighbourhood_key",
-          "type": "INT"
-        },
-        {
-          "name": "neighbourhood_name",
-          "type": "STRING"
-        },
-        {
-          "name": "station_count",
-          "type": "INT"
-        },
-        {
-          "name": "total_capacity",
-          "type": "INT"
-        },
-        {
-          "name": "total_bikes_available",
-          "type": "INT"
-        },
-        {
-          "name": "total_empty_docks",
-          "type": "INT"
-        },
-        {
-          "name": "neighbourhood_utilization_pct",
-          "type": "FLOAT"
-        },
-        {
-          "name": "avg_utilization_pct",
-          "type": "FLOAT"
-        },
-        {
-          "name": "health_score",
-          "type": "FLOAT"
-        },
-        {
-          "name": "capacity_status",
-          "type": "STRING"
-        },
-        {
-          "name": "empty_stations",
-          "type": "INT"
-        },
-        {
-          "name": "full_stations",
-          "type": "INT"
-        },
-        {
-          "name": "stations_needing_rebalance",
-          "type": "INT"
-        },
-        {
-          "name": "centroid_lat",
-          "type": "FLOAT"
-        },
-        {
-          "name": "centroid_lon",
-          "type": "FLOAT"
-        },
-        {
-          "name": "density_tier",
-          "type": "STRING"
-        },
-        {
-          "name": "loaded_at",
-          "type": "DATETIME"
-        }
-      ]
-    },
-    {
-      "primaryKeyProperties": [
-        "time_key"
-      ],
-      "alias": "266396690945189",
-      "labels": [
-        "TimeSlot"
-      ],
-      "properties": [
-        {
-          "name": "time_key",
-          "type": "INT"
-        },
-        {
-          "name": "hour_of_day",
-          "type": "INT"
-        },
-        {
-          "name": "hour_label",
-          "type": "STRING"
-        },
-        {
-          "name": "time_period",
-          "type": "STRING"
-        },
-        {
-          "name": "is_rush_hour",
-          "type": "BOOLEAN"
-        },
-        {
-          "name": "am_pm",
-          "type": "STRING"
-        },
-        {
-          "name": "demand_tier",
-          "type": "STRING"
-        }
-      ]
-    },
-    {
-      "primaryKeyProperties": [
-        "date_key"
-      ],
-      "alias": "16437291161987",
-      "labels": [
-        "CalendarDate"
-      ],
-      "properties": [
-        {
-          "name": "date_key",
-          "type": "INT"
-        },
-        {
-          "name": "date_value",
-          "type": "DATETIME"
-        },
-        {
-          "name": "year",
-          "type": "INT"
-        },
-        {
-          "name": "quarter",
-          "type": "INT"
-        },
-        {
-          "name": "month_num",
-          "type": "INT"
-        },
-        {
-          "name": "month_name",
-          "type": "STRING"
-        },
-        {
-          "name": "week_of_year",
-          "type": "INT"
-        },
-        {
-          "name": "day_of_month",
-          "type": "INT"
-        },
-        {
-          "name": "day_of_week",
-          "type": "INT"
-        },
-        {
-          "name": "day_name",
-          "type": "STRING"
-        },
-        {
-          "name": "is_weekend",
-          "type": "BOOLEAN"
-        },
-        {
-          "name": "season",
-          "type": "STRING"
-        }
-      ]
-    },
-    {
-      "primaryKeyProperties": [
-        "weather_key"
-      ],
-      "alias": "33418903485014",
-      "labels": [
-        "WeatherObservation"
-      ],
-      "properties": [
-        {
-          "name": "weather_key",
-          "type": "INT"
-        },
-        {
-          "name": "observation_hour",
-          "type": "DATETIME"
-        },
-        {
-          "name": "observation_date",
-          "type": "DATETIME"
-        },
-        {
-          "name": "time_key",
-          "type": "INT"
-        },
-        {
-          "name": "weather_description",
-          "type": "STRING"
-        },
-        {
-          "name": "weather_category",
-          "type": "STRING"
-        },
-        {
-          "name": "weather_severity",
-          "type": "STRING"
-        },
-        {
-          "name": "has_precipitation",
-          "type": "BOOLEAN"
-        },
-        {
-          "name": "temperature_c",
-          "type": "FLOAT"
-        },
-        {
-          "name": "feels_like_c",
-          "type": "FLOAT"
-        },
-        {
-          "name": "relative_humidity",
-          "type": "FLOAT"
-        },
-        {
-          "name": "wind_speed_kmh",
-          "type": "FLOAT"
-        },
-        {
-          "name": "wind_gust_kmh",
-          "type": "FLOAT"
-        },
-        {
-          "name": "wind_direction_desc",
-          "type": "STRING"
-        },
-        {
-          "name": "visibility_km",
-          "type": "FLOAT"
-        },
-        {
-          "name": "cloud_cover_pct",
-          "type": "INT"
-        },
-        {
-          "name": "pressure_mb",
-          "type": "FLOAT"
-        },
-        {
-          "name": "uv_index",
-          "type": "INT"
-        },
-        {
-          "name": "is_daytime",
-          "type": "BOOLEAN"
-        },
-        {
-          "name": "cycling_comfort_index",
-          "type": "FLOAT"
-        },
-        {
-          "name": "icon_code",
-          "type": "INT"
-        },
-        {
-          "name": "weather_latitude",
-          "type": "FLOAT"
-        },
-        {
-          "name": "weather_longitude",
-          "type": "FLOAT"
-        },
-        {
-          "name": "location_name",
-          "type": "STRING"
-        },
-        {
-          "name": "loaded_at",
-          "type": "DATETIME"
-        }
-      ]
-    },
-    {
-      "primaryKeyProperties": [
-        "availability_key"
-      ],
-      "alias": "47187105287110",
-      "labels": [
-        "AvailabilityEvent"
-      ],
-      "properties": [
-        {
-          "name": "availability_key",
-          "type": "INT"
-        },
-        {
-          "name": "station_key",
-          "type": "INT"
-        },
-        {
-          "name": "event_id",
-          "type": "STRING"
-        },
-        {
-          "name": "event_timestamp",
-          "type": "DATETIME"
-        },
-        {
-          "name": "event_date",
-          "type": "DATETIME"
-        },
-        {
-          "name": "date_key",
-          "type": "INT"
-        },
-        {
-          "name": "time_key",
-          "type": "INT"
-        },
-        {
-          "name": "bikes_available",
-          "type": "INT"
-        },
-        {
-          "name": "empty_docks",
-          "type": "INT"
-        },
-        {
-          "name": "total_docks",
-          "type": "INT"
-        },
-        {
-          "name": "utilization_pct",
-          "type": "FLOAT"
-        },
-        {
-          "name": "event_type",
-          "type": "STRING"
-        },
-        {
-          "name": "is_critical",
-          "type": "BOOLEAN"
-        },
-        {
-          "name": "availability_band",
-          "type": "STRING"
-        },
-        {
-          "name": "is_rush_hour",
-          "type": "BOOLEAN"
-        },
-        {
-          "name": "time_period",
-          "type": "STRING"
-        }
-      ]
-    },
-    {
-      "primaryKeyProperties": [
-        "demand_key"
-      ],
-      "alias": "63018637599947",
-      "labels": [
-        "HourlyDemand"
-      ],
-      "properties": [
-        {
-          "name": "demand_key",
-          "type": "INT"
-        },
-        {
-          "name": "neighbourhood_key",
-          "type": "INT"
-        },
-        {
-          "name": "event_hour",
-          "type": "DATETIME"
-        },
-        {
-          "name": "demand_date",
-          "type": "DATETIME"
-        },
-        {
-          "name": "date_key",
-          "type": "INT"
-        },
-        {
-          "name": "time_key",
-          "type": "INT"
-        },
-        {
-          "name": "event_count",
-          "type": "INT"
-        },
-        {
-          "name": "avg_utilization",
-          "type": "FLOAT"
-        },
-        {
-          "name": "min_bikes",
-          "type": "INT"
-        },
-        {
-          "name": "max_bikes",
-          "type": "INT"
-        },
-        {
-          "name": "avg_bikes",
-          "type": "FLOAT"
-        },
-        {
-          "name": "critical_events",
-          "type": "INT"
-        },
-        {
-          "name": "rebalance_triggers",
-          "type": "INT"
-        },
-        {
-          "name": "demand_spike_count",
-          "type": "INT"
-        },
-        {
-          "name": "active_stations",
-          "type": "INT"
-        },
-        {
-          "name": "is_rush_hour",
-          "type": "BOOLEAN"
-        },
-        {
-          "name": "demand_intensity",
-          "type": "STRING"
-        }
-      ]
-    },
-    {
-      "primaryKeyProperties": [
-        "rebalance_key"
-      ],
-      "alias": "76056605000199",
-      "labels": [
-        "RebalancingAssessment"
-      ],
-      "properties": [
-        {
-          "name": "rebalance_key",
-          "type": "INT"
-        },
-        {
-          "name": "station_key",
-          "type": "INT"
-        },
-        {
-          "name": "neighbourhood_key",
-          "type": "INT"
-        },
-        {
-          "name": "time_key",
-          "type": "INT"
-        },
-        {
-          "name": "weather_key",
-          "type": "INT"
-        },
-        {
-          "name": "station_id",
-          "type": "STRING"
-        },
-        {
-          "name": "neighbourhood",
-          "type": "STRING"
-        },
-        {
-          "name": "bikes_available",
-          "type": "INT"
-        },
-        {
-          "name": "empty_docks",
-          "type": "INT"
-        },
-        {
-          "name": "total_docks",
-          "type": "INT"
-        },
-        {
-          "name": "utilization_pct",
-          "type": "FLOAT"
-        },
-        {
-          "name": "priority_score",
-          "type": "FLOAT"
-        },
-        {
-          "name": "recommended_action",
-          "type": "STRING"
-        },
-        {
-          "name": "bikes_to_target",
-          "type": "INT"
-        },
-        {
-          "name": "availability_status",
-          "type": "STRING"
-        },
-        {
-          "name": "station_size",
-          "type": "STRING"
-        },
-        {
-          "name": "assessed_at",
-          "type": "DATETIME"
-        },
-        {
-          "name": "date_key",
-          "type": "INT"
-        },
-        {
-          "name": "estimated_rebalance_cost",
-          "type": "FLOAT"
-        }
-      ]
-    },
-    {
-      "primaryKeyProperties": [
-        "forecast_key"
-      ],
-      "alias": "99130180380085",
-      "labels": [
-        "DemandForecast"
-      ],
-      "properties": [
-        {
-          "name": "forecast_key",
-          "type": "INT"
-        },
-        {
-          "name": "forecast_hour",
-          "type": "DATETIME"
-        },
-        {
-          "name": "neighbourhood",
-          "type": "STRING"
-        },
-        {
-          "name": "neighbourhood_key",
-          "type": "INT"
-        },
-        {
-          "name": "time_key",
-          "type": "INT"
-        },
-        {
-          "name": "date_key",
-          "type": "INT"
-        },
-        {
-          "name": "hour_of_day",
-          "type": "INT"
-        },
-        {
-          "name": "day_of_week",
-          "type": "INT"
-        },
-        {
-          "name": "is_rush_hour",
-          "type": "BOOLEAN"
-        },
-        {
-          "name": "is_weekend",
-          "type": "BOOLEAN"
-        },
-        {
-          "name": "predicted_demand",
-          "type": "FLOAT"
-        },
-        {
-          "name": "demand_lower_bound",
-          "type": "FLOAT"
-        },
-        {
-          "name": "demand_upper_bound",
-          "type": "FLOAT"
-        },
-        {
-          "name": "demand_tier",
-          "type": "STRING"
-        },
-        {
-          "name": "pre_position_recommended",
-          "type": "BOOLEAN"
-        },
-        {
-          "name": "forecast_generated_at",
-          "type": "DATETIME"
-        },
-        {
-          "name": "model_quality",
-          "type": "STRING"
-        }
-      ]
-    },
-    {
-      "primaryKeyProperties": [
-        "weather_impact_key"
-      ],
-      "alias": "112561428615426",
-      "labels": [
-        "WeatherImpact"
-      ],
-      "properties": [
-        {
-          "name": "weather_impact_key",
-          "type": "INT"
-        },
-        {
-          "name": "weather_key",
-          "type": "INT"
-        },
-        {
-          "name": "neighbourhood_key",
-          "type": "INT"
-        },
-        {
-          "name": "time_key",
-          "type": "INT"
-        },
-        {
-          "name": "event_hour",
-          "type": "DATETIME"
-        },
-        {
-          "name": "impact_date",
-          "type": "DATETIME"
-        },
-        {
-          "name": "date_key",
-          "type": "INT"
-        },
-        {
-          "name": "neighbourhood",
-          "type": "STRING"
-        },
-        {
-          "name": "event_count",
-          "type": "INT"
-        },
-        {
-          "name": "weather_adjusted_demand",
-          "type": "FLOAT"
-        },
-        {
-          "name": "weather_demand_impact",
-          "type": "FLOAT"
-        },
-        {
-          "name": "temperature_c",
-          "type": "FLOAT"
-        },
-        {
-          "name": "feels_like_c",
-          "type": "FLOAT"
-        },
-        {
-          "name": "wind_speed_kmh",
-          "type": "FLOAT"
-        },
-        {
-          "name": "has_precipitation",
-          "type": "BOOLEAN"
-        },
-        {
-          "name": "cloud_cover_pct",
-          "type": "INT"
-        },
-        {
-          "name": "cycling_comfort_index",
-          "type": "FLOAT"
-        },
-        {
-          "name": "weather_severity",
-          "type": "STRING"
-        },
-        {
-          "name": "weather_category",
-          "type": "STRING"
-        },
-        {
-          "name": "weather_description",
-          "type": "STRING"
-        },
-        {
-          "name": "visibility_km",
-          "type": "FLOAT"
-        },
-        {
-          "name": "impact_category",
-          "type": "STRING"
-        },
-        {
-          "name": "demand_gap",
-          "type": "FLOAT"
-        },
-        {
-          "name": "loaded_at",
-          "type": "DATETIME"
-        }
-      ]
-    },
-    {
-      "primaryKeyProperties": [
-        "station_key"
-      ],
-      "alias": "128045586265024",
-      "labels": [
-        "StationSnapshot"
-      ],
-      "properties": [
-        {
-          "name": "station_key",
-          "type": "INT"
-        },
-        {
-          "name": "station_id",
-          "type": "STRING"
-        },
-        {
-          "name": "street_address",
-          "type": "STRING"
-        },
-        {
-          "name": "neighbourhood",
-          "type": "STRING"
-        },
-        {
-          "name": "latitude",
-          "type": "FLOAT"
-        },
-        {
-          "name": "longitude",
-          "type": "FLOAT"
-        },
-        {
-          "name": "total_docks",
-          "type": "INT"
-        },
-        {
-          "name": "station_size",
-          "type": "STRING"
-        },
-        {
-          "name": "zone",
-          "type": "STRING"
-        },
-        {
-          "name": "bikes_available",
-          "type": "INT"
-        },
-        {
-          "name": "empty_docks",
-          "type": "INT"
-        },
-        {
-          "name": "utilization_pct",
-          "type": "FLOAT"
-        },
-        {
-          "name": "availability_band",
-          "type": "STRING"
-        },
-        {
-          "name": "is_critical",
-          "type": "BOOLEAN"
-        },
-        {
-          "name": "last_event_at",
-          "type": "DATETIME"
-        },
-        {
-          "name": "last_event_type",
-          "type": "STRING"
-        },
-        {
-          "name": "rebalance_priority",
-          "type": "FLOAT"
-        },
-        {
-          "name": "operational_status",
-          "type": "STRING"
-        },
-        {
-          "name": "needs_attention",
-          "type": "BOOLEAN"
-        },
-        {
-          "name": "snapshot_at",
-          "type": "DATETIME"
-        }
-      ]
-    },
-    {
-      "primaryKeyProperties": [
-        "recent_key"
-      ],
-      "alias": "143035040696971",
-      "labels": [
-        "RecentAvailability"
-      ],
-      "properties": [
-        {
-          "name": "recent_key",
-          "type": "INT"
-        },
-        {
-          "name": "station_key",
-          "type": "INT"
-        },
-        {
-          "name": "station_id",
-          "type": "STRING"
-        },
-        {
-          "name": "street_address",
-          "type": "STRING"
-        },
-        {
-          "name": "neighbourhood",
-          "type": "STRING"
-        },
-        {
-          "name": "zone",
-          "type": "STRING"
-        },
-        {
-          "name": "event_hour",
-          "type": "DATETIME"
-        },
-        {
-          "name": "event_date",
-          "type": "DATETIME"
-        },
-        {
-          "name": "date_key",
-          "type": "INT"
-        },
-        {
-          "name": "time_key",
-          "type": "INT"
-        },
-        {
-          "name": "event_count",
-          "type": "INT"
-        },
-        {
-          "name": "avg_bikes",
-          "type": "FLOAT"
-        },
-        {
-          "name": "min_bikes",
-          "type": "INT"
-        },
-        {
-          "name": "max_bikes",
-          "type": "INT"
-        },
-        {
-          "name": "avg_empty_docks",
-          "type": "FLOAT"
-        },
-        {
-          "name": "avg_utilization",
-          "type": "FLOAT"
-        },
-        {
-          "name": "critical_events",
-          "type": "INT"
-        },
-        {
-          "name": "utilization_band",
-          "type": "STRING"
-        },
-        {
-          "name": "loaded_at",
-          "type": "DATETIME"
-        }
-      ]
-    }
-  ],
-  "edgeTypes": [
-    {
-      "sourceNodeType": {
-        "alias": "47187105287110"
-      },
-      "alias": "4102094153518740683",
-      "destinationNodeType": {
-        "alias": "212245027828040"
-      },
-      "labels": [
-        "located_at"
-      ],
-      "properties": [
-        {
-          "name": "station_key",
-          "type": "INT"
-        }
-      ]
-    },
-    {
-      "sourceNodeType": {
-        "alias": "47187105287110"
-      },
-      "alias": "4102106608258406901",
-      "destinationNodeType": {
-        "alias": "266396690945189"
-      },
-      "labels": [
-        "occurred_during"
-      ],
-      "properties": [
-        {
-          "name": "time_key",
-          "type": "INT"
-        }
-      ]
-    },
-    {
-      "sourceNodeType": {
-        "alias": "47187105287110"
-      },
-      "alias": "4102118272852551806",
-      "destinationNodeType": {
-        "alias": "16437291161987"
-      },
-      "labels": [
-        "event_on_date"
-      ],
-      "properties": [
-        {
-          "name": "date_key",
-          "type": "INT"
-        }
-      ]
-    },
-    {
-      "sourceNodeType": {
-        "alias": "63018637599947"
-      },
-      "alias": "4102128914166469142",
-      "destinationNodeType": {
-        "alias": "234584979673062"
-      },
-      "labels": [
-        "measured_in"
-      ],
-      "properties": [
-        {
-          "name": "neighbourhood_key",
-          "type": "INT"
-        }
-      ]
-    },
-    {
-      "sourceNodeType": {
-        "alias": "63018637599947"
-      },
-      "alias": "4102141256951076824",
-      "destinationNodeType": {
-        "alias": "266396690945189"
-      },
-      "labels": [
-        "demand_at_time"
-      ],
-      "properties": [
-        {
-          "name": "time_key",
-          "type": "INT"
-        }
-      ]
-    },
-    {
-      "sourceNodeType": {
-        "alias": "63018637599947"
-      },
-      "alias": "4102153999124893358",
-      "destinationNodeType": {
-        "alias": "16437291161987"
-      },
-      "labels": [
-        "demand_on_date"
-      ],
-      "properties": [
-        {
-          "name": "date_key",
-          "type": "INT"
-        }
-      ]
-    },
-    {
-      "sourceNodeType": {
-        "alias": "76056605000199"
-      },
-      "alias": "4102167112850434568",
-      "destinationNodeType": {
-        "alias": "212245027828040"
-      },
-      "labels": [
-        "assessed_for"
-      ],
-      "properties": [
-        {
-          "name": "station_key",
-          "type": "INT"
-        }
-      ]
-    },
-    {
-      "sourceNodeType": {
-        "alias": "76056605000199"
-      },
-      "alias": "4102182358119609504",
-      "destinationNodeType": {
-        "alias": "234584979673062"
-      },
-      "labels": [
-        "rebalance_in_zone"
-      ],
-      "properties": [
-        {
-          "name": "neighbourhood_key",
-          "type": "INT"
-        }
-      ]
-    },
-    {
-      "sourceNodeType": {
-        "alias": "76056605000199"
-      },
-      "alias": "4102193025315110584",
-      "destinationNodeType": {
-        "alias": "266396690945189"
-      },
-      "labels": [
-        "rebalance_at_time"
-      ],
-      "properties": [
-        {
-          "name": "time_key",
-          "type": "INT"
-        }
-      ]
-    },
-    {
-      "sourceNodeType": {
-        "alias": "76056605000199"
-      },
-      "alias": "4102209689194433969",
-      "destinationNodeType": {
-        "alias": "16437291161987"
-      },
-      "labels": [
-        "assessed_on_date"
-      ],
-      "properties": [
-        {
-          "name": "date_key",
-          "type": "INT"
-        }
-      ]
-    },
-    {
-      "sourceNodeType": {
-        "alias": "76056605000199"
-      },
-      "alias": "4102222826165138855",
-      "destinationNodeType": {
-        "alias": "33418903485014"
-      },
-      "labels": [
-        "rebalance_during_weather"
-      ],
-      "properties": [
-        {
-          "name": "weather_key",
-          "type": "INT"
-        }
-      ]
-    },
-    {
-      "sourceNodeType": {
-        "alias": "112561428615426"
-      },
-      "alias": "4102234212806277746",
-      "destinationNodeType": {
-        "alias": "33418903485014"
-      },
-      "labels": [
-        "affected_by"
-      ],
-      "properties": [
-        {
-          "name": "weather_key",
-          "type": "INT"
-        }
-      ]
-    },
-    {
-      "sourceNodeType": {
-        "alias": "112561428615426"
-      },
-      "alias": "4102245812766966416",
-      "destinationNodeType": {
-        "alias": "234584979673062"
-      },
-      "labels": [
-        "impacts_zone"
-      ],
-      "properties": [
-        {
-          "name": "neighbourhood_key",
-          "type": "INT"
-        }
-      ]
-    },
-    {
-      "sourceNodeType": {
-        "alias": "112561428615426"
-      },
-      "alias": "4102255860869927743",
-      "destinationNodeType": {
-        "alias": "266396690945189"
-      },
-      "labels": [
-        "impact_at_time"
-      ],
-      "properties": [
-        {
-          "name": "time_key",
-          "type": "INT"
-        }
-      ]
-    },
-    {
-      "sourceNodeType": {
-        "alias": "112561428615426"
-      },
-      "alias": "4102269527051562944",
-      "destinationNodeType": {
-        "alias": "16437291161987"
-      },
-      "labels": [
-        "impact_on_date"
-      ],
-      "properties": [
-        {
-          "name": "date_key",
-          "type": "INT"
-        }
-      ]
-    },
-    {
-      "sourceNodeType": {
-        "alias": "128045586265024"
-      },
-      "alias": "4102283130443295018",
-      "destinationNodeType": {
-        "alias": "212245027828040"
-      },
-      "labels": [
-        "current_snapshot"
-      ],
-      "properties": [
-        {
-          "name": "station_key",
-          "type": "INT"
-        }
-      ]
-    },
-    {
-      "sourceNodeType": {
-        "alias": "143035040696971"
-      },
-      "alias": "4102296179910149352",
-      "destinationNodeType": {
-        "alias": "212245027828040"
-      },
-      "labels": [
-        "recent_at_station"
-      ],
-      "properties": [
-        {
-          "name": "station_key",
-          "type": "INT"
-        }
-      ]
-    },
-    {
-      "sourceNodeType": {
-        "alias": "143035040696971"
-      },
-      "alias": "4102310776510503015",
-      "destinationNodeType": {
-        "alias": "266396690945189"
-      },
-      "labels": [
-        "recent_at_time"
-      ],
-      "properties": [
-        {
-          "name": "time_key",
-          "type": "INT"
-        }
-      ]
-    },
-    {
-      "sourceNodeType": {
-        "alias": "143035040696971"
-      },
-      "alias": "4102321942862287426",
-      "destinationNodeType": {
-        "alias": "16437291161987"
-      },
-      "labels": [
-        "recent_on_date"
-      ],
-      "properties": [
-        {
-          "name": "date_key",
-          "type": "INT"
-        }
-      ]
-    },
-    {
-      "sourceNodeType": {
-        "alias": "99130180380085"
-      },
-      "alias": "4102335054868499744",
-      "destinationNodeType": {
-        "alias": "234584979673062"
-      },
-      "labels": [
-        "forecast_for_zone"
-      ],
-      "properties": [
-        {
-          "name": "neighbourhood_key",
-          "type": "INT"
-        }
-      ]
-    },
-    {
-      "sourceNodeType": {
-        "alias": "99130180380085"
-      },
-      "alias": "4102347066756596597",
-      "destinationNodeType": {
-        "alias": "266396690945189"
-      },
-      "labels": [
-        "forecast_at_time"
-      ],
-      "properties": [
-        {
-          "name": "time_key",
-          "type": "INT"
-        }
-      ]
-    },
-    {
-      "sourceNodeType": {
-        "alias": "99130180380085"
-      },
-      "alias": "4102358815914046894",
-      "destinationNodeType": {
-        "alias": "16437291161987"
-      },
-      "labels": [
-        "forecast_on_date"
-      ],
-      "properties": [
-        {
-          "name": "date_key",
-          "type": "INT"
-        }
-      ]
-    },
-    {
-      "sourceNodeType": {
-        "alias": "33418903485014"
-      },
-      "alias": "4102373022565552030",
-      "destinationNodeType": {
-        "alias": "266396690945189"
-      },
-      "labels": [
-        "observed_during"
-      ],
-      "properties": [
-        {
-          "name": "time_key",
-          "type": "INT"
-        }
-      ]
-    }
-  ]
+{
+  "schemaVersion": "1.0.0",
+  "nodeTypes": [
+    {
+      "primaryKeyProperties": [
+        "station_key"
+      ],
+      "alias": "212245027828040",
+      "labels": [
+        "Station"
+      ],
+      "properties": [
+        {
+          "name": "station_key",
+          "type": "INT"
+        },
+        {
+          "name": "station_id",
+          "type": "STRING"
+        },
+        {
+          "name": "street_address",
+          "type": "STRING"
+        },
+        {
+          "name": "neighbourhood",
+          "type": "STRING"
+        },
+        {
+          "name": "latitude",
+          "type": "FLOAT"
+        },
+        {
+          "name": "longitude",
+          "type": "FLOAT"
+        },
+        {
+          "name": "total_docks",
+          "type": "INT"
+        },
+        {
+          "name": "station_size",
+          "type": "STRING"
+        },
+        {
+          "name": "current_status",
+          "type": "STRING"
+        },
+        {
+          "name": "current_utilization_pct",
+          "type": "FLOAT"
+        },
+        {
+          "name": "rebalance_priority",
+          "type": "FLOAT"
+        },
+        {
+          "name": "zone",
+          "type": "STRING"
+        },
+        {
+          "name": "loaded_at",
+          "type": "DATETIME"
+        }
+      ]
+    },
+    {
+      "primaryKeyProperties": [
+        "neighbourhood_key"
+      ],
+      "alias": "234584979673062",
+      "labels": [
+        "Neighbourhood"
+      ],
+      "properties": [
+        {
+          "name": "neighbourhood_key",
+          "type": "INT"
+        },
+        {
+          "name": "neighbourhood_name",
+          "type": "STRING"
+        },
+        {
+          "name": "station_count",
+          "type": "INT"
+        },
+        {
+          "name": "total_capacity",
+          "type": "INT"
+        },
+        {
+          "name": "total_bikes_available",
+          "type": "INT"
+        },
+        {
+          "name": "total_empty_docks",
+          "type": "INT"
+        },
+        {
+          "name": "neighbourhood_utilization_pct",
+          "type": "FLOAT"
+        },
+        {
+          "name": "avg_utilization_pct",
+          "type": "FLOAT"
+        },
+        {
+          "name": "health_score",
+          "type": "FLOAT"
+        },
+        {
+          "name": "capacity_status",
+          "type": "STRING"
+        },
+        {
+          "name": "empty_stations",
+          "type": "INT"
+        },
+        {
+          "name": "full_stations",
+          "type": "INT"
+        },
+        {
+          "name": "stations_needing_rebalance",
+          "type": "INT"
+        },
+        {
+          "name": "centroid_lat",
+          "type": "FLOAT"
+        },
+        {
+          "name": "centroid_lon",
+          "type": "FLOAT"
+        },
+        {
+          "name": "density_tier",
+          "type": "STRING"
+        },
+        {
+          "name": "loaded_at",
+          "type": "DATETIME"
+        }
+      ]
+    },
+    {
+      "primaryKeyProperties": [
+        "time_key"
+      ],
+      "alias": "266396690945189",
+      "labels": [
+        "TimeSlot"
+      ],
+      "properties": [
+        {
+          "name": "time_key",
+          "type": "INT"
+        },
+        {
+          "name": "hour_of_day",
+          "type": "INT"
+        },
+        {
+          "name": "hour_label",
+          "type": "STRING"
+        },
+        {
+          "name": "time_period",
+          "type": "STRING"
+        },
+        {
+          "name": "is_rush_hour",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "am_pm",
+          "type": "STRING"
+        },
+        {
+          "name": "demand_tier",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "primaryKeyProperties": [
+        "date_key"
+      ],
+      "alias": "16437291161987",
+      "labels": [
+        "CalendarDate"
+      ],
+      "properties": [
+        {
+          "name": "date_key",
+          "type": "INT"
+        },
+        {
+          "name": "date_value",
+          "type": "DATETIME"
+        },
+        {
+          "name": "year",
+          "type": "INT"
+        },
+        {
+          "name": "quarter",
+          "type": "INT"
+        },
+        {
+          "name": "month_num",
+          "type": "INT"
+        },
+        {
+          "name": "month_name",
+          "type": "STRING"
+        },
+        {
+          "name": "week_of_year",
+          "type": "INT"
+        },
+        {
+          "name": "day_of_month",
+          "type": "INT"
+        },
+        {
+          "name": "day_of_week",
+          "type": "INT"
+        },
+        {
+          "name": "day_name",
+          "type": "STRING"
+        },
+        {
+          "name": "is_weekend",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "season",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "primaryKeyProperties": [
+        "weather_key"
+      ],
+      "alias": "33418903485014",
+      "labels": [
+        "WeatherObservation"
+      ],
+      "properties": [
+        {
+          "name": "weather_key",
+          "type": "INT"
+        },
+        {
+          "name": "observation_hour",
+          "type": "DATETIME"
+        },
+        {
+          "name": "observation_date",
+          "type": "DATETIME"
+        },
+        {
+          "name": "time_key",
+          "type": "INT"
+        },
+        {
+          "name": "weather_description",
+          "type": "STRING"
+        },
+        {
+          "name": "weather_category",
+          "type": "STRING"
+        },
+        {
+          "name": "weather_severity",
+          "type": "STRING"
+        },
+        {
+          "name": "has_precipitation",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "temperature_c",
+          "type": "FLOAT"
+        },
+        {
+          "name": "feels_like_c",
+          "type": "FLOAT"
+        },
+        {
+          "name": "relative_humidity",
+          "type": "FLOAT"
+        },
+        {
+          "name": "wind_speed_kmh",
+          "type": "FLOAT"
+        },
+        {
+          "name": "wind_gust_kmh",
+          "type": "FLOAT"
+        },
+        {
+          "name": "wind_direction_desc",
+          "type": "STRING"
+        },
+        {
+          "name": "visibility_km",
+          "type": "FLOAT"
+        },
+        {
+          "name": "cloud_cover_pct",
+          "type": "INT"
+        },
+        {
+          "name": "pressure_mb",
+          "type": "FLOAT"
+        },
+        {
+          "name": "uv_index",
+          "type": "INT"
+        },
+        {
+          "name": "is_daytime",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "cycling_comfort_index",
+          "type": "FLOAT"
+        },
+        {
+          "name": "icon_code",
+          "type": "INT"
+        },
+        {
+          "name": "weather_latitude",
+          "type": "FLOAT"
+        },
+        {
+          "name": "weather_longitude",
+          "type": "FLOAT"
+        },
+        {
+          "name": "location_name",
+          "type": "STRING"
+        },
+        {
+          "name": "loaded_at",
+          "type": "DATETIME"
+        }
+      ]
+    },
+    {
+      "primaryKeyProperties": [
+        "availability_key"
+      ],
+      "alias": "47187105287110",
+      "labels": [
+        "AvailabilityEvent"
+      ],
+      "properties": [
+        {
+          "name": "availability_key",
+          "type": "INT"
+        },
+        {
+          "name": "station_key",
+          "type": "INT"
+        },
+        {
+          "name": "event_id",
+          "type": "STRING"
+        },
+        {
+          "name": "event_timestamp",
+          "type": "DATETIME"
+        },
+        {
+          "name": "event_date",
+          "type": "DATETIME"
+        },
+        {
+          "name": "date_key",
+          "type": "INT"
+        },
+        {
+          "name": "time_key",
+          "type": "INT"
+        },
+        {
+          "name": "bikes_available",
+          "type": "INT"
+        },
+        {
+          "name": "empty_docks",
+          "type": "INT"
+        },
+        {
+          "name": "total_docks",
+          "type": "INT"
+        },
+        {
+          "name": "utilization_pct",
+          "type": "FLOAT"
+        },
+        {
+          "name": "event_type",
+          "type": "STRING"
+        },
+        {
+          "name": "is_critical",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "availability_band",
+          "type": "STRING"
+        },
+        {
+          "name": "is_rush_hour",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "time_period",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "primaryKeyProperties": [
+        "demand_key"
+      ],
+      "alias": "63018637599947",
+      "labels": [
+        "HourlyDemand"
+      ],
+      "properties": [
+        {
+          "name": "demand_key",
+          "type": "INT"
+        },
+        {
+          "name": "neighbourhood_key",
+          "type": "INT"
+        },
+        {
+          "name": "event_hour",
+          "type": "DATETIME"
+        },
+        {
+          "name": "demand_date",
+          "type": "DATETIME"
+        },
+        {
+          "name": "date_key",
+          "type": "INT"
+        },
+        {
+          "name": "time_key",
+          "type": "INT"
+        },
+        {
+          "name": "event_count",
+          "type": "INT"
+        },
+        {
+          "name": "avg_utilization",
+          "type": "FLOAT"
+        },
+        {
+          "name": "min_bikes",
+          "type": "INT"
+        },
+        {
+          "name": "max_bikes",
+          "type": "INT"
+        },
+        {
+          "name": "avg_bikes",
+          "type": "FLOAT"
+        },
+        {
+          "name": "critical_events",
+          "type": "INT"
+        },
+        {
+          "name": "rebalance_triggers",
+          "type": "INT"
+        },
+        {
+          "name": "demand_spike_count",
+          "type": "INT"
+        },
+        {
+          "name": "active_stations",
+          "type": "INT"
+        },
+        {
+          "name": "is_rush_hour",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "demand_intensity",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "primaryKeyProperties": [
+        "rebalance_key"
+      ],
+      "alias": "76056605000199",
+      "labels": [
+        "RebalancingAssessment"
+      ],
+      "properties": [
+        {
+          "name": "rebalance_key",
+          "type": "INT"
+        },
+        {
+          "name": "station_key",
+          "type": "INT"
+        },
+        {
+          "name": "neighbourhood_key",
+          "type": "INT"
+        },
+        {
+          "name": "time_key",
+          "type": "INT"
+        },
+        {
+          "name": "weather_key",
+          "type": "INT"
+        },
+        {
+          "name": "station_id",
+          "type": "STRING"
+        },
+        {
+          "name": "neighbourhood",
+          "type": "STRING"
+        },
+        {
+          "name": "bikes_available",
+          "type": "INT"
+        },
+        {
+          "name": "empty_docks",
+          "type": "INT"
+        },
+        {
+          "name": "total_docks",
+          "type": "INT"
+        },
+        {
+          "name": "utilization_pct",
+          "type": "FLOAT"
+        },
+        {
+          "name": "priority_score",
+          "type": "FLOAT"
+        },
+        {
+          "name": "recommended_action",
+          "type": "STRING"
+        },
+        {
+          "name": "bikes_to_target",
+          "type": "INT"
+        },
+        {
+          "name": "availability_status",
+          "type": "STRING"
+        },
+        {
+          "name": "station_size",
+          "type": "STRING"
+        },
+        {
+          "name": "assessed_at",
+          "type": "DATETIME"
+        },
+        {
+          "name": "date_key",
+          "type": "INT"
+        },
+        {
+          "name": "estimated_rebalance_cost",
+          "type": "FLOAT"
+        }
+      ]
+    },
+    {
+      "primaryKeyProperties": [
+        "forecast_key"
+      ],
+      "alias": "99130180380085",
+      "labels": [
+        "DemandForecast"
+      ],
+      "properties": [
+        {
+          "name": "forecast_key",
+          "type": "INT"
+        },
+        {
+          "name": "forecast_hour",
+          "type": "DATETIME"
+        },
+        {
+          "name": "neighbourhood",
+          "type": "STRING"
+        },
+        {
+          "name": "neighbourhood_key",
+          "type": "INT"
+        },
+        {
+          "name": "time_key",
+          "type": "INT"
+        },
+        {
+          "name": "date_key",
+          "type": "INT"
+        },
+        {
+          "name": "hour_of_day",
+          "type": "INT"
+        },
+        {
+          "name": "day_of_week",
+          "type": "INT"
+        },
+        {
+          "name": "is_rush_hour",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "is_weekend",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "predicted_demand",
+          "type": "FLOAT"
+        },
+        {
+          "name": "demand_lower_bound",
+          "type": "FLOAT"
+        },
+        {
+          "name": "demand_upper_bound",
+          "type": "FLOAT"
+        },
+        {
+          "name": "demand_tier",
+          "type": "STRING"
+        },
+        {
+          "name": "pre_position_recommended",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "forecast_generated_at",
+          "type": "DATETIME"
+        },
+        {
+          "name": "model_quality",
+          "type": "STRING"
+        }
+      ]
+    },
+    {
+      "primaryKeyProperties": [
+        "weather_impact_key"
+      ],
+      "alias": "112561428615426",
+      "labels": [
+        "WeatherImpact"
+      ],
+      "properties": [
+        {
+          "name": "weather_impact_key",
+          "type": "INT"
+        },
+        {
+          "name": "weather_key",
+          "type": "INT"
+        },
+        {
+          "name": "neighbourhood_key",
+          "type": "INT"
+        },
+        {
+          "name": "time_key",
+          "type": "INT"
+        },
+        {
+          "name": "event_hour",
+          "type": "DATETIME"
+        },
+        {
+          "name": "impact_date",
+          "type": "DATETIME"
+        },
+        {
+          "name": "date_key",
+          "type": "INT"
+        },
+        {
+          "name": "neighbourhood",
+          "type": "STRING"
+        },
+        {
+          "name": "event_count",
+          "type": "INT"
+        },
+        {
+          "name": "weather_adjusted_demand",
+          "type": "FLOAT"
+        },
+        {
+          "name": "weather_demand_impact",
+          "type": "FLOAT"
+        },
+        {
+          "name": "temperature_c",
+          "type": "FLOAT"
+        },
+        {
+          "name": "feels_like_c",
+          "type": "FLOAT"
+        },
+        {
+          "name": "wind_speed_kmh",
+          "type": "FLOAT"
+        },
+        {
+          "name": "has_precipitation",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "cloud_cover_pct",
+          "type": "INT"
+        },
+        {
+          "name": "cycling_comfort_index",
+          "type": "FLOAT"
+        },
+        {
+          "name": "weather_severity",
+          "type": "STRING"
+        },
+        {
+          "name": "weather_category",
+          "type": "STRING"
+        },
+        {
+          "name": "weather_description",
+          "type": "STRING"
+        },
+        {
+          "name": "visibility_km",
+          "type": "FLOAT"
+        },
+        {
+          "name": "impact_category",
+          "type": "STRING"
+        },
+        {
+          "name": "demand_gap",
+          "type": "FLOAT"
+        },
+        {
+          "name": "loaded_at",
+          "type": "DATETIME"
+        }
+      ]
+    },
+    {
+      "primaryKeyProperties": [
+        "station_key"
+      ],
+      "alias": "128045586265024",
+      "labels": [
+        "StationSnapshot"
+      ],
+      "properties": [
+        {
+          "name": "station_key",
+          "type": "INT"
+        },
+        {
+          "name": "station_id",
+          "type": "STRING"
+        },
+        {
+          "name": "street_address",
+          "type": "STRING"
+        },
+        {
+          "name": "neighbourhood",
+          "type": "STRING"
+        },
+        {
+          "name": "latitude",
+          "type": "FLOAT"
+        },
+        {
+          "name": "longitude",
+          "type": "FLOAT"
+        },
+        {
+          "name": "total_docks",
+          "type": "INT"
+        },
+        {
+          "name": "station_size",
+          "type": "STRING"
+        },
+        {
+          "name": "zone",
+          "type": "STRING"
+        },
+        {
+          "name": "bikes_available",
+          "type": "INT"
+        },
+        {
+          "name": "empty_docks",
+          "type": "INT"
+        },
+        {
+          "name": "utilization_pct",
+          "type": "FLOAT"
+        },
+        {
+          "name": "availability_band",
+          "type": "STRING"
+        },
+        {
+          "name": "is_critical",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "last_event_at",
+          "type": "DATETIME"
+        },
+        {
+          "name": "last_event_type",
+          "type": "STRING"
+        },
+        {
+          "name": "rebalance_priority",
+          "type": "FLOAT"
+        },
+        {
+          "name": "operational_status",
+          "type": "STRING"
+        },
+        {
+          "name": "needs_attention",
+          "type": "BOOLEAN"
+        },
+        {
+          "name": "snapshot_at",
+          "type": "DATETIME"
+        }
+      ]
+    },
+    {
+      "primaryKeyProperties": [
+        "recent_key"
+      ],
+      "alias": "143035040696971",
+      "labels": [
+        "RecentAvailability"
+      ],
+      "properties": [
+        {
+          "name": "recent_key",
+          "type": "INT"
+        },
+        {
+          "name": "station_key",
+          "type": "INT"
+        },
+        {
+          "name": "station_id",
+          "type": "STRING"
+        },
+        {
+          "name": "street_address",
+          "type": "STRING"
+        },
+        {
+          "name": "neighbourhood",
+          "type": "STRING"
+        },
+        {
+          "name": "zone",
+          "type": "STRING"
+        },
+        {
+          "name": "event_hour",
+          "type": "DATETIME"
+        },
+        {
+          "name": "event_date",
+          "type": "DATETIME"
+        },
+        {
+          "name": "date_key",
+          "type": "INT"
+        },
+        {
+          "name": "time_key",
+          "type": "INT"
+        },
+        {
+          "name": "event_count",
+          "type": "INT"
+        },
+        {
+          "name": "avg_bikes",
+          "type": "FLOAT"
+        },
+        {
+          "name": "min_bikes",
+          "type": "INT"
+        },
+        {
+          "name": "max_bikes",
+          "type": "INT"
+        },
+        {
+          "name": "avg_empty_docks",
+          "type": "FLOAT"
+        },
+        {
+          "name": "avg_utilization",
+          "type": "FLOAT"
+        },
+        {
+          "name": "critical_events",
+          "type": "INT"
+        },
+        {
+          "name": "utilization_band",
+          "type": "STRING"
+        },
+        {
+          "name": "loaded_at",
+          "type": "DATETIME"
+        }
+      ]
+    }
+  ],
+  "edgeTypes": [
+    {
+      "sourceNodeType": {
+        "alias": "47187105287110"
+      },
+      "alias": "4102094153518740683",
+      "destinationNodeType": {
+        "alias": "212245027828040"
+      },
+      "labels": [
+        "located_at"
+      ],
+      "properties": []
+    },
+    {
+      "sourceNodeType": {
+        "alias": "47187105287110"
+      },
+      "alias": "4102106608258406901",
+      "destinationNodeType": {
+        "alias": "266396690945189"
+      },
+      "labels": [
+        "occurred_during"
+      ],
+      "properties": []
+    },
+    {
+      "sourceNodeType": {
+        "alias": "47187105287110"
+      },
+      "alias": "4102118272852551806",
+      "destinationNodeType": {
+        "alias": "16437291161987"
+      },
+      "labels": [
+        "event_on_date"
+      ],
+      "properties": []
+    },
+    {
+      "sourceNodeType": {
+        "alias": "63018637599947"
+      },
+      "alias": "4102128914166469142",
+      "destinationNodeType": {
+        "alias": "234584979673062"
+      },
+      "labels": [
+        "measured_in"
+      ],
+      "properties": []
+    },
+    {
+      "sourceNodeType": {
+        "alias": "63018637599947"
+      },
+      "alias": "4102141256951076824",
+      "destinationNodeType": {
+        "alias": "266396690945189"
+      },
+      "labels": [
+        "demand_at_time"
+      ],
+      "properties": []
+    },
+    {
+      "sourceNodeType": {
+        "alias": "63018637599947"
+      },
+      "alias": "4102153999124893358",
+      "destinationNodeType": {
+        "alias": "16437291161987"
+      },
+      "labels": [
+        "demand_on_date"
+      ],
+      "properties": []
+    },
+    {
+      "sourceNodeType": {
+        "alias": "76056605000199"
+      },
+      "alias": "4102167112850434568",
+      "destinationNodeType": {
+        "alias": "212245027828040"
+      },
+      "labels": [
+        "assessed_for"
+      ],
+      "properties": []
+    },
+    {
+      "sourceNodeType": {
+        "alias": "76056605000199"
+      },
+      "alias": "4102182358119609504",
+      "destinationNodeType": {
+        "alias": "234584979673062"
+      },
+      "labels": [
+        "rebalance_in_zone"
+      ],
+      "properties": []
+    },
+    {
+      "sourceNodeType": {
+        "alias": "76056605000199"
+      },
+      "alias": "4102193025315110584",
+      "destinationNodeType": {
+        "alias": "266396690945189"
+      },
+      "labels": [
+        "rebalance_at_time"
+      ],
+      "properties": []
+    },
+    {
+      "sourceNodeType": {
+        "alias": "76056605000199"
+      },
+      "alias": "4102209689194433969",
+      "destinationNodeType": {
+        "alias": "16437291161987"
+      },
+      "labels": [
+        "assessed_on_date"
+      ],
+      "properties": []
+    },
+    {
+      "sourceNodeType": {
+        "alias": "76056605000199"
+      },
+      "alias": "4102222826165138855",
+      "destinationNodeType": {
+        "alias": "33418903485014"
+      },
+      "labels": [
+        "rebalance_during_weather"
+      ],
+      "properties": []
+    },
+    {
+      "sourceNodeType": {
+        "alias": "112561428615426"
+      },
+      "alias": "4102234212806277746",
+      "destinationNodeType": {
+        "alias": "33418903485014"
+      },
+      "labels": [
+        "affected_by"
+      ],
+      "properties": []
+    },
+    {
+      "sourceNodeType": {
+        "alias": "112561428615426"
+      },
+      "alias": "4102245812766966416",
+      "destinationNodeType": {
+        "alias": "234584979673062"
+      },
+      "labels": [
+        "impacts_zone"
+      ],
+      "properties": []
+    },
+    {
+      "sourceNodeType": {
+        "alias": "112561428615426"
+      },
+      "alias": "4102255860869927743",
+      "destinationNodeType": {
+        "alias": "266396690945189"
+      },
+      "labels": [
+        "impact_at_time"
+      ],
+      "properties": []
+    },
+    {
+      "sourceNodeType": {
+        "alias": "112561428615426"
+      },
+      "alias": "4102269527051562944",
+      "destinationNodeType": {
+        "alias": "16437291161987"
+      },
+      "labels": [
+        "impact_on_date"
+      ],
+      "properties": []
+    },
+    {
+      "sourceNodeType": {
+        "alias": "128045586265024"
+      },
+      "alias": "4102283130443295018",
+      "destinationNodeType": {
+        "alias": "212245027828040"
+      },
+      "labels": [
+        "current_snapshot"
+      ],
+      "properties": []
+    },
+    {
+      "sourceNodeType": {
+        "alias": "143035040696971"
+      },
+      "alias": "4102296179910149352",
+      "destinationNodeType": {
+        "alias": "212245027828040"
+      },
+      "labels": [
+        "recent_at_station"
+      ],
+      "properties": []
+    },
+    {
+      "sourceNodeType": {
+        "alias": "143035040696971"
+      },
+      "alias": "4102310776510503015",
+      "destinationNodeType": {
+        "alias": "266396690945189"
+      },
+      "labels": [
+        "recent_at_time"
+      ],
+      "properties": []
+    },
+    {
+      "sourceNodeType": {
+        "alias": "143035040696971"
+      },
+      "alias": "4102321942862287426",
+      "destinationNodeType": {
+        "alias": "16437291161987"
+      },
+      "labels": [
+        "recent_on_date"
+      ],
+      "properties": []
+    },
+    {
+      "sourceNodeType": {
+        "alias": "99130180380085"
+      },
+      "alias": "4102335054868499744",
+      "destinationNodeType": {
+        "alias": "234584979673062"
+      },
+      "labels": [
+        "forecast_for_zone"
+      ],
+      "properties": []
+    },
+    {
+      "sourceNodeType": {
+        "alias": "99130180380085"
+      },
+      "alias": "4102347066756596597",
+      "destinationNodeType": {
+        "alias": "266396690945189"
+      },
+      "labels": [
+        "forecast_at_time"
+      ],
+      "properties": []
+    },
+    {
+      "sourceNodeType": {
+        "alias": "99130180380085"
+      },
+      "alias": "4102358815914046894",
+      "destinationNodeType": {
+        "alias": "16437291161987"
+      },
+      "labels": [
+        "forecast_on_date"
+      ],
+      "properties": []
+    },
+    {
+      "sourceNodeType": {
+        "alias": "33418903485014"
+      },
+      "alias": "4102373022565552030",
+      "destinationNodeType": {
+        "alias": "266396690945189"
+      },
+      "labels": [
+        "observed_during"
+      ],
+      "properties": []
+    }
+  ]
 }
