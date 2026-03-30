@@ -249,6 +249,37 @@ class GraphModelClient:
             return resp.json()
         return None
 
+    # ── Wait for Data Load ────────────────────────────────────
+
+    def wait_for_data_load(self, workspace_id: str, graph_id: str,
+                           timeout: int = 600, poll_interval: int = 30) -> bool:
+        """
+        Poll until graph model finishes loading data.
+
+        After creating a graph model with a definition, Fabric auto-triggers
+        a data load. This method polls GET /graphModels/{id} until
+        queryReadiness == "Full" and loadingStatus == "Completed".
+        """
+        start = time.time()
+        while time.time() - start < timeout:
+            item = self.get(workspace_id, graph_id)
+            if not item:
+                time.sleep(poll_interval)
+                continue
+            props = item.get("properties", {})
+            readiness = props.get("queryReadiness", "")
+            loading = props.get("lastDataLoadingStatus") or {}
+            status = loading.get("status", "")
+            print(f"    queryReadiness={readiness}  loadingStatus={status}")
+            if readiness == "Full" and status == "Completed":
+                return True
+            if status == "Failed":
+                print(f"    [WARN] Data load failed")
+                return False
+            time.sleep(poll_interval)
+        print(f"    [WARN] Timed out waiting for data load ({timeout}s)")
+        return False
+
     # ── Delete ────────────────────────────────────────────────
 
     def delete(self, workspace_id: str, graph_id: str) -> bool:
