@@ -14,7 +14,7 @@ A **complete, one-click deployable** Real-Time Intelligence (RTI) solution on Mi
 6. [Task Flow](#task-flow)
 7. [Quick Start — Deploy in 7 Steps](#quick-start--deploy-in-7-steps)
 8. [Post-Deployment Steps](#post-deployment-steps)
-   - [KQL Database Setup (REQUIRED)](#kql-database-setup-required)
+   - [KQL Database Tables (Auto-Created)](#kql-database-tables-auto-created)
 9. [Item Inventory](#item-inventory)
 10. [Activator / Reflex Setup](#activator--reflex-items-manual-setup)
 11. [Data Model](#data-model)
@@ -452,34 +452,21 @@ The standalone graph reads the **same lakehouse tables** as the ontology, so the
 | Step | Action | Time |
 |------|--------|------|
 | **1. Start Eventstreams** | Open RTIbikeRental and RTI-WeatherDemo — click **Start** if not running. Wait for Bronze data. | 10–30 min |
-| **2. ⚠️ Create KQL Tables** | **REQUIRED** — Tables are NOT auto-created. See [KQL Database Setup](#kql-database-setup-required) below. | 5 min |
+| **2. Run Post-Deploy Notebook** | Upload & run `Post_Deploy_Setup.ipynb` — creates KQL tables, Ontology, Graph, Data Agents | 5 min |
 | **3. Run Pipeline** | Open PL_BicycleRTI_Medallion → click **Run** (Bronze → Silver → Gold → ML → Ontology) | 15–25 min |
 | **4. Refresh Semantic Models** | Open each Semantic Model → click **Refresh now** | 5 min |
-| **5. Deploy Ontology + Graph** | Upload & run `Post_Deploy_Setup.ipynb` | 5 min |
-| **6. Refresh Graph Model** | Cell 3 triggers `refreshGraph` automatically. If nodes/edges still show 0, open Graph Model → **Refresh now** | 2 min |
-| **7. Verify KQL Dashboard** | Open KQL Dashboard → confirm tiles show data from Eventhouse | 2 min |
+| **5. Refresh Graph Model** | Cell 3 triggers `refreshGraph` automatically. If nodes/edges still show 0, open Graph Model → **Refresh now** | 2 min |
+| **6. Verify KQL Dashboard** | Open KQL Dashboard → confirm tiles show data from Eventhouse | 2 min |
 | **7. Test Data Agent** | Open Bicycle Fleet Intelligence Agent → ask: *"What are the top 5 busiest stations?"* | 1 min |
 | **Import Task Flow** *(optional)* | See [Task Flow Import](#task-flow-import) — import `bicycle_rti_task_flow.json` | 5 min |
 | **Configure Activators** *(optional)* | Create Reflex items manually, add alert triggers. See `docs/ACTIVATOR_SETUP.md` | 10 min |
 | **Set up Power Automate** *(optional)* | Create flows triggered by Activator → send Teams notifications | 15 min |
 
-### KQL Database Setup (REQUIRED)
+### KQL Database Tables (Auto-Created)
 
-> **⚠️ IMPORTANT:** The KQL database tables are **NOT auto-created** during `fabric-cicd` deployment. You **MUST** run the setup commands manually before the dashboard will show data.
+> **✅ Now Automated:** `Post_Deploy_Setup.ipynb` Cell 1.5 automatically creates all KQL tables using the Kusto SDK. No manual copy/paste required!
 
-**Why is this manual?**
-- `fabric-cicd` deploys the KQL Database definition but Fabric does not auto-execute the `DatabaseSchema.kql` DDL commands
-- The Eventstream destinations require tables to exist before data can flow
-- Without tables, the KQL Dashboard shows blank/empty tiles
-
-**Steps:**
-1. Open the deployed `bikerentaleventhouse` KQL Database in your workspace
-2. Click **New KQL Queryset** (or open the existing embedded queryset)
-3. Open the file: `workspace/bikerentaleventhouse.KQLDatabase/POST_DEPLOYMENT_KQL_SETUP.kql`
-4. Copy and run each section **in order** (Sections 1-5)
-5. Verify tables exist by running the final `.show tables` command
-
-**Tables Created:**
+**What gets created:**
 
 | Table | Purpose | Data Source |
 |-------|---------|-------------|
@@ -490,8 +477,14 @@ The standalone graph reads the **same lakehouse tables** as the ontology, so the
 | `geo_neighbourhood_zones` | Neighbourhood zone risk metrics | Gold lakehouse (after pipeline runs) |
 | `geo_rebalancing_routes` | Optimal rebalancing routes | Gold lakehouse (after pipeline runs) |
 
-**Update Policy:**
-The `weather_events_transform()` function automatically converts raw weather data → `weather_events_clean` table whenever new data arrives. This is set up in Section 4 of the KQL setup script.
+**How it works:**
+1. Cell 1.5 discovers the Eventhouse `queryServiceUri` via Fabric REST API
+2. Connects using the Kusto SDK (`azure-kusto-data`)
+3. Executes `.create-merge table` commands for all 6 tables
+4. Creates the `weather_events_transform()` function
+5. Attaches the update policy for auto-transformation
+
+**Manual fallback:** If Cell 1.5 fails (e.g., permissions), use `workspace/bikerentaleventhouse.KQLDatabase/POST_DEPLOYMENT_KQL_SETUP.kql` — copy/paste sections into a KQL queryset.
 
 ---
 
