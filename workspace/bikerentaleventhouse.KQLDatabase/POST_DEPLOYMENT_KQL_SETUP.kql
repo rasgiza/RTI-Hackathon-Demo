@@ -1,0 +1,175 @@
+// ============================================================================
+// BICYCLE RTI - POST-DEPLOYMENT KQL DATABASE SETUP
+// ============================================================================
+// 
+// ⚠️  IMPORTANT: RUN THIS SCRIPT MANUALLY AFTER DEPLOYMENT
+// 
+// After deploying the workspace via fabric-cicd, the KQL database tables
+// are NOT auto-created. You MUST run these commands manually.
+//
+// HOW TO RUN:
+// 1. Open the "bikerentaleventhouse" KQL Database in your new workspace
+// 2. Click "New KQL Queryset" or open the embedded queryset
+// 3. Copy each section below and run it (Ctrl+Enter or click Run)
+// 4. Run sections IN ORDER (1, 2, 3, 4, 5)
+//
+// ============================================================================
+
+
+// ============================================================================
+// SECTION 1: CREATE CORE TABLES
+// ============================================================================
+// These tables receive data from the Eventstream
+// Run this section FIRST
+// ============================================================================
+
+.create-merge table bikerentaldb (
+    BikepointID: string, 
+    Street: string, 
+    Neighbourhood: string, 
+    Latitude: real, 
+    Longitude: real, 
+    No_Bikes: long, 
+    No_Empty_Docks: long
+) 
+
+.create-merge table weather_events (
+    observation_time: string, 
+    weather_description: string, 
+    relative_humidity: real, 
+    location_name: string, 
+    precip_past_1h_mm: real, 
+    icon_code: string, 
+    uv_index: real, 
+    cloud_ceiling_m: real, 
+    cloud_cover_pct: real, 
+    pressure_mb: real, 
+    visibility_km: real, 
+    dew_point_c: real, 
+    wind_gust_kmh: real, 
+    wind_direction_desc: string, 
+    temperature_c: real, 
+    feels_like_c: real, 
+    wind_direction_deg: real, 
+    has_precipitation: string, 
+    is_daytime: string
+) 
+
+
+// ============================================================================
+// SECTION 2: CREATE WEATHER_EVENTS_CLEAN TABLE (TRANSFORMED)
+// ============================================================================
+// This table auto-populates via update policy when weather_events gets data
+// ============================================================================
+
+.create-merge table weather_events_clean (
+    observation_time: string, 
+    weather_description: string, 
+    relative_humidity: real, 
+    location_name: string, 
+    precip_past_1h_mm: real, 
+    icon_code: int, 
+    uv_index: real, 
+    cloud_ceiling_m: real, 
+    cloud_cover_pct: real, 
+    pressure_mb: real, 
+    visibility_km: real, 
+    dew_point_c: real, 
+    wind_gust_kmh: real, 
+    wind_direction_desc: string, 
+    temperature_c: real, 
+    feels_like_c: real, 
+    wind_direction_deg: real, 
+    has_precipitation: bool, 
+    is_daytime: bool
+) 
+
+
+// ============================================================================
+// SECTION 3: CREATE TRANSFORM FUNCTION
+// ============================================================================
+// This function cleans weather data (converts string booleans, parses JSON)
+// ============================================================================
+
+.create-or-alter function with (skipvalidation = "true") weather_events_transform() {
+    weather_events
+    | extend icon_code_clean = toint(parse_json(icon_code).value)
+    | extend has_precip_clean = tobool(has_precipitation)
+    | extend is_day_clean = tobool(is_daytime)
+    | project 
+        observation_time, weather_description, relative_humidity, location_name,
+        precip_past_1h_mm, icon_code = icon_code_clean, uv_index, cloud_ceiling_m,
+        cloud_cover_pct, pressure_mb, visibility_km, dew_point_c, wind_gust_kmh,
+        wind_direction_desc, temperature_c, feels_like_c, wind_direction_deg,
+        has_precipitation = has_precip_clean, is_daytime = is_day_clean
+}
+
+
+// ============================================================================
+// SECTION 4: ATTACH UPDATE POLICY
+// ============================================================================
+// This policy auto-transforms weather_events → weather_events_clean
+// Every time weather_events gets new data, it auto-populates weather_events_clean
+// ============================================================================
+
+.alter table weather_events_clean policy update "[{\"IsEnabled\":true,\"Source\":\"weather_events\",\"Query\":\"weather_events_transform()\",\"IsTransactional\":false,\"PropagateIngestionProperties\":false,\"ManagedIdentity\":null}]"
+
+
+// ============================================================================
+// SECTION 5: CREATE GEO ANALYTICS TABLES
+// ============================================================================
+// These tables are used by the "Geospatial Analytics" page in the dashboard
+// Data comes from Gold lakehouse (run the Gold notebook to populate)
+// ============================================================================
+
+.create-merge table geo_station_hotspots (
+    station_id: string, 
+    street_address: string, 
+    neighbourhood: string, 
+    latitude: real, 
+    longitude: real, 
+    utilization_pct: real, 
+    Gi_Bin: int, 
+    hotspot_label: string, 
+    zone_action: string
+)
+
+.create-merge table geo_neighbourhood_zones (
+    neighbourhood: string, 
+    station_count: int, 
+    avg_utilization: real, 
+    hot_spot_count: int, 
+    cold_spot_count: int, 
+    zone_risk: string, 
+    recommended_action: string
+)
+
+.create-merge table geo_rebalancing_routes (
+    deficit_street: string, 
+    deficit_neighbourhood: string, 
+    surplus_street: string, 
+    surplus_neighbourhood: string, 
+    distance_km: real, 
+    bikes_to_move: int, 
+    route_priority: string
+)
+
+
+// ============================================================================
+// VERIFICATION: CHECK ALL TABLES EXIST
+// ============================================================================
+// Run this to verify all tables were created successfully
+// ============================================================================
+
+.show tables
+| project TableName, Folder
+| order by TableName asc
+
+
+// ============================================================================
+// ✅ SETUP COMPLETE!
+// ============================================================================
+// After running all sections above:
+// 1. Enable the Eventstream to start data flowing
+// 2. Refresh the KQL Dashboard - data should appear within 30 seconds
+// ============================================================================

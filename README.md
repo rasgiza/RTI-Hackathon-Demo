@@ -14,19 +14,20 @@ A **complete, one-click deployable** Real-Time Intelligence (RTI) solution on Mi
 6. [Task Flow](#task-flow)
 7. [Quick Start — Deploy in 7 Steps](#quick-start--deploy-in-7-steps)
 8. [Post-Deployment Steps](#post-deployment-steps)
+   - [KQL Database Setup (REQUIRED)](#kql-database-setup-required)
 9. [Item Inventory](#item-inventory)
 10. [Activator / Reflex Setup](#activator--reflex-items-manual-setup)
 11. [Data Model](#data-model)
 12. [Notebooks Reference](#notebooks-reference)
 13. [Pipeline](#pipeline)
-13. [Semantic Models](#semantic-models)
-14. [Data Agents](#data-agents)
-15. [Real-Time Components](#real-time-components)
-16. [Task Flow Import](#task-flow-import)
-17. [Alternative — Local Python Scripts](#alternative--local-python-scripts)
-18. [Repo Structure](#repo-structure)
-19. [Troubleshooting](#troubleshooting)
-20. [License](#license)
+14. [Semantic Models](#semantic-models)
+15. [Data Agents](#data-agents)
+16. [Real-Time Components](#real-time-components)
+17. [Task Flow Import](#task-flow-import)
+18. [Alternative — Local Python Scripts](#alternative--local-python-scripts)
+19. [Repo Structure](#repo-structure)
+20. [Troubleshooting](#troubleshooting)
+21. [License](#license)
 
 ---
 
@@ -451,15 +452,46 @@ The standalone graph reads the **same lakehouse tables** as the ontology, so the
 | Step | Action | Time |
 |------|--------|------|
 | **1. Start Eventstreams** | Open RTIbikeRental and RTI-WeatherDemo — click **Start** if not running. Wait for Bronze data. | 10–30 min |
-| **2. Run Pipeline** | Open PL_BicycleRTI_Medallion → click **Run** (Bronze → Silver → Gold → ML → Ontology) | 15–25 min |
-| **3. Refresh Semantic Models** | Open each Semantic Model → click **Refresh now** | 5 min |
-| **4. Deploy Ontology + Graph** | Upload & run `Post_Deploy_Setup.ipynb` | 5 min |
-| **5. Refresh Graph Model** | Cell 3 triggers `refreshGraph` automatically. If nodes/edges still show 0, open Graph Model → **Refresh now** | 2 min |
-| **6. Verify KQL Dashboard** | Open KQL Dashboard → confirm tiles show data from Eventhouse | 2 min |
+| **2. ⚠️ Create KQL Tables** | **REQUIRED** — Tables are NOT auto-created. See [KQL Database Setup](#kql-database-setup-required) below. | 5 min |
+| **3. Run Pipeline** | Open PL_BicycleRTI_Medallion → click **Run** (Bronze → Silver → Gold → ML → Ontology) | 15–25 min |
+| **4. Refresh Semantic Models** | Open each Semantic Model → click **Refresh now** | 5 min |
+| **5. Deploy Ontology + Graph** | Upload & run `Post_Deploy_Setup.ipynb` | 5 min |
+| **6. Refresh Graph Model** | Cell 3 triggers `refreshGraph` automatically. If nodes/edges still show 0, open Graph Model → **Refresh now** | 2 min |
+| **7. Verify KQL Dashboard** | Open KQL Dashboard → confirm tiles show data from Eventhouse | 2 min |
 | **7. Test Data Agent** | Open Bicycle Fleet Intelligence Agent → ask: *"What are the top 5 busiest stations?"* | 1 min |
 | **Import Task Flow** *(optional)* | See [Task Flow Import](#task-flow-import) — import `bicycle_rti_task_flow.json` | 5 min |
 | **Configure Activators** *(optional)* | Create Reflex items manually, add alert triggers. See `docs/ACTIVATOR_SETUP.md` | 10 min |
 | **Set up Power Automate** *(optional)* | Create flows triggered by Activator → send Teams notifications | 15 min |
+
+### KQL Database Setup (REQUIRED)
+
+> **⚠️ IMPORTANT:** The KQL database tables are **NOT auto-created** during `fabric-cicd` deployment. You **MUST** run the setup commands manually before the dashboard will show data.
+
+**Why is this manual?**
+- `fabric-cicd` deploys the KQL Database definition but Fabric does not auto-execute the `DatabaseSchema.kql` DDL commands
+- The Eventstream destinations require tables to exist before data can flow
+- Without tables, the KQL Dashboard shows blank/empty tiles
+
+**Steps:**
+1. Open the deployed `bikerentaleventhouse` KQL Database in your workspace
+2. Click **New KQL Queryset** (or open the existing embedded queryset)
+3. Open the file: `workspace/bikerentaleventhouse.KQLDatabase/POST_DEPLOYMENT_KQL_SETUP.kql`
+4. Copy and run each section **in order** (Sections 1-5)
+5. Verify tables exist by running the final `.show tables` command
+
+**Tables Created:**
+
+| Table | Purpose | Data Source |
+|-------|---------|-------------|
+| `bikerentaldb` | Real-time bike station status | Eventstream (TfL API) |
+| `weather_events` | Raw weather data (string booleans) | Eventstream (Open-Meteo API) |
+| `weather_events_clean` | Cleaned weather data (proper types) | Auto-populated via update policy |
+| `geo_station_hotspots` | Station-level Gi* hotspot analysis | Gold lakehouse (after pipeline runs) |
+| `geo_neighbourhood_zones` | Neighbourhood zone risk metrics | Gold lakehouse (after pipeline runs) |
+| `geo_rebalancing_routes` | Optimal rebalancing routes | Gold lakehouse (after pipeline runs) |
+
+**Update Policy:**
+The `weather_events_transform()` function automatically converts raw weather data → `weather_events_clean` table whenever new data arrives. This is set up in Section 4 of the KQL setup script.
 
 ---
 
