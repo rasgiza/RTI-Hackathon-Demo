@@ -47,68 +47,54 @@ KQL_DB_DESCRIPTION = (
 EVENTSTREAM_NAME = "bicycles_eventstream"
 
 # KQL table creation commands
-# These match the column names used in dashboard.json queries
+# These match the ACTUAL exported schema from the Bike Rental Hackathon workspace
+# Tables: bikerentaldb, weather_events, weather_events_clean (via transform function)
 KQL_TABLE_COMMANDS = [
-    # ── Main station events table ──
-    # Column names match what the dashboard queries expect
-    """
-.create-merge table bikerentaldb (
-    BikepointID: string,
-    Street: string,
-    Neighbourhood: string,
-    Latitude: real,
-    Longitude: real,
-    No_Bikes: int,
-    No_Empty_Docks: int,
-    event_timestamp: datetime
-)
-""",
-    # ── Ingestion mapping for JSON events ──
-    """
-.create-or-alter table bikerentaldb ingestion json mapping 'BikeEventsMapping'
-'['
-'  {"column": "BikepointID",     "path": "$.BikepointID",     "datatype": "string"},'
-'  {"column": "Street",          "path": "$.Street",          "datatype": "string"},'
-'  {"column": "Neighbourhood",   "path": "$.Neighbourhood",   "datatype": "string"},'
-'  {"column": "Latitude",        "path": "$.Latitude",        "datatype": "real"},'
-'  {"column": "Longitude",       "path": "$.Longitude",       "datatype": "real"},'
-'  {"column": "No_Bikes",        "path": "$.No_Bikes",        "datatype": "int"},'
-'  {"column": "No_Empty_Docks",  "path": "$.No_Empty_Docks",  "datatype": "int"},'
-'  {"column": "event_timestamp", "path": "$.event_timestamp", "datatype": "datetime"}'
-']'
-""",
-    # ── Weather observations table ──
-    """
-.create-merge table weather_tb (
-    temperature: real,
-    realFeelTemperature: real,
-    description: string,
-    windSpeed: real,
-    humidity: real,
-    event_timestamp: datetime
-)
-""",
-    # ── Weather ingestion mapping ──
-    """
-.create-or-alter table weather_tb ingestion json mapping 'WeatherMapping'
-'['
-'  {"column": "temperature",        "path": "$.temperature",        "datatype": "real"},'
-'  {"column": "realFeelTemperature","path": "$.realFeelTemperature","datatype": "real"},'
-'  {"column": "description",        "path": "$.description",        "datatype": "string"},'
-'  {"column": "windSpeed",          "path": "$.windSpeed",          "datatype": "real"},'
-'  {"column": "humidity",           "path": "$.humidity",           "datatype": "real"},'
-'  {"column": "event_timestamp",    "path": "$.event_timestamp",    "datatype": "datetime"}'
-']'
-""",
-    # ── Retention policy (90 days for demo) ──
-    ".alter-merge table bikerentaldb policy retention softdelete = 90d",
-    ".alter-merge table weather_tb policy retention softdelete = 90d",
-    # ── Enable streaming ingestion for low-latency ──
-    ".alter table bikerentaldb policy streamingingestion enable",
-    ".alter table weather_tb policy streamingingestion enable",
-    # ── Caching policy: hot cache last 7 days ──
-    ".alter table bikerentaldb policy caching hot = 7d",
-    ".alter table weather_tb policy caching hot = 7d",
+    # ══════════════════════════════════════════════════════════════════
+    # 1. Main station events table (bikerentaldb)
+    # ══════════════════════════════════════════════════════════════════
+    """.create-merge table bikerentaldb (BikepointID:string, Street:string, Neighbourhood:string, Latitude:real, Longitude:real, No_Bikes:long, No_Empty_Docks:long)""",
+    
+    # ══════════════════════════════════════════════════════════════════
+    # 2. Weather events table (raw ingestion from Eventstream)
+    # ══════════════════════════════════════════════════════════════════
+    """.create-merge table weather_events (observation_time:string, weather_description:string, relative_humidity:real, location_name:string, precip_past_1h_mm:real, icon_code:string, uv_index:real, cloud_ceiling_m:real, cloud_cover_pct:real, pressure_mb:real, visibility_km:real, dew_point_c:real, wind_gust_kmh:real, wind_direction_desc:string, temperature_c:real, feels_like_c:real, wind_direction_deg:real, has_precipitation:string, is_daytime:string)""",
+    
+    # ══════════════════════════════════════════════════════════════════
+    # 3. Weather events clean table (properly typed version)
+    # ══════════════════════════════════════════════════════════════════
+    """.create-merge table weather_events_clean (observation_time:string, weather_description:string, relative_humidity:real, location_name:string, precip_past_1h_mm:real, icon_code:int, uv_index:real, cloud_ceiling_m:real, cloud_cover_pct:real, pressure_mb:real, visibility_km:real, dew_point_c:real, wind_gust_kmh:real, wind_direction_desc:string, temperature_c:real, feels_like_c:real, wind_direction_deg:real, has_precipitation:bool, is_daytime:bool)""",
+    
+    # ══════════════════════════════════════════════════════════════════
+    # 4. Transform function (converts weather_events → weather_events_clean)
+    # ══════════════════════════════════════════════════════════════════
+    """.create-or-alter function with (skipvalidation = "true") weather_events_transform() {
+    weather_events
+    | extend icon_code_clean = toint(parse_json(icon_code).value)
+    | extend has_precip_clean = tobool(has_precipitation)
+    | extend is_day_clean = tobool(is_daytime)
+    | project 
+        observation_time, weather_description, relative_humidity, location_name,
+        precip_past_1h_mm, icon_code = icon_code_clean, uv_index, cloud_ceiling_m,
+        cloud_cover_pct, pressure_mb, visibility_km, dew_point_c, wind_gust_kmh,
+        wind_direction_desc, temperature_c, feels_like_c, wind_direction_deg,
+        has_precipitation = has_precip_clean, is_daytime = is_day_clean
+}""",
+    
+    # ══════════════════════════════════════════════════════════════════
+    # 5. Update policy (auto-transforms rows from weather_events → weather_events_clean)
+    # ══════════════════════════════════════════════════════════════════
+    """.alter table weather_events_clean policy update "[{\\"IsEnabled\\":true,\\"Source\\":\\"weather_events\\",\\"Query\\":\\"weather_events_transform()\\",\\"IsTransactional\\":false,\\"PropagateIngestionProperties\\":false,\\"ManagedIdentity\\":null}]" """,
+    
+    # ══════════════════════════════════════════════════════════════════
+    # 6. Geo-analytics tables (used by hot spot map and neighbourhood zones)
+    # ══════════════════════════════════════════════════════════════════
+    # These are populated by notebook 08_GeoAnalytics_HotSpots
+    """.create-merge table geo_station_hotspots (station_id:string, street_address:string, neighbourhood:string, latitude:real, longitude:real, utilization_pct:real, Gi_Bin:int, hotspot_label:string, zone_action:string)""",
+    
+    """.create-merge table geo_neighbourhood_zones (neighbourhood:string, station_count:int, avg_utilization:real, hot_spot_count:int, cold_spot_count:int, zone_risk:string, recommended_action:string)""",
+    
+    """.create-merge table geo_rebalancing_routes (deficit_street:string, deficit_neighbourhood:string, surplus_street:string, surplus_neighbourhood:string, distance_km:real, bikes_to_move:int, route_priority:string)""",
 ]
 
 
