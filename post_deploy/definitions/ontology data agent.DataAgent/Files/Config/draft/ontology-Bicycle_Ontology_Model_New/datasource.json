@@ -2,9 +2,9 @@
 
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/dataAgent/definition/dataSource/1.0.0/schema.json",
 
-  "artifactId": "__ONTOLOGY_FLEET__",
+  "artifactId": "00000000-0000-0000-0000-000000000000",
 
-  "workspaceId": "573cc7c7-a45a-4fd9-886e-9db4e9798db4",
+  "workspaceId": "00000000-0000-0000-0000-000000000000",
 
   "dataSourceInstructions": null,
 
