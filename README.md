@@ -190,7 +190,11 @@ Lakehouse, Eventhouse, KQL Database, Eventstream, Notebook (PySpark), Data Pipel
 
 ## Architecture
 
-![Architecture Diagram](images/architecture.png)
+### Medallion Architecture
+![Medallion Architecture](images/architecture.png)
+
+### Real-Time Intelligence Architecture
+![RTI Architecture](images/architecture_rti.png)
 
 <details>
 <summary>Text-based architecture diagram</summary>
