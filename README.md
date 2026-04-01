@@ -790,7 +790,27 @@ Eventstream (RTIbikeRental)
 | `03a_Silver_Weather_Join` | Silver | Temporal join of weather data to station records |
 | `04_Gold_Star_Schema` | Gold | Builds fact + dimension tables, aggregations, snapshots |
 | `06_ML_Demand_Forecast` | ML | Prophet time-series + sklearn regression, writes to forecast_demand |
-| `09_Ontology_Neighbourhood_Filter` | Ontology | Populates ontology-specific Gold tables + triggers SM refresh |
+| `09_Ontology_Neighbourhood_Filter` | Ontology | Creates filtered `onto_*` tables for Graph Model (see below) |
+
+#### Why `09_Ontology_Neighbourhood_Filter` Exists
+
+The **Graph Model** in Fabric has a practical limitation: it cannot efficiently traverse relationships backed by large fact tables (> 200K rows). Our star schema has:
+
+| Table | Rows | Problem |
+|-------|------|---------|
+| `fact_availability` | ~560M | Graph queries would timeout |
+| `fact_rebalancing` | ~500K | Too large for graph traversals |
+| `fact_hourly_demand` | ~200K | At the boundary |
+
+**Solution:** NB09 creates **neighbourhood-scoped copies** (`onto_*` tables) filtered to a single neighbourhood. This reduces row counts by 95%+, enabling fast graph queries while preserving the full star schema for SQL/DAX queries.
+
+| Original | Filtered Copy | Rows |
+|----------|---------------|------|
+| `fact_availability` | `onto_fact_availability` | ~15-20M |
+| `fact_rebalancing` | `onto_fact_rebalancing` | ~17K |
+| `dim_station` | `onto_dim_station` | ~4-8 |
+
+The **Ontology** entity types bind to these `onto_*` tables, while the **Semantic Model** and **Data Agent** continue using the full tables. Best of both worlds.
 
 ### Standalone/Diagnostic Notebooks
 
