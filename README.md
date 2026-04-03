@@ -375,6 +375,15 @@ The pipeline processes Bronze → Silver → Gold → ML → Ontology. **It requ
 
 #### Step 6: Deploy Ontology + Graph + Operations Agent + DataAgents + Activators
 
+> ⚠️ **IMPORTANT: Stop the Spark session from `Deploy_Bicycle_RTI.ipynb` before running this notebook!**
+>
+> If the Spark session from Step 3 is still running, you will hit a Spark compute rate limit:
+> ```
+> This spark job can't be run because you have hit a spark compute or API rate limit.
+> HTTP status code: 430
+> ```
+> **To fix:** Open `Deploy_Bicycle_RTI.ipynb` → click **Stop session** in the notebook toolbar (or wait for it to auto-terminate after ~20 min idle). Then run `Post_Deploy_Setup.ipynb`.
+
 > **Pre-requisite:** The `post_deploy/` folder must already be uploaded to the `deploy_staging` lakehouse (Step 2, item 4). The notebook reads definition JSON files from `Files/post_deploy/definitions/`.
 
 Upload `Post_Deploy_Setup.ipynb` to your workspace, **attach `deploy_staging`** (same as Step 3), and **Run all cells**. This creates all 7 post-deploy items:
@@ -1093,6 +1102,7 @@ RTI-Hackathon-Demo/
 
 | Issue | Cause | Fix |
 |-------|-------|-----|
+| **HTTP 430 - Spark rate limit** | Previous notebook's Spark session still running | Stop the session in `Deploy_Bicycle_RTI.ipynb` before running `Post_Deploy_Setup.ipynb` |
 | **Eventstream not streaming** | Auto-start may not trigger | Open Eventstream → click **Start** |
 | **Pipeline fails at NB04_Gold** | Silver tables don't exist yet | Run NB03 + NB03a manually first |
 | **SM refresh fails in pipeline** | Connection ID is workspace-specific | Re-create SM refresh activity in pipeline editor |
