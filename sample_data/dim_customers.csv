@@ -1,0 +1,56 @@
+CustomerID,FirstName,LastName,Email,PhoneNumber,DateOfBirth,NationalInsuranceNumber,PostalCode,Neighbourhood,MembershipTier,MemberSince,RiderSegment,MarketingOptIn,CreditCardLast4,AccountStatus
+CUST-0001,Oliver,Bennett,oliver.bennett@email.co.uk,+44 7700 900142,1988-03-14,AB 12 34 56 C,SW3 4ND,Chelsea,Annual,2019-04-01,Commuter,TRUE,4821,Active
+CUST-0002,Amelia,Clarke,amelia.clarke@gmail.com,+44 7700 900287,1993-07-22,CD 23 45 67 D,SW3 5TH,Chelsea,Casual,2022-06-15,Tourist,FALSE,7734,Active
+CUST-0003,James,Thornton,j.thornton@outlook.com,+44 7700 900391,1975-11-05,EF 34 56 78 E,SW3 2AB,Chelsea,Corporate,2017-01-10,Commuter,TRUE,2290,Active
+CUST-0004,Sophie,Williams,sophie.w@hotmail.co.uk,+44 7700 900412,1990-02-28,GH 45 67 89 F,SW3 6RS,Chelsea,Annual,2020-09-03,Recreational,TRUE,5512,Active
+CUST-0005,Harry,Patel,harry.patel@email.co.uk,+44 7700 900538,1985-08-17,IJ 56 78 90 G,SW3 1JK,Chelsea,Corporate,2018-03-22,Commuter,FALSE,8847,Active
+CUST-0006,Isabella,Morgan,i.morgan@gmail.com,+44 7700 900623,1997-12-30,KL 67 89 01 H,SW3 3PQ,Chelsea,Casual,2023-01-08,Tourist,TRUE,3361,Active
+CUST-0007,George,Adams,george.adams@work.co.uk,+44 7700 900744,1982-05-09,MN 78 90 12 I,SW3 4WX,Chelsea,Annual,2016-07-14,Commuter,TRUE,9923,Active
+CUST-0008,Emily,Robinson,emily.robinson@bt.com,+44 7700 900815,1991-09-21,OP 89 01 23 J,SW3 5YZ,Chelsea,Casual,2021-11-19,Recreational,FALSE,6674,Inactive
+CUST-0009,Noah,Fitzgerald,n.fitz@email.co.uk,+44 7700 900967,1978-04-03,QR 90 12 34 K,WC2R 1AB,Strand,Annual,2015-02-28,Commuter,TRUE,1182,Active
+CUST-0010,Charlotte,Hughes,c.hughes@gmail.com,+44 7700 901023,1995-06-11,ST 01 23 45 L,WC2R 2CD,Strand,Casual,2022-08-05,Tourist,TRUE,4457,Active
+CUST-0011,Liam,Sutton,liam.sutton@city.com,+44 7700 901134,1987-01-25,UV 12 34 56 M,WC2R 3EF,Strand,Corporate,2019-05-17,Commuter,FALSE,7789,Active
+CUST-0012,Mia,Campbell,mia.campbell@outlook.com,+44 7700 901278,1992-10-14,WX 23 45 67 N,WC2R 4GH,Strand,Annual,2020-12-01,Recreational,TRUE,2234,Active
+CUST-0013,Ethan,Brooks,e.brooks@email.co.uk,+44 7700 901345,1983-07-08,YZ 34 56 78 O,WC2R 5IJ,Strand,Annual,2017-09-30,Commuter,TRUE,5566,Active
+CUST-0014,Poppy,Stewart,poppy.s@hotmail.co.uk,+44 7700 901489,1999-03-17,AB 45 67 89 P,WC2R 1KL,Strand,Casual,2023-03-12,Tourist,FALSE,8891,Active
+CUST-0015,Jack,Davies,jack.davies@work.co.uk,+44 7700 901512,1980-12-22,CD 56 78 90 Q,WC2R 2MN,Strand,Corporate,2014-06-07,Commuter,TRUE,1145,Active
+CUST-0016,Lily,Turner,lily.turner@gmail.com,+44 7700 901634,1994-08-30,EF 67 89 01 R,E3 2AB,Mile End,Casual,2021-04-22,Recreational,TRUE,4478,Active
+CUST-0017,William,Evans,w.evans@email.co.uk,+44 7700 901723,1986-02-14,GH 78 90 12 S,E3 3CD,Mile End,Annual,2018-10-09,Commuter,FALSE,7712,Active
+CUST-0018,Isla,Griffiths,isla.g@outlook.com,+44 7700 901856,1990-05-27,IJ 89 01 23 T,E3 4EF,Mile End,Casual,2022-01-31,Tourist,TRUE,2289,Inactive
+CUST-0019,Alfie,Price,alfie.price@bt.com,+44 7700 901948,1977-11-03,KL 90 12 34 U,E3 5GH,Mile End,Annual,2016-08-18,Commuter,TRUE,5523,Active
+CUST-0020,Freya,Jenkins,freya.jenkins@gmail.com,+44 7700 902012,1996-09-15,MN 01 23 45 V,E3 1IJ,Mile End,Casual,2023-05-04,Recreational,TRUE,8856,Active
+CUST-0021,Oscar,Lawson,o.lawson@work.co.uk,+44 7700 902145,1984-06-20,OP 12 34 56 W,SW7 1AB,Knightsbridge,Corporate,2017-11-25,Commuter,FALSE,1190,Active
+CUST-0022,Grace,Mason,grace.mason@email.co.uk,+44 7700 902234,1991-04-08,QR 23 45 67 X,SW7 2CD,Knightsbridge,Annual,2020-03-14,Recreational,TRUE,4423,Active
+CUST-0023,Henry,Phillips,henry.phillips@city.com,+44 7700 902378,1979-08-19,ST 34 56 78 Y,SW7 3EF,Knightsbridge,Corporate,2015-07-06,Commuter,TRUE,7757,Active
+CUST-0024,Daisy,Walsh,daisy.w@hotmail.co.uk,+44 7700 902467,1998-01-12,UV 45 67 89 Z,SW7 4GH,Knightsbridge,Casual,2022-10-28,Tourist,FALSE,2291,Active
+CUST-0025,Sebastian,Harris,s.harris@outlook.com,+44 7700 902589,1988-11-29,WX 56 78 90 A,NW8 1AB,St. John's Wood,Annual,2019-02-17,Commuter,TRUE,5534,Active
+CUST-0026,Chloe,Wood,chloe.wood@gmail.com,+44 7700 902672,1993-05-04,YZ 67 89 01 B,NW8 2CD,St. John's Wood,Casual,2021-07-23,Recreational,TRUE,8868,Active
+CUST-0027,Theodore,King,theo.king@work.co.uk,+44 7700 902745,1981-03-16,AB 78 90 12 C,NW8 3EF,St. John's Wood,Corporate,2016-12-05,Commuter,FALSE,1102,Active
+CUST-0028,Hannah,Collins,h.collins@email.co.uk,+44 7700 902834,1995-10-07,CD 89 01 23 D,SE1 2AB,Bankside,Annual,2020-06-19,Commuter,TRUE,4435,Active
+CUST-0029,Archie,Scott,archie.scott@bt.com,+44 7700 902967,1987-07-31,EF 90 12 34 E,SE1 3CD,Bankside,Casual,2022-02-14,Tourist,TRUE,7769,Active
+CUST-0030,Zoe,Mitchell,zoe.mitchell@outlook.com,+44 7700 903012,1992-12-18,GH 01 23 45 F,SE1 4EF,Bankside,Annual,2018-04-08,Recreational,FALSE,2212,Active
+CUST-0031,Lucas,Taylor,l.taylor@gmail.com,+44 7700 903145,1976-09-24,IJ 12 34 56 G,SW10 1AB,West Chelsea,Annual,2015-10-30,Commuter,TRUE,5546,Active
+CUST-0032,Penelope,White,p.white@email.co.uk,+44 7700 903278,1990-02-06,KL 23 45 67 H,SW10 2CD,West Chelsea,Casual,2021-09-16,Tourist,TRUE,8880,Active
+CUST-0033,Max,Anderson,max.anderson@work.co.uk,+44 7700 903356,1984-06-13,MN 34 56 78 I,SW10 3EF,West Chelsea,Corporate,2017-05-21,Commuter,FALSE,1114,Active
+CUST-0034,Imogen,Thompson,i.thompson@city.com,+44 7700 903489,1997-04-25,OP 45 67 89 J,W1T 1AB,Fitzrovia,Annual,2020-11-07,Commuter,TRUE,4448,Active
+CUST-0035,Benjamin,Jackson,ben.j@hotmail.co.uk,+44 7700 903567,1983-11-10,QR 56 78 90 K,W1T 2CD,Fitzrovia,Corporate,2016-03-15,Commuter,TRUE,7782,Active
+CUST-0036,Rosie,Martin,rosie.martin@gmail.com,+44 7700 903634,1996-07-02,ST 67 89 01 L,W1T 3EF,Fitzrovia,Casual,2023-07-20,Recreational,FALSE,2226,Active
+CUST-0037,Samuel,Lee,samuel.lee@email.co.uk,+44 7700 903778,1989-03-28,UV 78 90 12 M,SW1V 1AB,Victoria,Annual,2019-08-11,Commuter,TRUE,5559,Active
+CUST-0038,Ellie,Walker,ellie.walker@outlook.com,+44 7700 903845,1994-01-15,WX 89 01 23 N,SW1V 2CD,Victoria,Casual,2022-04-26,Tourist,TRUE,8893,Active
+CUST-0039,Toby,Hall,toby.hall@bt.com,+44 7700 903923,1978-08-04,YZ 90 12 34 O,SW1V 3EF,Victoria,Annual,2015-12-03,Commuter,FALSE,1127,Active
+CUST-0040,Ava,Green,ava.green@gmail.com,+44 7700 904056,1992-05-19,AB 01 23 45 P,SW6 1AB,Sands End,Casual,2021-02-08,Recreational,TRUE,4461,Active
+CUST-0041,Daniel,Baker,d.baker@work.co.uk,+44 7700 904134,1986-10-26,CD 12 34 56 Q,SW6 2CD,Sands End,Annual,2018-07-17,Commuter,TRUE,7795,Active
+CUST-0042,Ella,Carter,ella.carter@email.co.uk,+44 7700 904267,1999-02-12,EF 23 45 67 R,W1C 1AB,West End,Corporate,2023-09-01,Tourist,FALSE,2239,Active
+CUST-0043,Ryan,Edwards,ryan.edwards@city.com,+44 7700 904345,1985-06-30,GH 34 56 78 S,W1C 2CD,West End,Annual,2017-04-12,Commuter,TRUE,5573,Active
+CUST-0044,Scarlett,Perez,scarlett.p@hotmail.co.uk,+44 7700 904478,1993-12-08,IJ 45 67 89 T,E3 2KL,Old Ford,Casual,2022-06-24,Recreational,TRUE,8806,Active
+CUST-0045,Freddie,Roberts,freddie.r@outlook.com,+44 7700 904556,1980-04-17,KL 56 78 90 U,E3 3MN,Old Ford,Annual,2016-11-08,Commuter,FALSE,1140,Active
+CUST-0046,Matilda,Nelson,m.nelson@gmail.com,+44 7700 904689,1988-09-23,MN 67 89 01 V,SW1X 1AB,Belgravia,Corporate,2019-01-29,Commuter,TRUE,4474,Active
+CUST-0047,Charlie,Cooper,charlie.c@email.co.uk,+44 7700 904723,1995-03-05,OP 78 90 12 W,SW1X 2CD,Belgravia,Annual,2021-08-14,Recreational,TRUE,7708,Active
+CUST-0048,Molly,Reed,molly.reed@bt.com,+44 7700 904856,1974-07-14,QR 89 01 23 X,W14 1AB,Olympia,Casual,2014-03-20,Tourist,FALSE,2242,Inactive
+CUST-0049,Arthur,Shaw,arthur.shaw@work.co.uk,+44 7700 904934,1991-11-27,ST 90 12 34 Y,W14 2CD,Olympia,Annual,2020-05-06,Commuter,TRUE,5576,Active
+CUST-0050,Phoebe,Watson,phoebe.w@outlook.com,+44 7700 905012,1997-08-09,UV 01 23 45 Z,SW8 1AB,Wandsworth Road,Casual,2022-12-17,Recreational,TRUE,8819,Active
+CUST-0051,Leo,Barnes,leo.barnes@gmail.com,+44 7700 905145,1983-02-22,WX 12 34 56 A,SW8 2CD,Wandsworth Road,Annual,2018-09-03,Commuter,FALSE,1153,Active
+CUST-0052,Harriet,Wood,harriet.wood@email.co.uk,+44 7700 905234,1990-06-16,YZ 23 45 67 B,SE1 9AB,London Bridge,Corporate,2019-07-22,Commuter,TRUE,4487,Active
+CUST-0053,Jasper,Kelly,jasper.kelly@city.com,+44 7700 905378,1987-04-03,AB 34 56 78 C,SE1 8CD,London Bridge,Annual,2017-02-11,Commuter,TRUE,7721,Active
+CUST-0054,Florence,Morris,f.morris@hotmail.co.uk,+44 7700 905456,1998-10-20,CD 45 67 89 D,E15 1AB,Stratford,Casual,2023-04-15,Recreational,FALSE,2255,Active
+CUST-0055,Hugo,Murphy,hugo.murphy@outlook.com,+44 7700 905589,1982-01-08,EF 56 78 90 E,E15 2CD,Stratford,Annual,2016-06-27,Commuter,TRUE,5588,Active
