@@ -1098,6 +1098,79 @@ RTI-Hackathon-Demo/
 
 ---
 
+## Known API Limitations
+
+The following Fabric REST API limitations affect automated deployment. These are service-side issues that require manual workarounds until Microsoft addresses them.
+
+| Item | Limitation | Workaround |
+|------|-----------|------------|
+| **Operations Agent** | `POST /operationsAgents` returns 500 when `definition` is included; `updateDefinition` also returns 500 | Create manually via Fabric UI. See [Manual Setup](#operations-agent-manual-setup) |
+| **Ontology Companion Graph** | Auto-provisioned companion graph is read-only; `updateDefinition` and `refreshGraph` both fail | Delete companion, create standalone graph model, then `refreshGraph` |
+| **Data Agent Lakehouse** | `elements` structure must include full column metadata | Keep original elements tree, only patch `workspaceId`/`artifactId` |
+| **Graph Refresh** | `refreshGraph` returns `InvalidJobType` for ontology-managed graphs | Only works on standalone graph models; use UI for companion graphs |
+
+### Operations Agent Manual Setup
+
+The Operations Agent (Cycling-Campaign-Agent) is **Phase 2** of the architecture — it connects to Microsoft Teams and Power Automate for campaign automation.
+
+Since the Operations Agent API does not currently support pushing a definition via `updateDefinition`, you must configure the agent manually in the Fabric UI.
+
+**Configuration file location:** [post_deploy/definitions/Cycling-Campaign-Agent.OperationsAgent/Configurations.json](post_deploy/definitions/Cycling-Campaign-Agent.OperationsAgent/Configurations.json)
+
+**Steps:**
+1. In Fabric UI: **New** → **Operations Agent** → Name it `Cycling-Campaign-Agent`
+2. **Add Data Source**: Select `bikerentaleventhouse` (your KQL Database)
+3. **Set Goals** (copy from below):
+   ```
+   Maximise customer engagement and campaign ROI for London's bike-share service 
+   by proactively recommending marketing outreach when real-time conditions are optimal.
+
+   Key objectives:
+   1. Identify neighbourhoods where cycling conditions are ideal (good weather, bikes available, safe wind speeds)
+   2. Recommend sending personalised campaign emails to opted-in customers in those neighbourhoods
+   3. Avoid campaign fatigue - do not recommend campaigns more than once every 2 hours for the same neighbourhood
+   4. Prioritise neighbourhoods with 5+ average bikes available and no precipitation
+   5. Consider temperature comfort (10-30C ideal range) and wind gusts (under 40 km/h safe threshold)
+   ```
+4. **Set Instructions** (copy from below):
+   ```
+   You monitor two streaming tables in the bikerentaldb KQL database:
+
+   1. bikerentaldb - Live bike availability at every station in London
+      Key columns: BikepointID, No_Bikes, No_Empty_Docks, Neighbourhood, ingestion_time()
+      
+   2. weather_events_clean - Live weather observations
+      Key columns: observation_time, temperature_c, feels_like_c, weather_description,
+      has_precipitation, wind_gust_kmh, visibility_km, cloud_cover_pct
+
+   MONITORING RULES:
+   - Check data from the last 5 minutes (fleet) and last 30 minutes (weather)
+   - A neighbourhood has optimal conditions when:
+     - Average bikes available >= 5
+     - No precipitation (has_precipitation = false)
+     - Temperature between 10C and 30C
+     - Wind gusts < 40 km/h
+   - Comfort rating: Excellent if 12-25C and wind < 30 km/h, otherwise Good
+
+   WHEN TO RECOMMEND Send Customer Campaign:
+   - At least 1 neighbourhood meets all optimal conditions
+   - The same neighbourhood has NOT been targeted in the last 2 hours
+   - Include: neighbourhood list, average bikes, temperature, weather description, comfort rating
+
+   WHEN NOT TO RECOMMEND:
+   - Precipitation detected - no campaign
+   - Temperature outside 10-30C - no campaign  
+   - All neighbourhoods have < 5 bikes - no campaign
+   - Campaign was sent to same neighbourhoods within 2 hours - suppress
+   ```
+5. **Configure Teams channel** (Phase 2): Connect to your team's notification channel
+6. **Set up Power Automate flow** (Phase 2): Create flow to trigger campaign emails
+7. Click **Save**
+
+> **API Documentation**: [Operations Agent REST API](https://learn.microsoft.com/en-us/rest/api/fabric/operationsagent/items)
+
+---
+
 ## Troubleshooting
 
 | Issue | Cause | Fix |
