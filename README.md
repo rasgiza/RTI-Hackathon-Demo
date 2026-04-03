@@ -13,6 +13,7 @@ A **complete, one-click deployable** Real-Time Intelligence (RTI) solution on Mi
 5. [Architecture](#architecture)
 6. [Task Flow](#task-flow)
 7. [Quick Start — Deploy in 7 Steps](#quick-start--deploy-in-7-steps)
+   - [Tenant-Level Prerequisites](#tenant-level-prerequisites-admin-required)
 8. [Post-Deployment Steps](#post-deployment-steps)
    - [KQL Database Tables (Auto-Created)](#kql-database-tables-auto-created)
 9. [Item Inventory](#item-inventory)
@@ -286,6 +287,24 @@ The Fabric **Task Flow** provides a visual overview of how all items relate in t
 ---
 
 ## Quick Start — Deploy in 7 Steps
+
+### Tenant-Level Prerequisites (Admin Required)
+
+Before deploying, ensure your **Fabric administrator** has enabled the following features in the **Fabric Admin Portal** → **Tenant settings**:
+
+| Feature | Required For | Admin Setting Location |
+|---------|--------------|------------------------|
+| **Real-Time Intelligence** | Eventstream, Eventhouse, KQL Database, KQL Dashboard | Tenant settings → Real-Time Intelligence |
+| **Data Activator / Reflex** | Real-time alerts to Teams/Power Automate | Tenant settings → Data Activator |
+| **Copilot and AI features** | Data Agents (natural language queries) | Tenant settings → Copilot and Azure OpenAI Service |
+| **Users can create Fabric items** | Creating all Fabric items | Tenant settings → Users can create Fabric items |
+| **ArcGIS Maps for Power BI** | Map visualizations in reports/dashboards | Tenant settings → ArcGIS Maps for Power BI (Integration settings) |
+| **Azure Maps visual** | Alternative map visuals | Tenant settings → Azure Maps visual (Integration settings) |
+| **Graph Model (Preview)** | Ontology knowledge graph traversals | May require preview feature enrollment |
+
+> **How to check:** Ask your Fabric admin to navigate to **admin.powerbi.com** → **Tenant settings** and verify each setting is enabled for your security group or the entire organization.
+>
+> **Common symptom if disabled:** Features appear grayed out, items fail to create, or you see "This feature is not enabled for your organization" errors.
 
 ### Prerequisites
 
