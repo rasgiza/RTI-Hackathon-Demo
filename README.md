@@ -298,8 +298,7 @@ Before deploying, ensure your **Fabric administrator** has enabled the following
 | **Data Activator / Reflex** | Real-time alerts to Teams/Power Automate | Tenant settings → Data Activator |
 | **Copilot and AI features** | Data Agents (natural language queries) | Tenant settings → Copilot and Azure OpenAI Service |
 | **Users can create Fabric items** | Creating all Fabric items | Tenant settings → Users can create Fabric items |
-| **ArcGIS Maps for Power BI** | Map visualizations in reports/dashboards | Tenant settings → ArcGIS Maps for Power BI (Integration settings) |
-| **Azure Maps visual** | Alternative map visuals | Tenant settings → Azure Maps visual (Integration settings) |
+| **ArcGIS Maps** | Map visualizations in KQL Dashboard | Tenant settings → Integration settings → ArcGIS Maps for Power BI |
 | **Graph Model (Preview)** | Ontology knowledge graph traversals | May require preview feature enrollment |
 
 > **How to check:** Ask your Fabric admin to navigate to **admin.powerbi.com** → **Tenant settings** and verify each setting is enabled for your security group or the entire organization.
