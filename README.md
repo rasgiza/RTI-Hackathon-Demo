@@ -338,9 +338,11 @@ git clone https://github.com/kwamesefah_microsoft/RTI-Hackathon-Demo.git
 2. Open it → click **Upload → Upload folder**
 3. Upload the **`workspace`** folder from the cloned repo (contains ~26 item definition sub-folders for `fabric-cicd`)
 4. Upload the **`post_deploy`** folder the same way (contains JSON definitions for Ontology, Graph Model, Agents, and Activators — used by `Post_Deploy_Setup.ipynb` in Step 6)
-5. Wait for uploads — you should see:
+5. Upload the **`sample_data`** folder (contains `dim_customers.csv` for customer analytics)
+6. Wait for uploads — you should see:
    - `Files/workspace/` with ~26 sub-folders (one per item)
    - `Files/post_deploy/definitions/` with the REST API payload files
+   - `Files/sample_data/dim_customers.csv`
 
 #### Step 3: Upload and run the deploy notebook
 
@@ -516,6 +518,23 @@ The standalone graph reads the **same lakehouse tables** as the ontology, so the
 5. Attaches the update policy for auto-transformation
 
 **Manual fallback:** If Cell 1.5 fails (e.g., permissions), use `workspace/bikerentaleventhouse.KQLDatabase/POST_DEPLOYMENT_KQL_SETUP.kql` — copy/paste sections into a KQL queryset.
+
+### Customer Data Table (Cell 1.6)
+
+`Post_Deploy_Setup.ipynb` Cell 1.6 loads `dim_customers` into the Gold lakehouse from `Files/sample_data/dim_customers.csv`.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| CustomerID | String | Primary key (e.g., CUST-0001) |
+| FirstName, LastName, Email | String | Contact info |
+| Neighbourhood | String | Links to dim_neighbourhood |
+| MembershipTier | String | Annual, Casual, Corporate |
+| RiderSegment | String | Commuter, Tourist, Recreational |
+| AccountStatus | String | Active, Suspended, Cancelled |
+| NationalInsuranceNumber | String | PII - masked in queries |
+| CreditCardLast4 | String | PII - last 4 digits only |
+
+**Prerequisites:** Upload `sample_data/` folder to lakehouse (Step 2.5).
 
 ---
 
