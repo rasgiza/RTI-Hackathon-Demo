@@ -84,7 +84,7 @@
 
         "itemId": "__ONTOLOGY_NEW__",
 
-        "workspaceId": "573cc7c7-a45a-4fd9-886e-9db4e9798db4",
+        "workspaceId": "__WORKSPACE_ID__",
 
         "itemType": "DigitalTwinBuilder"
 
@@ -394,7 +394,7 @@
 
         "itemId": "__ONTOLOGY_NEW__",
 
-        "workspaceId": "573cc7c7-a45a-4fd9-886e-9db4e9798db4",
+        "workspaceId": "__WORKSPACE_ID__",
 
         "itemType": "DigitalTwinBuilder"
 
@@ -704,7 +704,7 @@
 
         "itemId": "__ONTOLOGY_NEW__",
 
-        "workspaceId": "573cc7c7-a45a-4fd9-886e-9db4e9798db4",
+        "workspaceId": "__WORKSPACE_ID__",
 
         "itemType": "DigitalTwinBuilder"
 
