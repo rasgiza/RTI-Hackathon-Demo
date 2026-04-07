@@ -1,6 +1,6 @@
 # Bicycle Real-Time Intelligence — Hackathon Demo
 
-A **complete, one-click deployable** Real-Time Intelligence (RTI) solution on Microsoft Fabric. This repo packages 28 Fabric items (21 automated + 7 post-deploy) — from streaming eventstreams to ontology-backed AI agents — into a self-contained project that any teammate can deploy to their own workspace in under 15 minutes.
+A **complete, one-click deployable** Real-Time Intelligence (RTI) solution on Microsoft Fabric. This repo packages 28 Fabric items (21 automated + 7 post-deploy) — from streaming eventstreams to ontology-backed AI agents — into a self-contained project that any teammate can deploy to their own workspace in under 15 minutes.tes
 
 ---
 
